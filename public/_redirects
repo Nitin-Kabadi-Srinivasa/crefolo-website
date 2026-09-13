@@ -1,0 +1,6 @@
+# Old WordPress paths (in case someone reaches them on this host)
+/termin-buchen        /probestunde   301
+/termin-buchen/       /probestunde   301
+/impressum/           /impressum     301
+/datenschutz/         /datenschutz   301
+/en/                  /en            301

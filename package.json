@@ -1,0 +1,26 @@
+{
+  "name": "crefolo-website",
+  "private": true,
+  "type": "module",
+  "version": "1.0.0",
+  "description": "crefolo.com - playful English lessons for kids, with trial-lesson booking",
+  "scripts": {
+    "dev": "astro dev --host 127.0.0.1 --port 4321",
+    "api": "wrangler dev --port 8787",
+    "build": "astro build",
+    "preview": "wrangler dev",
+    "deploy": "astro build && wrangler deploy",
+    "check": "astro check && tsc --noEmit -p worker/tsconfig.json",
+    "images": "node scripts/process-images.mjs"
+  },
+  "dependencies": {
+    "astro": "^7.3.2",
+    "sharp": "^0.35.4"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.10",
+    "@cloudflare/workers-types": "^5.20260911.1",
+    "typescript": "^5.9.3",
+    "wrangler": "^4.131.1"
+  }
+}

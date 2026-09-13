@@ -1,0 +1,17 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "site",
+      "runtimeExecutable": "C:\\Users\\NitinCrefolo\\AppData\\Local\\Programs\\nodejs\\npm.cmd",
+      "runtimeArgs": ["run", "dev"],
+      "port": 4321
+    },
+    {
+      "name": "api",
+      "runtimeExecutable": "C:\\Users\\NitinCrefolo\\AppData\\Local\\Programs\\nodejs\\npm.cmd",
+      "runtimeArgs": ["run", "api"],
+      "port": 8787
+    }
+  ]
+}

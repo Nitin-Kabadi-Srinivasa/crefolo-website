@@ -1,0 +1,95 @@
+---
+import type { Locale } from '@/content/types';
+import { getContent, sectionIds } from '@/i18n';
+import Icon from './Icon.astro';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const t = getContent(locale);
+const colors = ['pink', 'yellow', 'teal'];
+---
+
+<section class="section section--white steps" id={sectionIds[locale].steps}>
+  <div class="container">
+    <div class="section__head reveal">
+      <span class="eyebrow eyebrow--teal">1 · 2 · 3</span>
+      <h2>{t.steps.title}</h2>
+      <p>{t.steps.intro}</p>
+    </div>
+    <ol class="steps__list">
+      {t.steps.items.map((s, i) => (
+        <li class="steps__item card reveal" data-delay={i}>
+          <span class={`steps__num steps__num--${colors[i]}`}>{i + 1}</span>
+          <div class={`icon-badge icon-badge--${colors[i]}`}><Icon name={s.icon} /></div>
+          <h3>{s.title}</h3>
+          <p>{s.text}</p>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+
+<style>
+  .steps__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.75rem;
+    position: relative;
+  }
+  .steps__list::before {
+    content: '';
+    position: absolute;
+    top: 96px;
+    left: 12%;
+    right: 12%;
+    border-top: 3px dashed var(--pink-soft);
+    z-index: 0;
+  }
+  .steps__item {
+    position: relative;
+    z-index: 1;
+    padding-top: 2.25rem;
+  }
+  .steps__item p {
+    margin: 0;
+    color: var(--muted);
+  }
+  .steps__num {
+    position: absolute;
+    top: -18px;
+    left: 1.5rem;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 1.15rem;
+    color: #fff;
+    box-shadow: var(--shadow);
+  }
+  .steps__num--pink {
+    background: var(--pink);
+  }
+  .steps__num--yellow {
+    background: var(--yellow);
+    color: var(--plum);
+  }
+  .steps__num--teal {
+    background: var(--teal);
+  }
+  @media (max-width: 860px) {
+    .steps__list {
+      grid-template-columns: 1fr;
+    }
+    .steps__list::before {
+      display: none;
+    }
+  }
+</style>

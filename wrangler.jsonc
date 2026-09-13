@@ -1,0 +1,41 @@
+{
+  // Cloudflare Workers configuration: one Worker serves the static site (dist/) and the booking API (/api/*)
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "crefolo-website",
+  "main": "worker/index.ts",
+  "compatibility_date": "2026-06-01",
+  "compatibility_flags": ["nodejs_compat"],
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS",
+    "run_worker_first": ["/api/*"],
+    "not_found_handling": "404-page",
+    "html_handling": "auto-trailing-slash"
+  },
+  "triggers": {
+    // Daily reminder run: 05:00 UTC = 07:00 Berlin in summer, 06:00 in winter
+    "crons": ["0 5 * * *"]
+  },
+  "vars": {
+    "SITE_URL": "https://crefolo.com",
+    "TEACHER_EMAIL": "info@crefolo.com",
+    "TEACHER_NAME": "Nitin",
+    "TIMEZONE": "Europe/Berlin",
+    // Trial-lesson slots: weekdays 1-5 = Monday-Friday, start hours in local time, 60 minutes each
+    "SLOT_WEEKDAYS": "1,2,3,4,5",
+    "SLOT_START_HOURS": "17,18,19,20",
+    "SLOT_MINUTES": "60",
+    // Earliest bookable day = today + MIN_DAYS_AHEAD; bookable up to MAX_DAYS_AHEAD days from today
+    "MIN_DAYS_AHEAD": "1",
+    "MAX_DAYS_AHEAD": "28",
+    // "1" = no Google/Microsoft calls, fake availability and bookings (local design work)
+    "MOCK": "0"
+  },
+  "observability": {
+    "enabled": true
+  }
+  // Secrets (set with `wrangler secret put NAME`, locally in .dev.vars):
+  //   GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, GOOGLE_REFRESH_TOKEN
+  //   MS_TENANT_ID, MS_CLIENT_ID, MS_CLIENT_SECRET
+  //   TURNSTILE_SECRET, CANCEL_SECRET
+}

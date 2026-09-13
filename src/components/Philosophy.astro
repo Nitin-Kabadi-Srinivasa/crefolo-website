@@ -1,0 +1,99 @@
+---
+import type { Locale } from '@/content/types';
+import { getContent } from '@/i18n';
+import Icon from './Icon.astro';
+import Wave from './Wave.astro';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const t = getContent(locale);
+const colors = ['pink', 'yellow', 'sky'];
+---
+
+<section class="section section--tint philosophy" id={locale === 'de' ? 'weniger-bildschirm' : 'less-screen-time'}>
+  <Wave fill="var(--white)" flip />
+  <div class="container philosophy__inner">
+    <div class="philosophy__text reveal">
+      <span class="eyebrow eyebrow--lilac">{t.philosophy.eyebrow}</span>
+      <h2>{t.philosophy.title}</h2>
+      {t.philosophy.paragraphs.map((p) => <p>{p}</p>)}
+    </div>
+    <ul class="philosophy__points">
+      {t.philosophy.points.map((pt, i) => (
+        <li class="philosophy__point card reveal" data-delay={i}>
+          <div class={`icon-badge icon-badge--${colors[i]}`}><Icon name={pt.icon} /></div>
+          <div>
+            <h3>{pt.title}</h3>
+            <p>{pt.text}</p>
+          </div>
+        </li>
+      ))}
+    </ul>
+  </div>
+  <Wave fill="var(--white)" />
+</section>
+
+<style>
+  .philosophy {
+    padding-top: clamp(5rem, 10vw, 8rem);
+    padding-bottom: clamp(5rem, 10vw, 8rem);
+  }
+  .philosophy__inner {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 3.5rem;
+    align-items: center;
+  }
+  .philosophy__text p {
+    font-size: 1.08rem;
+    color: var(--plum-soft);
+  }
+  .philosophy__points {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 1.1rem;
+  }
+  .philosophy__point {
+    display: flex;
+    gap: 1.1rem;
+    align-items: flex-start;
+    padding: 1.35rem 1.5rem;
+  }
+  .philosophy__point .icon-badge {
+    margin-bottom: 0;
+    flex: none;
+  }
+  .philosophy__point h3 {
+    font-size: 1.2rem;
+    margin-bottom: 0.2rem;
+  }
+  .philosophy__point p {
+    margin: 0;
+    color: var(--muted);
+  }
+  .philosophy__point:nth-child(1) {
+    transform: rotate(-1.2deg);
+  }
+  .philosophy__point:nth-child(2) {
+    transform: rotate(1deg) translateX(10px);
+  }
+  .philosophy__point:nth-child(3) {
+    transform: rotate(-0.8deg);
+  }
+  .philosophy__point.in {
+    transition: transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1), opacity 0.7s ease;
+  }
+  @media (max-width: 900px) {
+    .philosophy__inner {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+    .philosophy__point:nth-child(n) {
+      transform: none;
+    }
+  }
+</style>

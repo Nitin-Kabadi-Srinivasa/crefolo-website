@@ -1,0 +1,98 @@
+---
+import type { Locale } from '@/content/types';
+import { getContent, sectionIds } from '@/i18n';
+import Icon from './Icon.astro';
+
+interface Props {
+  locale: Locale;
+  limit?: number;
+  id?: string;
+}
+const { locale, limit, id } = Astro.props;
+const t = getContent(locale);
+const items = limit ? t.faq.items.slice(0, limit) : t.faq.items;
+const faqLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: items.map((i) => ({ '@type': 'Question', name: i.q, acceptedAnswer: { '@type': 'Answer', text: i.a } })),
+};
+---
+
+<section class="section section--white faq" id={id ?? sectionIds[locale].faq}>
+  <div class="container--narrow">
+    <div class="section__head reveal">
+      <span class="eyebrow eyebrow--lilac">FAQ</span>
+      <h2>{t.faq.title}</h2>
+      <p>{t.faq.intro}</p>
+    </div>
+    <div class="faq__list">
+      {items.map((item, i) => (
+        <details class="faq__item reveal" data-delay={i % 3}>
+          <summary>
+            <span>{item.q}</span>
+            <Icon name="plus" class="faq__icon" />
+          </summary>
+          <div class="faq__answer"><p>{item.a}</p></div>
+        </details>
+      ))}
+    </div>
+  </div>
+  <script type="application/ld+json" set:html={JSON.stringify(faqLd)} />
+</section>
+
+<style>
+  .faq__list {
+    display: grid;
+    gap: 0.85rem;
+  }
+  .faq__item {
+    background: var(--cream);
+    border: 2px solid transparent;
+    border-radius: var(--radius-sm);
+    transition: border-color 0.2s ease, background-color 0.2s ease;
+  }
+  .faq__item[open] {
+    background: #fff;
+    border-color: var(--pink-soft);
+    box-shadow: var(--shadow);
+  }
+  .faq__item summary {
+    list-style: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1rem 1.25rem;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.12rem;
+    color: var(--plum);
+  }
+  .faq__item summary::-webkit-details-marker {
+    display: none;
+  }
+  .faq__item summary:hover {
+    color: var(--pink-deep);
+  }
+  .faq__icon {
+    flex: none;
+    width: 26px;
+    height: 26px;
+    padding: 4px;
+    border-radius: 50%;
+    background: var(--pink-soft);
+    color: var(--pink-deep);
+    transition: transform 0.25s ease;
+  }
+  .faq__item[open] .faq__icon {
+    transform: rotate(45deg);
+  }
+  .faq__answer {
+    padding: 0 1.25rem 1.1rem;
+    color: var(--plum-soft);
+  }
+  .faq__answer p {
+    margin: 0;
+  }
+</style>

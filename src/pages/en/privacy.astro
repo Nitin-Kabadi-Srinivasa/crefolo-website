@@ -1,0 +1,12 @@
+---
+import Base from '@/layouts/Base.astro';
+import LegalPage from '@/components/LegalPage.astro';
+import { getLegal } from '@/i18n';
+
+const locale = 'en';
+const legal = getLegal(locale);
+---
+
+<Base locale={locale} page="privacy" title={`${legal.privacy.title} – Crefolo`} description={legal.privacy.metaDescription} hideMobileCta>
+  <LegalPage locale={locale} kind="privacy" />
+</Base>

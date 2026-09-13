@@ -1,0 +1,36 @@
+---
+import Base from '@/layouts/Base.astro';
+import Mascot from '@/components/Mascot.astro';
+import Icon from '@/components/Icon.astro';
+
+const locale = 'de';
+---
+
+<Base locale={locale} page="home" title="Seite nicht gefunden – Crefolo" description="Diese Seite gibt es leider nicht." noindex hideMobileCta>
+  <section class="section notfound">
+    <div class="container--narrow text-center">
+      <div class="notfound__mascot float"><Mascot size={200} /></div>
+      <span class="eyebrow">404</span>
+      <h1>Ups, hier ist nichts.</h1>
+      <p class="muted">Diese Seite gibt es leider nicht (mehr). <span lang="en">This page does not exist.</span></p>
+      <div class="notfound__actions">
+        <a class="btn btn--primary" href="/"><Icon name="home" />Zur Startseite</a>
+        <a class="btn btn--ghost" href="/probestunde"><Icon name="calendar" />Probestunde buchen</a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .notfound__mascot {
+    width: 200px;
+    margin: 0 auto 1rem;
+  }
+  .notfound__actions {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+  }
+</style>

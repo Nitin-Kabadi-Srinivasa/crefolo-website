@@ -1,0 +1,28 @@
+---
+import Base from '@/layouts/Base.astro';
+import Hero from '@/components/Hero.astro';
+import Steps from '@/components/Steps.astro';
+import Philosophy from '@/components/Philosophy.astro';
+import Features from '@/components/Features.astro';
+import CtaBand from '@/components/CtaBand.astro';
+import Pricing from '@/components/Pricing.astro';
+import About from '@/components/About.astro';
+import Reviews from '@/components/Reviews.astro';
+import Faq from '@/components/Faq.astro';
+import Booking from '@/components/Booking.astro';
+
+const locale = 'en';
+---
+
+<Base locale={locale} page="home">
+  <Hero locale={locale} />
+  <Steps locale={locale} />
+  <Philosophy locale={locale} />
+  <Features locale={locale} />
+  <CtaBand locale={locale} />
+  <Pricing locale={locale} />
+  <About locale={locale} />
+  <Reviews locale={locale} />
+  <Faq locale={locale} />
+  <Booking locale={locale} />
+</Base>

@@ -1,0 +1,119 @@
+---
+import { Image } from 'astro:assets';
+import nitin from '@/assets/nitin.jpg';
+import type { Locale } from '@/content/types';
+import { getContent, sectionIds } from '@/i18n';
+import Icon from './Icon.astro';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const t = getContent(locale);
+---
+
+<section class="section section--white about" id={sectionIds[locale].about}>
+  <div class="container about__inner">
+    <div class="about__photo reveal">
+      <span class="about__blob" aria-hidden="true"></span>
+      <Image src={nitin} alt={t.about.photoAlt} width={520} height={520} class="about__img" loading="lazy" />
+      <span class="about__badge"><Icon name="graduation" />{locale === 'de' ? 'Cambridge-zertifiziert' : 'Cambridge certified'}</span>
+    </div>
+    <div class="about__text reveal" data-delay="1">
+      <span class="eyebrow">{t.about.eyebrow}</span>
+      <h2>{t.about.title}</h2>
+      {t.about.paragraphs.map((p) => <p>{p}</p>)}
+      <ul class="about__facts">
+        {t.about.facts.map((f) => (
+          <li><Icon name="check" />{f}</li>
+        ))}
+      </ul>
+    </div>
+  </div>
+</section>
+
+<style>
+  .about__inner {
+    display: grid;
+    grid-template-columns: 0.85fr 1.15fr;
+    gap: 3.5rem;
+    align-items: center;
+  }
+  .about__photo {
+    position: relative;
+    width: min(100%, 420px);
+    margin-inline: auto;
+  }
+  .about__blob {
+    position: absolute;
+    inset: -6%;
+    background: linear-gradient(135deg, var(--yellow-soft), var(--pink-soft));
+    border-radius: 45% 55% 52% 48% / 55% 45% 55% 45%;
+    transform: rotate(8deg);
+  }
+  .about__img {
+    position: relative;
+    width: 100%;
+    border-radius: 48% 52% 50% 50% / 52% 48% 52% 48%;
+    border: 6px solid #fff;
+    box-shadow: var(--shadow-lg);
+    object-fit: cover;
+  }
+  .about__badge {
+    position: absolute;
+    bottom: 6%;
+    right: -4%;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    background: #fff;
+    color: var(--plum);
+    font-family: var(--font-display);
+    font-weight: 700;
+    padding: 0.5rem 0.9rem;
+    border-radius: 999px;
+    box-shadow: var(--shadow);
+    font-size: 0.95rem;
+  }
+  .about__badge svg {
+    width: 20px;
+    height: 20px;
+    color: var(--pink);
+  }
+  .about__text p {
+    color: var(--plum-soft);
+    font-size: 1.08rem;
+  }
+  .about__facts {
+    list-style: none;
+    margin: 1.25rem 0 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+  }
+  .about__facts li {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: var(--teal-soft);
+    color: #146f65;
+    font-weight: 700;
+    padding: 0.4rem 0.85rem;
+    border-radius: 999px;
+    font-size: 0.95rem;
+  }
+  .about__facts svg {
+    width: 18px;
+    height: 18px;
+  }
+  @media (max-width: 860px) {
+    .about__inner {
+      grid-template-columns: 1fr;
+      gap: 2.5rem;
+    }
+    .about__photo {
+      width: min(100%, 320px);
+    }
+  }
+</style>

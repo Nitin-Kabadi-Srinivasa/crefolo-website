@@ -1,0 +1,130 @@
+---
+import { Image } from 'astro:assets';
+import logo from '@/assets/logo.png';
+import type { Locale } from '@/content/types';
+import { getContent } from '@/i18n';
+import Icon from './Icon.astro';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const t = getContent(locale);
+---
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="site-footer__grid">
+      <div class="site-footer__brand">
+        <Image src={logo} alt="Crefolo" width={150} loading="lazy" />
+        <p class="site-footer__tagline">{t.footer.tagline}</p>
+      </div>
+
+      <div>
+        <h2 class="site-footer__title">{t.contact.title}</h2>
+        <p class="muted">{t.contact.text}</p>
+        <ul class="site-footer__contact">
+          <li>
+            <a href={`mailto:${t.contact.email}`}><Icon name="mail" />{t.contact.email}</a>
+          </li>
+          <li>
+            <a href={t.contact.phoneHref}><Icon name="phone" />{t.contact.phoneDisplay}</a>
+          </li>
+          <li>
+            <a href={t.contact.whatsappHref} target="_blank" rel="noopener"><Icon name="whatsapp" />{t.contact.whatsappLabel}</a>
+          </li>
+        </ul>
+      </div>
+
+      <div>
+        <h2 class="site-footer__title">{locale === 'de' ? 'Rechtliches' : 'Legal'}</h2>
+        <ul class="site-footer__links">
+          {t.footer.links.map((l) => (
+            <li><a href={l.href}>{l.label}</a></li>
+          ))}
+        </ul>
+      </div>
+    </div>
+
+    <div class="site-footer__bottom">
+      <span>{t.footer.rights}</span>
+      <span>{t.footer.madeWith}</span>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    background: var(--plum);
+    color: #e9e0f2;
+    padding: 4rem 0 2rem;
+    margin-top: 0;
+  }
+  .site-footer__grid {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr 0.8fr;
+    gap: 2.5rem;
+    align-items: start;
+  }
+  .site-footer__brand img {
+    background: #fff;
+    padding: 0.9rem 1.1rem;
+    border-radius: 18px;
+    width: 150px;
+  }
+  .site-footer__tagline {
+    font-family: var(--font-display);
+    font-size: 1.2rem;
+    margin-top: 1rem;
+    color: #fff;
+  }
+  .site-footer__title {
+    font-size: 1.15rem;
+    color: #fff;
+    margin-bottom: 0.6rem;
+  }
+  .site-footer .muted {
+    color: #cbbfda;
+    font-size: 0.95rem;
+  }
+  .site-footer ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.5rem;
+  }
+  .site-footer a {
+    color: #fff;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    font-weight: 700;
+  }
+  .site-footer a:hover {
+    color: var(--yellow);
+  }
+  .site-footer a svg {
+    width: 20px;
+    height: 20px;
+    color: var(--pink-light);
+  }
+  .site-footer__bottom {
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.14);
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.5rem;
+    font-size: 0.9rem;
+    color: #cbbfda;
+  }
+  @media (max-width: 760px) {
+    .site-footer__grid {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+  }
+</style>

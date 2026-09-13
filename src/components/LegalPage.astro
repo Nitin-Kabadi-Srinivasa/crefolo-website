@@ -1,0 +1,64 @@
+---
+import type { Locale } from '@/content/types';
+import { getLegal } from '@/i18n';
+
+interface Props {
+  locale: Locale;
+  kind: 'imprint' | 'privacy';
+}
+const { locale, kind } = Astro.props;
+const legal = getLegal(locale);
+---
+
+<section class="section legal">
+  <div class="container--narrow prose">
+    {kind === 'imprint' ? (
+      <>
+        <h1>{legal.imprint.title}</h1>
+        {legal.imprint.blocks.map((b) => (
+          <div class="legal__block">
+            {b.heading && <h2>{b.heading}</h2>}
+            <p set:html={b.lines.join('<br>')} />
+          </div>
+        ))}
+      </>
+    ) : (
+      <>
+        <h1>{legal.privacy.title}</h1>
+        {legal.privacy.note && <p class="legal__note">{legal.privacy.note}</p>}
+        {legal.privacy.sections.map((sec) => (
+          <section>
+            <h2>{sec.heading}</h2>
+            {sec.paragraphs.map((p) => (
+              <p set:html={p} />
+            ))}
+          </section>
+        ))}
+        <p class="muted legal__updated">{legal.privacy.updated}</p>
+      </>
+    )}
+  </div>
+</section>
+
+<style>
+  .legal h1 {
+    font-size: clamp(2rem, 4vw, 2.8rem);
+    margin-bottom: 1.5rem;
+  }
+  .legal__block {
+    margin-bottom: 1.25rem;
+  }
+  .legal__block h2 {
+    margin-top: 1.5rem;
+  }
+  .legal__note {
+    background: var(--yellow-soft);
+    padding: 0.8rem 1rem;
+    border-radius: var(--radius-xs);
+    font-size: 0.95rem;
+  }
+  .legal__updated {
+    margin-top: 2.5rem;
+    font-size: 0.9rem;
+  }
+</style>

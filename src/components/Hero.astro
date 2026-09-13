@@ -1,0 +1,326 @@
+---
+import { Image } from 'astro:assets';
+import kids from '@/assets/kids.jpg';
+import type { Locale } from '@/content/types';
+import { getContent, routes } from '@/i18n';
+import Icon from './Icon.astro';
+import Mascot from './Mascot.astro';
+import Wave from './Wave.astro';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const t = getContent(locale);
+const bookingHref = routes.booking[locale];
+---
+
+<section class="hero" aria-labelledby="hero-title">
+  <div class="hero__bg" aria-hidden="true">
+    <span class="hero__blob hero__blob--1"></span>
+    <span class="hero__blob hero__blob--2"></span>
+    <span class="hero__blob hero__blob--3"></span>
+  </div>
+
+  <div class="container hero__inner">
+    <div class="hero__text">
+      <span class="eyebrow">{t.hero.eyebrow}</span>
+      <h1 id="hero-title" set:html={t.hero.title} />
+      <p class="hero__lead">{t.hero.text}</p>
+      <div class="hero__actions">
+        <a class="btn btn--primary btn--lg" href={bookingHref}><Icon name="calendar" />{t.hero.ctaPrimary}</a>
+        <a class="btn btn--ghost" href={t.contact.whatsappHref} target="_blank" rel="noopener"><Icon name="whatsapp" class="wa" />{t.hero.ctaSecondary}</a>
+      </div>
+      <ul class="hero__chips" aria-label={locale === 'de' ? 'Auf einen Blick' : 'At a glance'}>
+        {t.hero.chips.map((c) => (
+          <li><Icon name="check" />{c}</li>
+        ))}
+      </ul>
+    </div>
+
+    <div class="hero__visual" aria-hidden="false">
+      <div class="hero__photo-wrap">
+        <span class="hero__photo-bg"></span>
+        <Image src={kids} alt={t.hero.photoAlt} widths={[480, 720, 960]} sizes="(max-width: 900px) 90vw, 520px" class="hero__photo" loading="eager" fetchpriority="high" />
+      </div>
+
+      <div class="hero__mascot float float--slow">
+        <span class="bubble">{t.hero.bubble}</span>
+        <Mascot size={210} />
+      </div>
+
+      <span class="hero__letter hero__letter--a float" aria-hidden="true">A</span>
+      <span class="hero__letter hero__letter--b float float--fast" aria-hidden="true">B</span>
+      <span class="hero__letter hero__letter--c float float--slow" aria-hidden="true">C</span>
+      <span class="hero__star float float--fast" aria-hidden="true"><Icon name="star" /></span>
+      <svg class="hero__squiggle float" viewBox="0 0 120 40" aria-hidden="true"><path d="M4 22 C 20 2, 34 42, 50 22 S 80 2, 96 22 S 114 30, 116 20" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round" /></svg>
+    </div>
+  </div>
+
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <clipPath id="blob-clip" clipPathUnits="objectBoundingBox">
+        <path d="M0.52 0.02 C0.74 0.02 0.95 0.17 0.97 0.4 C0.99 0.64 0.88 0.9 0.64 0.97 C0.42 1.03 0.13 0.92 0.04 0.68 C-0.04 0.44 0.09 0.13 0.31 0.05 C0.38 0.03 0.45 0.02 0.52 0.02 Z" />
+      </clipPath>
+    </defs>
+  </svg>
+
+  <Wave fill="var(--white)" />
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    overflow: hidden;
+    padding: clamp(2.5rem, 6vw, 5rem) 0 clamp(5rem, 9vw, 8rem);
+    background: linear-gradient(180deg, #fff3f8 0%, var(--cream) 100%);
+  }
+  .hero__bg {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+  .hero__blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(60px);
+    opacity: 0.55;
+  }
+  .hero__blob--1 {
+    width: 520px;
+    height: 520px;
+    background: #ffd6ea;
+    top: -180px;
+    right: -120px;
+  }
+  .hero__blob--2 {
+    width: 380px;
+    height: 380px;
+    background: var(--yellow-soft);
+    bottom: -120px;
+    left: -100px;
+  }
+  .hero__blob--3 {
+    width: 300px;
+    height: 300px;
+    background: var(--sky-soft);
+    top: 40%;
+    left: 45%;
+  }
+  .hero__inner {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    gap: 3rem;
+    align-items: center;
+    z-index: 2;
+  }
+  .hero__text h1 :global(em) {
+    font-style: normal;
+    color: var(--pink);
+    position: relative;
+    white-space: nowrap;
+  }
+  .hero__text h1 :global(em)::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0.02em;
+    height: 0.28em;
+    background: var(--yellow);
+    border-radius: 999px;
+    z-index: -1;
+    opacity: 0.85;
+  }
+  .hero__lead {
+    font-size: clamp(1.1rem, 1.6vw, 1.3rem);
+    color: var(--plum-soft);
+    max-width: 34rem;
+    margin-bottom: 1.75rem;
+  }
+  .hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.85rem;
+    margin-bottom: 1.75rem;
+  }
+  .hero__actions :global(.wa) {
+    color: var(--whatsapp);
+  }
+  .hero__chips {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem 1.25rem;
+    font-weight: 700;
+    color: var(--plum-soft);
+    font-size: 0.98rem;
+  }
+  .hero__chips li {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+  .hero__chips svg {
+    width: 20px;
+    height: 20px;
+    color: var(--teal);
+  }
+
+  .hero__visual {
+    position: relative;
+    min-height: 460px;
+  }
+  .hero__photo-wrap {
+    position: relative;
+    width: min(100%, 520px);
+    margin-left: auto;
+    aspect-ratio: 1 / 0.92;
+  }
+  .hero__photo-bg {
+    position: absolute;
+    inset: -4% -3% -2% -5%;
+    background: linear-gradient(135deg, var(--pink-light), var(--lilac));
+    border-radius: 58% 42% 55% 45% / 48% 60% 40% 52%;
+    transform: rotate(-6deg);
+    opacity: 0.55;
+  }
+  .hero__photo {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    clip-path: url(#blob-clip);
+  }
+  .hero__mascot {
+    position: absolute;
+    left: -2%;
+    bottom: -6%;
+    width: 210px;
+    filter: drop-shadow(0 16px 24px rgba(46, 26, 71, 0.18));
+  }
+  .bubble {
+    position: absolute;
+    top: -8px;
+    left: 96px;
+    background: #fff;
+    color: var(--plum);
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 1.25rem;
+    padding: 0.45rem 0.95rem;
+    border-radius: 999px;
+    box-shadow: var(--shadow);
+    animation: pop 0.6s cubic-bezier(0.2, 0.9, 0.3, 1.4) 0.6s both;
+    white-space: nowrap;
+  }
+  .bubble::after {
+    content: '';
+    position: absolute;
+    left: 14px;
+    bottom: -8px;
+    width: 14px;
+    height: 14px;
+    background: #fff;
+    transform: rotate(45deg);
+    border-radius: 2px;
+  }
+  .hero__letter {
+    position: absolute;
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 3.2rem;
+    line-height: 1;
+    opacity: 0.95;
+    text-shadow: 0 8px 18px rgba(46, 26, 71, 0.12);
+  }
+  .hero__letter--a {
+    top: -6%;
+    left: 8%;
+    color: var(--teal);
+    --rot: -12deg;
+  }
+  .hero__letter--b {
+    top: 16%;
+    right: -4%;
+    color: var(--yellow);
+    --rot: 10deg;
+  }
+  .hero__letter--c {
+    bottom: 2%;
+    right: 6%;
+    color: var(--lilac);
+    --rot: -8deg;
+  }
+  .hero__star {
+    position: absolute;
+    top: -2%;
+    right: 22%;
+    color: var(--yellow);
+    width: 44px;
+    --rot: 15deg;
+  }
+  .hero__star svg {
+    width: 100%;
+    height: auto;
+  }
+  .hero__squiggle {
+    position: absolute;
+    left: 40%;
+    bottom: -4%;
+    width: 110px;
+    color: var(--pink-light);
+  }
+
+  @media (max-width: 900px) {
+    .hero__inner {
+      grid-template-columns: 1fr;
+      gap: 2.5rem;
+    }
+    .hero__text {
+      text-align: center;
+    }
+    .hero__lead {
+      margin-inline: auto;
+    }
+    .hero__actions,
+    .hero__chips {
+      justify-content: center;
+    }
+    .hero__visual {
+      min-height: 0;
+      padding-bottom: 3.5rem;
+    }
+    .hero__photo-wrap {
+      margin-inline: auto;
+      width: min(100%, 440px);
+    }
+    .hero__mascot {
+      width: 160px;
+      left: 0;
+      bottom: 0;
+    }
+    .hero__letter {
+      font-size: 2.4rem;
+    }
+    .hero__letter--a {
+      left: 2%;
+      top: -4%;
+    }
+    .hero__letter--b {
+      right: 0;
+    }
+  }
+  @media (max-width: 480px) {
+    .hero__actions .btn {
+      width: 100%;
+    }
+    .hero__letter--c,
+    .hero__squiggle {
+      display: none;
+    }
+  }
+</style>

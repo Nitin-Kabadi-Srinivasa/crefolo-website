@@ -1,0 +1,558 @@
+---
+import type { Locale } from '@/content/types';
+import { getContent, bookingSectionId } from '@/i18n';
+import Icon from './Icon.astro';
+import Wave from './Wave.astro';
+
+interface Props {
+  locale: Locale;
+  standalone?: boolean; // true on the dedicated booking page (no section heading, h1 lives in the page)
+}
+const { locale, standalone = false } = Astro.props;
+const t = getContent(locale);
+const b = t.booking;
+const sitekey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? '1x00000000000000000000AA';
+const ages = Array.from({ length: 9 }, (_, i) => i + 4); // 4 … 12
+---
+
+<section class:list={['section', 'section--cream', 'booking-section', { 'booking-section--standalone': standalone }]} id={bookingSectionId(locale)}>
+  {!standalone && <Wave fill="var(--white)" flip />}
+  <div class="container--narrow">
+    {!standalone && (
+      <div class="section__head reveal">
+        <span class="eyebrow">{locale === 'de' ? 'Kostenlos & unverbindlich' : 'Free & no obligation'}</span>
+        <h2>{b.title}</h2>
+        <p>{b.intro}</p>
+      </div>
+    )}
+
+    <div class="booking card" id="booking-widget" data-locale={locale} data-api="/api" data-sitekey={sitekey} data-privacy-href={locale === 'de' ? '/datenschutz' : '/en/privacy'}>
+      <ol class="bsteps" aria-label={locale === 'de' ? 'Schritte' : 'Steps'}>
+        {b.steps.map((s, i) => (
+          <li class:list={['bsteps__item', { 'is-active': i === 0 }]} data-step={i + 1}>
+            <span class="bsteps__num">{i + 1}</span>
+            <span class="bsteps__label">{s}</span>
+          </li>
+        ))}
+      </ol>
+
+      <div class="booking__summary" data-role="summary" hidden>
+        <Icon name="calendar" />
+        <span data-role="summary-text"></span>
+        <button type="button" class="booking__change" data-role="change">{b.changeSlot}</button>
+      </div>
+
+      <div class="booking__status" data-role="status" role="status" aria-live="polite">
+        <span class="spinner" aria-hidden="true"></span>
+        {b.loading}
+      </div>
+
+      <div class="booking__error" data-role="error" role="alert" hidden>
+        <Icon name="alert" />
+        <span data-role="error-text"></span>
+      </div>
+
+      <div class="booking__days" data-role="days" hidden>
+        <h3 class="booking__step-title"><span class="booking__step-num">1</span>{b.steps[0]}</h3>
+        <div class="days-strip" data-role="days-list"></div>
+        <p class="booking__tz muted">{b.timezone}</p>
+      </div>
+
+      <div class="booking__times" data-role="times" hidden>
+        <h3 class="booking__step-title"><span class="booking__step-num">2</span>{b.steps[1]}</h3>
+        <div class="times-grid" data-role="times-list"></div>
+      </div>
+
+      <form class="booking__form" data-role="form" hidden novalidate>
+        <h3 class="booking__step-title"><span class="booking__step-num">3</span>{b.steps[2]}</h3>
+        <div class="field-grid">
+          <label class="field">
+            <span class="field__label">{b.form.childName} <em>*</em></span>
+            <input type="text" name="childName" required maxlength="40" autocomplete="off" placeholder={b.form.childNamePlaceholder} />
+          </label>
+          <label class="field">
+            <span class="field__label">{b.form.childAge} <em>*</em></span>
+            <select name="childAge" required>
+              <option value="" selected disabled>–</option>
+              {ages.map((a) => <option value={a}>{a} {b.form.ageUnit}</option>)}
+            </select>
+          </label>
+          <label class="field field--full">
+            <span class="field__label">{b.form.parentName}</span>
+            <input type="text" name="parentName" maxlength="60" autocomplete="name" />
+          </label>
+          <label class="field">
+            <span class="field__label">{b.form.email} <em>*</em></span>
+            <input type="email" name="email" required maxlength="120" autocomplete="email" inputmode="email" />
+          </label>
+          <label class="field">
+            <span class="field__label">{b.form.phone} <em>*</em></span>
+            <input type="tel" name="phone" required minlength="6" maxlength="30" autocomplete="tel" inputmode="tel" />
+          </label>
+          <label class="field field--full">
+            <span class="field__label">{b.form.message}</span>
+            <textarea name="message" rows="3" maxlength="500"></textarea>
+          </label>
+          <label class="field field--full field--check">
+            <input type="checkbox" name="privacy" required />
+            <span set:html={b.form.privacy} />
+          </label>
+        </div>
+        <div class="turnstile" data-role="turnstile"></div>
+        <p class="booking__required muted">* {b.form.required}</p>
+        <button type="submit" class="btn btn--primary btn--lg btn--block" data-role="submit">
+          <Icon name="calendar" /><span data-role="submit-label">{b.form.submit}</span>
+        </button>
+      </form>
+
+      <div class="booking__success" data-role="success" hidden>
+        <div class="booking__success-icon" aria-hidden="true">🎉</div>
+        <h3>{b.success.title}</h3>
+        <p data-role="success-text"></p>
+        <div class="booking__success-slot" data-role="success-slot"></div>
+        <div class="booking__success-actions">
+          <a class="btn btn--primary" data-role="meet-link" href="#" target="_blank" rel="noopener"><Icon name="video" />{b.success.meet}</a>
+          <a class="btn btn--ghost" data-role="gcal-link" href="#" target="_blank" rel="noopener"><Icon name="calendar" />Google</a>
+          <a class="btn btn--ghost" data-role="ics-link" href="#"><Icon name="download" />{b.success.calendar} (.ics)</a>
+        </div>
+        <p class="muted booking__cancel-hint">{b.success.cancelHint}</p>
+        <button type="button" class="booking__another" data-role="another">{b.success.another}</button>
+      </div>
+    </div>
+
+    <div class="booking__fallback reveal">
+      <h3>{b.fallback.title}</h3>
+      <p class="muted">{b.fallback.text}</p>
+      <div class="booking__fallback-actions">
+        <a class="btn btn--whatsapp" href={t.contact.whatsappHref} target="_blank" rel="noopener"><Icon name="whatsapp" />{t.contact.whatsappLabel}</a>
+        <a class="btn btn--ghost" href={`mailto:${t.contact.email}`}><Icon name="mail" />{t.contact.email}</a>
+        <a class="btn btn--ghost" href={t.contact.phoneHref}><Icon name="phone" />{t.contact.phoneDisplay}</a>
+      </div>
+    </div>
+  </div>
+
+  <script type="application/json" id="booking-i18n" set:html={JSON.stringify(b)} />
+</section>
+
+<script>
+  import '@/scripts/booking';
+</script>
+
+<style>
+  .booking-section {
+    padding-top: clamp(5rem, 10vw, 8rem);
+  }
+  .booking-section--standalone {
+    padding-top: 1rem;
+  }
+  .booking {
+    padding: 1.75rem clamp(1rem, 3vw, 2.25rem) 2rem;
+    position: relative;
+  }
+
+  /* step indicator */
+  .bsteps {
+    list-style: none;
+    margin: 0 0 1.5rem;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.5rem;
+  }
+  .bsteps__item {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    padding: 0.55rem 0.7rem;
+    border-radius: 999px;
+    background: var(--cream);
+    color: var(--muted);
+    font-weight: 700;
+    font-size: 0.95rem;
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+  .bsteps__num {
+    flex: none;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    background: #fff;
+    color: var(--muted);
+    font-family: var(--font-display);
+    font-weight: 800;
+    border: 2px solid var(--line);
+  }
+  .bsteps__item.is-active {
+    background: var(--pink-soft);
+    color: var(--pink-deep);
+  }
+  .bsteps__item.is-active .bsteps__num {
+    background: var(--pink);
+    color: #fff;
+    border-color: var(--pink);
+  }
+  .bsteps__item.is-done {
+    background: var(--teal-soft);
+    color: #146f65;
+  }
+  .bsteps__item.is-done .bsteps__num {
+    background: var(--teal);
+    color: #fff;
+    border-color: var(--teal);
+  }
+
+  .booking__step-title {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 1.25rem;
+    margin: 0 0 1rem;
+  }
+  .booking__step-num {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: var(--pink);
+    color: #fff;
+    display: grid;
+    place-items: center;
+    font-size: 1rem;
+  }
+
+  .booking__summary {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+    background: var(--teal-soft);
+    color: #146f65;
+    padding: 0.8rem 1rem;
+    border-radius: var(--radius-sm);
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+  }
+  .booking__summary svg {
+    width: 22px;
+    height: 22px;
+    flex: none;
+  }
+  .booking__change {
+    margin-left: auto;
+    background: #fff;
+    border: 0;
+    border-radius: 999px;
+    padding: 0.4rem 0.8rem;
+    font-family: var(--font-display);
+    font-weight: 700;
+    color: var(--pink-deep);
+    cursor: pointer;
+  }
+
+  .booking__status {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: var(--muted);
+    padding: 1rem 0;
+  }
+  .spinner {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    border: 3px solid var(--pink-soft);
+    border-top-color: var(--pink);
+    animation: spin 0.9s linear infinite;
+  }
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  .booking__error {
+    display: flex;
+    gap: 0.7rem;
+    align-items: flex-start;
+    background: var(--red-soft);
+    color: #8f2323;
+    padding: 0.9rem 1rem;
+    border-radius: var(--radius-sm);
+    margin-bottom: 1.25rem;
+    font-weight: 600;
+  }
+  .booking__error svg {
+    width: 22px;
+    height: 22px;
+    flex: none;
+  }
+
+  /* days strip */
+  .days-strip {
+    display: flex;
+    gap: 0.6rem;
+    overflow-x: auto;
+    padding: 0.35rem 0.25rem 0.75rem;
+    scroll-snap-type: x proximity;
+    -webkit-overflow-scrolling: touch;
+  }
+  .days-strip::-webkit-scrollbar {
+    height: 8px;
+  }
+  .days-strip::-webkit-scrollbar-thumb {
+    background: var(--pink-soft);
+    border-radius: 8px;
+  }
+  :global(.day-chip) {
+    flex: none;
+    scroll-snap-align: start;
+    width: 86px;
+    display: grid;
+    justify-items: center;
+    gap: 0.1rem;
+    padding: 0.7rem 0.4rem 0.6rem;
+    border-radius: 18px;
+    border: 2px solid var(--line);
+    background: #fff;
+    cursor: pointer;
+    color: var(--plum);
+    font-family: var(--font-body);
+    transition: border-color 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease;
+  }
+  :global(.day-chip:hover:not([disabled])) {
+    border-color: var(--pink-light);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow);
+  }
+  :global(.day-chip.is-selected) {
+    border-color: var(--pink);
+    background: var(--pink-soft);
+    box-shadow: var(--shadow);
+  }
+  :global(.day-chip[disabled]) {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+  :global(.day-chip__wd) {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  :global(.day-chip__day) {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 1.6rem;
+    line-height: 1.1;
+  }
+  :global(.day-chip__month) {
+    font-size: 0.8rem;
+    color: var(--muted);
+  }
+  :global(.day-chip__free) {
+    margin-top: 0.3rem;
+    font-size: 0.72rem;
+    font-weight: 800;
+    color: #146f65;
+    background: var(--teal-soft);
+    padding: 0.1rem 0.5rem;
+    border-radius: 999px;
+  }
+  :global(.day-chip__free--none) {
+    color: var(--muted);
+    background: var(--cream);
+  }
+  .booking__tz {
+    font-size: 0.9rem;
+    margin: 0.25rem 0 0;
+  }
+
+  /* times */
+  .times-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 0.75rem;
+  }
+  :global(.time-btn) {
+    padding: 0.9rem 0.75rem;
+    border-radius: var(--radius-sm);
+    border: 2px solid var(--line);
+    background: #fff;
+    color: var(--plum);
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.1rem;
+    cursor: pointer;
+    display: grid;
+    gap: 0.15rem;
+    justify-items: center;
+    transition: border-color 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease;
+  }
+  :global(.time-btn:hover:not([disabled])) {
+    border-color: var(--pink-light);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow);
+  }
+  :global(.time-btn.is-selected) {
+    border-color: var(--pink);
+    background: var(--pink-soft);
+  }
+  :global(.time-btn[disabled]) {
+    opacity: 0.45;
+    cursor: not-allowed;
+    text-decoration: line-through;
+  }
+  :global(.time-btn__taken) {
+    font-family: var(--font-body);
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--muted);
+    text-decoration: none;
+  }
+
+  /* form */
+  .field-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem 1.25rem;
+  }
+  .field {
+    display: grid;
+    gap: 0.35rem;
+  }
+  .field--full {
+    grid-column: 1 / -1;
+  }
+  .field__label {
+    font-weight: 700;
+    color: var(--plum);
+    font-size: 0.98rem;
+  }
+  .field__label em {
+    color: var(--pink);
+    font-style: normal;
+  }
+  .field input:not([type='checkbox']),
+  .field select,
+  .field textarea {
+    width: 100%;
+    font: inherit;
+    padding: 0.8rem 0.95rem;
+    border-radius: var(--radius-xs);
+    border: 2px solid var(--line);
+    background: #fff;
+    color: var(--ink);
+    transition: border-color 0.18s ease, box-shadow 0.18s ease;
+  }
+  .field input:focus,
+  .field select:focus,
+  .field textarea:focus {
+    outline: none;
+    border-color: var(--pink);
+    box-shadow: 0 0 0 4px var(--pink-soft);
+  }
+  .field textarea {
+    resize: vertical;
+    min-height: 90px;
+  }
+  .field--check {
+    grid-template-columns: auto 1fr;
+    align-items: start;
+    gap: 0.7rem;
+    font-size: 0.95rem;
+    color: var(--plum-soft);
+  }
+  .field--check input {
+    width: 22px;
+    height: 22px;
+    margin-top: 0.15rem;
+    accent-color: var(--pink);
+  }
+  :global(.field.is-invalid input),
+  :global(.field.is-invalid select) {
+    border-color: var(--red);
+  }
+  .turnstile {
+    margin: 1.25rem 0 0.5rem;
+    min-height: 65px;
+  }
+  .booking__required {
+    font-size: 0.85rem;
+    margin: 0.25rem 0 1rem;
+  }
+
+  /* success */
+  .booking__success {
+    text-align: center;
+    padding: 1rem 0;
+  }
+  .booking__success-icon {
+    font-size: 3rem;
+    line-height: 1;
+    margin-bottom: 0.5rem;
+    animation: pop 0.6s cubic-bezier(0.2, 0.9, 0.3, 1.4) both;
+  }
+  .booking__success-slot {
+    display: inline-block;
+    background: var(--teal-soft);
+    color: #146f65;
+    font-weight: 700;
+    padding: 0.6rem 1rem;
+    border-radius: 999px;
+    margin: 0.25rem 0 1.25rem;
+  }
+  .booking__success-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+  }
+  .booking__cancel-hint {
+    font-size: 0.9rem;
+  }
+  .booking__another {
+    background: none;
+    border: 0;
+    color: var(--pink-deep);
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  /* fallback */
+  .booking__fallback {
+    margin-top: 2.5rem;
+    text-align: center;
+  }
+  .booking__fallback h3 {
+    margin-bottom: 0.25rem;
+  }
+  .booking__fallback-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.75rem;
+    margin-top: 1rem;
+  }
+
+  @media (max-width: 640px) {
+    .bsteps__label {
+      display: none;
+    }
+    .bsteps__item {
+      justify-content: center;
+    }
+    .field-grid {
+      grid-template-columns: 1fr;
+    }
+    .booking__fallback-actions .btn {
+      width: 100%;
+    }
+  }
+</style>

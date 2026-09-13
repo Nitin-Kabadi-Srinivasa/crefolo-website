@@ -1,0 +1,161 @@
+---
+import '@/styles/global.css';
+import type { Locale } from '@/content/types';
+import { getContent, routes, type PageId } from '@/i18n';
+import Header from '@/components/Header.astro';
+import Footer from '@/components/Footer.astro';
+import Icon from '@/components/Icon.astro';
+
+interface Props {
+  locale: Locale;
+  page: PageId;
+  title?: string;
+  description?: string;
+  noindex?: boolean;
+  hideMobileCta?: boolean;
+}
+const { locale, page, title, description, noindex = false, hideMobileCta = false } = Astro.props;
+const t = getContent(locale);
+const site = Astro.site ?? new URL('https://crefolo.com');
+const canonical = new URL(routes[page][locale], site).href;
+const altDe = new URL(routes[page].de, site).href;
+const altEn = new URL(routes[page].en, site).href;
+const pageTitle = title ?? t.meta.title;
+const pageDesc = description ?? t.meta.description;
+const ogImage = new URL('/og.jpg', site).href;
+const bookingHref = routes.booking[locale];
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'EducationalOrganization',
+  name: 'Crefolo',
+  url: site.href,
+  email: t.contact.email,
+  telephone: t.contact.phoneDisplay,
+  description: t.meta.description,
+  address: { '@type': 'PostalAddress', streetAddress: 'Stadtseestraße 25', postalCode: '74189', addressLocality: 'Weinsberg', addressCountry: 'DE' },
+  areaServed: ['DE', 'AT', 'CH'],
+  founder: { '@type': 'Person', name: 'Nitin' },
+};
+---
+
+<!doctype html>
+<html lang={locale}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={pageDesc} />
+    <link rel="canonical" href={canonical} />
+    <link rel="alternate" hreflang="de" href={altDe} />
+    <link rel="alternate" hreflang="en" href={altEn} />
+    <link rel="alternate" hreflang="x-default" href={altDe} />
+    {noindex && <meta name="robots" content="noindex" />}
+    <meta name="theme-color" content="#fff9f4" />
+    <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <link rel="preload" href="/fonts/Baloo2-normal-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/Nunito-normal-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Crefolo" />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={pageDesc} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:locale" content={locale === 'de' ? 'de_DE' : 'en_GB'} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">{locale === 'de' ? 'Zum Inhalt springen' : 'Skip to content'}</a>
+    <Header locale={locale} page={page} />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer locale={locale} />
+
+    {!hideMobileCta && (
+      <a class="mobile-cta" id="mobile-cta" href={bookingHref}>
+        <Icon name="calendar" />
+        <span>{t.mobileCta}</span>
+        <Icon name="arrow-right" />
+      </a>
+    )}
+
+    <script>
+      // Scroll reveal
+      const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const items = document.querySelectorAll<HTMLElement>('.reveal');
+      if (reduced || !('IntersectionObserver' in window)) {
+        items.forEach((el) => el.classList.add('in'));
+      } else {
+        const io = new IntersectionObserver(
+          (entries) => {
+            for (const e of entries) {
+              if (e.isIntersecting) {
+                (e.target as HTMLElement).classList.add('in');
+                io.unobserve(e.target);
+              }
+            }
+          },
+          { rootMargin: '0px 0px -8% 0px', threshold: 0.08 },
+        );
+        items.forEach((el) => io.observe(el));
+      }
+
+      // Hide the sticky mobile CTA while the booking widget itself is on screen
+      const cta = document.getElementById('mobile-cta');
+      const widget = document.getElementById('booking-widget');
+      if (cta && widget && 'IntersectionObserver' in window) {
+        new IntersectionObserver(
+          (entries) => {
+            for (const e of entries) cta.classList.toggle('is-hidden', e.isIntersecting);
+          },
+          { threshold: 0.05 },
+        ).observe(widget);
+      }
+    </script>
+  </body>
+</html>
+
+<style is:global>
+  .mobile-cta {
+    display: none;
+  }
+  @media (max-width: 900px) {
+    .mobile-cta {
+      position: fixed;
+      left: 1rem;
+      right: 1rem;
+      bottom: max(1rem, env(safe-area-inset-bottom));
+      z-index: 40;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.6rem;
+      background: var(--pink-btn);
+      color: #fff;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.1rem;
+      padding: 1rem 1.25rem;
+      border-radius: 999px;
+      text-decoration: none;
+      box-shadow: 0 14px 30px rgba(214, 18, 122, 0.4);
+      transition: transform 0.25s ease, opacity 0.25s ease;
+    }
+    .mobile-cta svg {
+      width: 22px;
+      height: 22px;
+    }
+    .mobile-cta.is-hidden {
+      transform: translateY(120%);
+      opacity: 0;
+      pointer-events: none;
+    }
+    body {
+      padding-bottom: 5.5rem;
+    }
+  }
+</style>

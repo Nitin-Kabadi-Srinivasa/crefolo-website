@@ -1,0 +1,160 @@
+---
+import type { Locale } from '@/content/types';
+import { getContent, sectionIds, routes } from '@/i18n';
+import Icon from './Icon.astro';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const t = getContent(locale);
+const bookingHref = routes.booking[locale];
+---
+
+<section class="section section--cream pricing" id={sectionIds[locale].prices}>
+  <div class="container">
+    <div class="section__head reveal">
+      <span class="eyebrow eyebrow--yellow">{locale === 'de' ? 'Transparent & fair' : 'Clear & fair'}</span>
+      <h2>{t.pricing.title}</h2>
+      <p>{t.pricing.intro}</p>
+    </div>
+
+    <div class="pricing__grid">
+      <div class="card pricing__details reveal">
+        <span class="eyebrow">{locale === 'de' ? 'Kurs' : 'Course'}</span>
+        <h3>{t.pricing.course}</h3>
+        <ul class="checklist">
+          {t.pricing.details.map((d) => <li>{d}</li>)}
+        </ul>
+        <p class="pricing__invoice muted">{t.pricing.invoice}</p>
+      </div>
+
+      <div class="pricing__plans">
+        {t.pricing.plans.map((p, i) => (
+          <div class:list={['card', 'plan', { 'plan--highlight': p.highlight }, 'reveal']} data-delay={i}>
+            {p.badge && <span class="plan__badge">{p.badge}</span>}
+            <h3>{p.name}</h3>
+            <div class="plan__price">
+              <span class="plan__amount">{p.price}</span>
+              <span class="plan__unit">{p.unit}</span>
+            </div>
+            <p>{p.text}</p>
+            <a class:list={['btn', p.highlight ? 'btn--primary' : 'btn--ghost', 'btn--block']} href={bookingHref}>
+              <Icon name="calendar" />{locale === 'de' ? 'Probestunde buchen' : 'Book a trial lesson'}
+            </a>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <div class="pricing__note reveal">
+      <div class="pricing__note-icon"><Icon name="heart" /></div>
+      <div>
+        <h3>{t.pricing.note.title}</h3>
+        <p>{t.pricing.note.text}</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .pricing__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.75rem;
+    align-items: start;
+  }
+  .pricing__details h3 {
+    font-size: 1.35rem;
+    margin-bottom: 1.1rem;
+  }
+  .pricing__invoice {
+    margin: 1.25rem 0 0;
+    font-size: 0.95rem;
+  }
+  .pricing__plans {
+    display: grid;
+    gap: 1.25rem;
+  }
+  .plan {
+    position: relative;
+    display: grid;
+    gap: 0.5rem;
+  }
+  .plan--highlight {
+    border: 3px solid var(--pink);
+    box-shadow: var(--shadow-lg);
+  }
+  .plan__badge {
+    position: absolute;
+    top: -14px;
+    right: 1.5rem;
+    background: var(--yellow);
+    color: var(--plum);
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 0.9rem;
+    padding: 0.25rem 0.8rem;
+    border-radius: 999px;
+    box-shadow: var(--shadow);
+  }
+  .plan h3 {
+    margin: 0;
+  }
+  .plan__price {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+  .plan__amount {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 2.6rem;
+    color: var(--pink);
+    line-height: 1;
+  }
+  .plan__unit {
+    color: var(--muted);
+    font-weight: 700;
+  }
+  .plan p {
+    color: var(--muted);
+    margin: 0 0 0.5rem;
+  }
+  .pricing__note {
+    margin-top: 1.75rem;
+    display: flex;
+    gap: 1.25rem;
+    align-items: flex-start;
+    background: var(--yellow-soft);
+    border-radius: var(--radius);
+    padding: 1.6rem 1.8rem;
+  }
+  .pricing__note-icon {
+    flex: none;
+    width: 52px;
+    height: 52px;
+    border-radius: 16px;
+    background: #fff;
+    display: grid;
+    place-items: center;
+    color: var(--pink);
+  }
+  .pricing__note-icon svg {
+    width: 28px;
+    height: 28px;
+  }
+  .pricing__note h3 {
+    margin-bottom: 0.3rem;
+  }
+  .pricing__note p {
+    margin: 0;
+    color: var(--plum-soft);
+  }
+  @media (max-width: 860px) {
+    .pricing__grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

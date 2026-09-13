@@ -1,0 +1,160 @@
+---
+import type { Locale } from '@/content/types';
+import { getContent, sectionIds } from '@/i18n';
+import Icon from './Icon.astro';
+import Wave from './Wave.astro';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const t = getContent(locale);
+const colors = ['pink', 'teal', 'yellow', 'lilac'];
+---
+
+<section class="section section--tint reviews" id={sectionIds[locale].parents}>
+  <Wave fill="var(--white)" flip />
+  <div class="container">
+    <div class="section__head reveal">
+      <span class="eyebrow">{locale === 'de' ? '5,0 ★ bei Google' : '5.0 ★ on Google'}</span>
+      <h2>{t.reviews.title}</h2>
+      <p>{t.reviews.intro}</p>
+    </div>
+    <ul class="grid grid--2 reviews__list">
+      {t.reviews.items.map((r, i) => (
+        <li class="card review reveal" data-delay={i % 2}>
+          <div class="review__stars" aria-label="5 / 5">
+            {[1, 2, 3, 4, 5].map(() => <Icon name="star" />)}
+          </div>
+          <blockquote class="review__text" data-review>
+            <p>{r.text}</p>
+          </blockquote>
+          <button class="review__more" type="button" hidden data-more={t.reviews.more} data-less={t.reviews.less}>{t.reviews.more}</button>
+          <footer class="review__meta">
+            <span class={`review__avatar review__avatar--${colors[i % colors.length]}`}>{r.name.charAt(0)}</span>
+            <div>
+              <strong>{r.name}</strong>
+              <span class="review__role">{r.role} · {t.reviews.source}</span>
+            </div>
+          </footer>
+        </li>
+      ))}
+    </ul>
+  </div>
+  <Wave fill="var(--white)" />
+</section>
+
+<style>
+  .reviews {
+    padding-top: clamp(5rem, 10vw, 8rem);
+    padding-bottom: clamp(5rem, 10vw, 8rem);
+  }
+  .reviews__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .review {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  .review__stars {
+    display: flex;
+    gap: 0.15rem;
+    color: var(--yellow);
+  }
+  .review__stars svg {
+    width: 22px;
+    height: 22px;
+  }
+  .review__text {
+    margin: 0;
+    color: var(--plum-soft);
+    font-size: 1.05rem;
+  }
+  .review__text p {
+    margin: 0;
+  }
+  .review__text.is-clamped p {
+    display: -webkit-box;
+    -webkit-line-clamp: 5;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .review__more {
+    align-self: flex-start;
+    background: none;
+    border: 0;
+    padding: 0;
+    color: var(--pink-deep);
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .review__meta {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    margin-top: auto;
+    padding-top: 0.5rem;
+  }
+  .review__meta strong {
+    display: block;
+    font-family: var(--font-display);
+    font-size: 1.05rem;
+    color: var(--plum);
+  }
+  .review__role {
+    font-size: 0.9rem;
+    color: var(--muted);
+  }
+  .review__avatar {
+    flex: none;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 1.2rem;
+    color: #fff;
+  }
+  .review__avatar--pink {
+    background: var(--pink);
+  }
+  .review__avatar--teal {
+    background: var(--teal);
+  }
+  .review__avatar--yellow {
+    background: var(--yellow);
+    color: var(--plum);
+  }
+  .review__avatar--lilac {
+    background: var(--lilac);
+  }
+</style>
+
+<script>
+  // Clamp long reviews and offer a "read more" toggle
+  document.querySelectorAll<HTMLElement>('[data-review]').forEach((quote) => {
+    const btn = quote.nextElementSibling as HTMLButtonElement | null;
+    if (!btn) return;
+    quote.classList.add('is-clamped');
+    const p = quote.querySelector('p');
+    if (p && p.scrollHeight > p.clientHeight + 4) {
+      btn.hidden = false;
+      btn.addEventListener('click', () => {
+        const clamped = quote.classList.toggle('is-clamped');
+        btn.textContent = clamped ? btn.dataset.more! : btn.dataset.less!;
+        btn.setAttribute('aria-expanded', String(!clamped));
+      });
+    } else {
+      quote.classList.remove('is-clamped');
+    }
+  });
+</script>

@@ -1,0 +1,37 @@
+---
+import Base from '@/layouts/Base.astro';
+import Booking from '@/components/Booking.astro';
+import Faq from '@/components/Faq.astro';
+import { getContent } from '@/i18n';
+
+const locale = 'de';
+const t = getContent(locale);
+---
+
+<Base locale={locale} page="booking" title={`${t.booking.title} – Crefolo`} description={t.booking.intro} hideMobileCta>
+  <section class="page-head">
+    <div class="container--narrow text-center">
+      <span class="eyebrow">Kostenlos & unverbindlich</span>
+      <h1>{t.booking.title}</h1>
+      <p class="page-head__lead">{t.booking.intro}</p>
+    </div>
+  </section>
+  <Booking locale={locale} standalone />
+  <Faq locale={locale} limit={4} id="faq" />
+</Base>
+
+<style is:global>
+  .page-head {
+    padding: clamp(2.5rem, 6vw, 4.5rem) 0 1rem;
+    background: linear-gradient(180deg, #fff3f8 0%, var(--cream) 100%);
+  }
+  .page-head h1 {
+    font-size: clamp(2.2rem, 5vw, 3.4rem);
+  }
+  .page-head__lead {
+    font-size: 1.15rem;
+    color: var(--plum-soft);
+    max-width: 40rem;
+    margin-inline: auto;
+  }
+</style>

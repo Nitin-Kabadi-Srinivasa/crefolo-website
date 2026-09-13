@@ -1,0 +1,21 @@
+# dependencies and build output
+node_modules/
+dist/
+.astro/
+.wrangler/
+
+# local secrets - never commit
+.dev.vars
+.env
+.env.*
+!.env.example
+
+# logs and OS files
+*.log
+npm-debug.log*
+.DS_Store
+Thumbs.db
+
+# editor
+.vscode/
+.idea/

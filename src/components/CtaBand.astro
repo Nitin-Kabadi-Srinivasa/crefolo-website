@@ -1,0 +1,120 @@
+---
+import type { Locale } from '@/content/types';
+import { getContent, routes } from '@/i18n';
+import Icon from './Icon.astro';
+import Mascot from './Mascot.astro';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const t = getContent(locale);
+const bookingHref = routes.booking[locale];
+---
+
+<section class="cta-band">
+  <div class="container cta-band__inner reveal">
+    <div class="cta-band__mascot float" aria-hidden="true">
+      <Mascot size={170} />
+    </div>
+    <div class="cta-band__text">
+      <h2>{t.ctaBand.title}</h2>
+      <p>{t.ctaBand.text}</p>
+    </div>
+    <div class="cta-band__actions">
+      <a class="btn btn--lg cta-band__btn" href={bookingHref}><Icon name="calendar" />{t.ctaBand.button}</a>
+      <a class="cta-band__wa" href={t.contact.whatsappHref} target="_blank" rel="noopener"><Icon name="whatsapp" />WhatsApp</a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .cta-band {
+    padding: 1rem 0 3rem;
+    background: var(--white);
+  }
+  .cta-band__inner {
+    background: linear-gradient(120deg, var(--pink) 0%, #ff5fb0 55%, var(--lilac) 100%);
+    border-radius: 32px;
+    padding: 2.5rem 3rem;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 2rem;
+    color: #fff;
+    box-shadow: 0 24px 60px rgba(234, 24, 137, 0.28);
+    position: relative;
+    overflow: hidden;
+  }
+  .cta-band__inner::before {
+    content: '';
+    position: absolute;
+    width: 260px;
+    height: 260px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.12);
+    right: -60px;
+    top: -120px;
+  }
+  .cta-band__mascot {
+    width: 150px;
+    margin-bottom: -2.5rem;
+  }
+  .cta-band__text h2 {
+    color: #fff;
+    margin-bottom: 0.35rem;
+    font-size: clamp(1.6rem, 3vw, 2.2rem);
+  }
+  .cta-band__text p {
+    margin: 0;
+    font-size: 1.08rem;
+    opacity: 0.95;
+    max-width: 38rem;
+  }
+  .cta-band__actions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.6rem;
+  }
+  .cta-band__btn {
+    background: #fff;
+    color: var(--pink-deep);
+    box-shadow: 0 12px 26px rgba(46, 26, 71, 0.25);
+  }
+  .cta-band__btn:hover {
+    background: var(--yellow-soft);
+    color: var(--plum);
+  }
+  .cta-band__wa {
+    color: #fff;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-weight: 700;
+    text-decoration: none;
+    opacity: 0.95;
+  }
+  .cta-band__wa:hover {
+    color: #fff;
+    text-decoration: underline;
+  }
+  .cta-band__wa svg {
+    width: 20px;
+    height: 20px;
+  }
+  @media (max-width: 900px) {
+    .cta-band__inner {
+      grid-template-columns: 1fr;
+      text-align: center;
+      padding: 2rem 1.5rem 2.5rem;
+    }
+    .cta-band__mascot {
+      margin: -1rem auto -1.5rem;
+      width: 120px;
+    }
+    .cta-band__text p {
+      margin-inline: auto;
+    }
+  }
+</style>

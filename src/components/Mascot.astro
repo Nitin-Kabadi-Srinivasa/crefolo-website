@@ -1,0 +1,77 @@
+---
+// "Lolo", the Crefolo flamingo. Pure SVG, blinks every few seconds, flaps its wing on hover.
+interface Props {
+  class?: string;
+  size?: number;
+  label?: string;
+}
+const { class: cls = '', size = 240, label = 'Lolo, der Crefolo-Flamingo' } = Astro.props;
+---
+
+<svg class:list={['mascot', cls]} width={size} viewBox="0 0 240 300" role="img" aria-label={label} xmlns="http://www.w3.org/2000/svg">
+  <!-- legs -->
+  <g stroke="#c0106d" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <path d="M104 230 V286" />
+    <path d="M91 287 H119" />
+    <path d="M138 228 L146 254 L122 266" />
+  </g>
+  <!-- tail -->
+  <path d="M170 172 C 188 148, 216 154, 216 176 C 204 172, 196 180, 194 190 C 186 178, 178 182, 170 172 Z" fill="#ea1889" />
+  <!-- body -->
+  <ellipse cx="120" cy="190" rx="62" ry="48" fill="#f58ac0" />
+  <!-- wing -->
+  <g class="mascot__wing">
+    <path d="M88 176 C 118 148, 166 154, 174 200 C 140 222, 104 214, 88 176 Z" fill="#ea1889" />
+    <path d="M132 208 l5 11 M151 202 l8 9 M115 209 l2 11" stroke="#f9b8d8" stroke-width="4" stroke-linecap="round" fill="none" />
+  </g>
+  <!-- neck -->
+  <path d="M100 164 C 66 140, 50 112, 68 78" stroke="#f58ac0" stroke-width="26" stroke-linecap="round" fill="none" />
+  <!-- head -->
+  <circle cx="72" cy="62" r="24" fill="#f58ac0" />
+  <!-- tuft -->
+  <path d="M58 42 c 1 -12 10 -15 15 -7 M72 37 c 6 -10 15 -8 15 1" stroke="#ea1889" stroke-width="5" stroke-linecap="round" fill="none" />
+  <!-- beak -->
+  <path d="M91 57 C 112 49, 132 55, 139 72 C 124 81, 106 77, 91 66 Z" fill="#ffd1e6" />
+  <path d="M119 59 C 130 61, 137 66, 139 72 C 131 77, 122 76, 113 70 Z" fill="#2e1a47" />
+  <!-- eye -->
+  <circle cx="80" cy="58" r="7.5" fill="#ffffff" />
+  <circle cx="82" cy="59" r="4" fill="#2e1a47" />
+  <circle cx="83.6" cy="57.3" r="1.5" fill="#ffffff" />
+  <ellipse class="mascot__lid" cx="80" cy="58" rx="8.5" ry="8.5" fill="#f58ac0" />
+  <!-- cheek -->
+  <circle cx="65" cy="73" r="5" fill="#ff9bcb" opacity="0.9" />
+</svg>
+
+<style>
+  .mascot {
+    height: auto;
+    overflow: visible;
+  }
+  .mascot__lid {
+    transform-origin: 80px 58px;
+    transform: scaleY(0);
+    animation: blink 5.5s infinite;
+  }
+  .mascot__wing {
+    transform-origin: 92px 182px;
+  }
+  .mascot:hover .mascot__wing {
+    animation: flap 0.55s ease-in-out 3;
+  }
+  @keyframes blink {
+    0%,
+    92%,
+    100% {
+      transform: scaleY(0);
+    }
+    94%,
+    97% {
+      transform: scaleY(1);
+    }
+  }
+  @keyframes flap {
+    50% {
+      transform: rotate(-16deg);
+    }
+  }
+</style>
