@@ -138,7 +138,7 @@ const navLabel = locale === 'de' ? 'Hauptnavigation' : 'Main navigation';
     border-color: var(--pink-light);
     color: var(--pink-deep);
   }
-  .lang-switch svg {
+  .lang-switch :global(svg) {
     width: 18px;
     height: 18px;
   }
@@ -153,28 +153,28 @@ const navLabel = locale === 'de' ? 'Hauptnavigation' : 'Main navigation';
     cursor: pointer;
     place-items: center;
   }
-  .nav-toggle svg {
+  .nav-toggle :global(svg) {
     width: 24px;
     height: 24px;
   }
-  .nav-toggle__close {
+  .nav-toggle :global(.nav-toggle__close) {
     display: none;
   }
-  .nav-toggle[aria-expanded='true'] .nav-toggle__open {
+  .nav-toggle[aria-expanded='true'] :global(.nav-toggle__open) {
     display: none;
   }
-  .nav-toggle[aria-expanded='true'] .nav-toggle__close {
+  .nav-toggle[aria-expanded='true'] :global(.nav-toggle__close) {
     display: block;
   }
 
-  @media (max-width: 1080px) {
+  @media (max-width: 1180px) {
     .site-nav a:not(.btn) {
       padding: 0.5rem 0.55rem;
       font-size: 0.95rem;
     }
   }
 
-  @media (max-width: 900px) {
+  @media (max-width: 1060px) {
     .header-cta {
       display: none;
     }

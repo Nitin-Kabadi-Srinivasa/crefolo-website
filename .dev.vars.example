@@ -2,6 +2,8 @@
 
 # 1 = fake calendar + no emails (design work without any accounts)
 MOCK=1
+# Links in emails/pages point here during local development
+SITE_URL=http://localhost:8787
 
 # Google Calendar (OAuth client from Google Cloud Console + one-time refresh token)
 GOOGLE_CLIENT_ID=

@@ -115,6 +115,9 @@ const bookingHref = routes.booking[locale];
     align-items: center;
     z-index: 2;
   }
+  .hero__inner > * {
+    min-width: 0;
+  }
   .hero__text h1 :global(em) {
     font-style: normal;
     color: var(--pink);
@@ -164,7 +167,10 @@ const bookingHref = routes.booking[locale];
     align-items: center;
     gap: 0.4rem;
   }
-  .hero__chips svg {
+  .hero__chips li {
+    white-space: nowrap;
+  }
+  .hero__chips :global(svg) {
     width: 20px;
     height: 20px;
     color: var(--teal);
@@ -263,7 +269,7 @@ const bookingHref = routes.booking[locale];
     width: 44px;
     --rot: 15deg;
   }
-  .hero__star svg {
+  .hero__star :global(svg) {
     width: 100%;
     height: auto;
   }

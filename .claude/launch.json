@@ -3,14 +3,14 @@
   "configurations": [
     {
       "name": "site",
-      "runtimeExecutable": "C:\\Users\\NitinCrefolo\\AppData\\Local\\Programs\\nodejs\\npm.cmd",
-      "runtimeArgs": ["run", "dev"],
+      "runtimeExecutable": "cmd.exe",
+      "runtimeArgs": ["/d", "/c", "set PATH=C:\\Users\\NitinCrefolo\\AppData\\Local\\Programs\\nodejs;C:\\Users\\NitinCrefolo\\AppData\\Local\\Programs\\MinGit\\cmd;%PATH% && npm run dev"],
       "port": 4321
     },
     {
       "name": "api",
-      "runtimeExecutable": "C:\\Users\\NitinCrefolo\\AppData\\Local\\Programs\\nodejs\\npm.cmd",
-      "runtimeArgs": ["run", "api"],
+      "runtimeExecutable": "cmd.exe",
+      "runtimeArgs": ["/d", "/c", "set PATH=C:\\Users\\NitinCrefolo\\AppData\\Local\\Programs\\nodejs;C:\\Users\\NitinCrefolo\\AppData\\Local\\Programs\\MinGit\\cmd;%PATH% && npm run api"],
       "port": 8787
     }
   ]

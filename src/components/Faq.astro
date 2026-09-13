@@ -75,17 +75,17 @@ const faqLd = {
   .faq__item summary:hover {
     color: var(--pink-deep);
   }
-  .faq__icon {
+  .faq__item summary :global(.faq__icon) {
     flex: none;
-    width: 26px;
-    height: 26px;
-    padding: 4px;
+    width: 28px;
+    height: 28px;
+    padding: 5px;
     border-radius: 50%;
     background: var(--pink-soft);
     color: var(--pink-deep);
     transition: transform 0.25s ease;
   }
-  .faq__item[open] .faq__icon {
+  .faq__item[open] summary :global(.faq__icon) {
     transform: rotate(45deg);
   }
   .faq__answer {

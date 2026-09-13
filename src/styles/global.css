@@ -80,6 +80,10 @@
   box-sizing: border-box;
 }
 
+[hidden] {
+  display: none !important;
+}
+
 html {
   scroll-behavior: smooth;
   scroll-padding-top: calc(var(--header-h) + 16px);
@@ -311,6 +315,14 @@ a:hover {
   width: 1.25em;
   height: 1.25em;
   flex: none;
+}
+
+@media (max-width: 520px) {
+  .btn {
+    white-space: normal;
+    text-align: center;
+    line-height: 1.2;
+  }
 }
 
 /* cards & grids ---------------------------------------------- */
