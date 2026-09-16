@@ -8,10 +8,11 @@ import type { BookingInfo, Lang } from './emails';
 export const WHATSAPP_URL = 'https://wa.me/491628904641';
 export const TEACHER_PHONE = '+49 162 890 4641';
 
-export async function linksFor(env: AppEnv, eventId: string, lang: Lang): Promise<{ cancelUrl: string; icsUrl: string; token: string }> {
+// origin = the address the booking was made on (localhost, workers.dev or crefolo.com); falls back to SITE_URL for cron jobs
+export async function linksFor(env: AppEnv, eventId: string, lang: Lang, origin?: string): Promise<{ cancelUrl: string; icsUrl: string; token: string }> {
   const secret = env.CANCEL_SECRET || 'missing-cancel-secret';
   const token = await signToken(secret, 'cancel', eventId);
-  const site = env.SITE_URL.replace(/\/$/, '');
+  const site = (origin || env.SITE_URL).replace(/\/$/, '');
   return {
     token,
     cancelUrl: `${site}/api/cancel?id=${encodeURIComponent(eventId)}&t=${token}&lang=${lang}`,
@@ -19,11 +20,11 @@ export async function linksFor(env: AppEnv, eventId: string, lang: Lang): Promis
   };
 }
 
-export async function bookingInfoFromEvent(env: AppEnv, event: CalendarEvent): Promise<BookingInfo | null> {
+export async function bookingInfoFromEvent(env: AppEnv, event: CalendarEvent, origin?: string): Promise<BookingInfo | null> {
   const p = event.extendedProperties?.private || {};
   if (p.crefolo !== 'trial' || !event.start?.dateTime || !event.end?.dateTime) return null;
   const lang: Lang = p.lang === 'en' ? 'en' : 'de';
-  const links = await linksFor(env, event.id, lang);
+  const links = await linksFor(env, event.id, lang, origin);
   return {
     eventId: event.id,
     start: new Date(event.start.dateTime),
@@ -40,7 +41,7 @@ export async function bookingInfoFromEvent(env: AppEnv, event: CalendarEvent): P
     cancelUrl: links.cancelUrl,
     icsUrl: links.icsUrl,
     eventLink: event.htmlLink || '',
-    siteUrl: env.SITE_URL.replace(/\/$/, ''),
+    siteUrl: (origin || env.SITE_URL).replace(/\/$/, ''),
     teacherName: env.TEACHER_NAME || 'Nitin',
     teacherEmail: env.TEACHER_EMAIL,
     teacherPhone: TEACHER_PHONE,

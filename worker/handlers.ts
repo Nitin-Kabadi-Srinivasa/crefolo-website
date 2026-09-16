@@ -129,7 +129,7 @@ export async function handleBook(request: Request, env: AppEnv, ctx: ExecutionCo
 
     // Make sure the info object sees the private props even if the API response omitted them
     event.extendedProperties = { private: { ...privateProps, ...(event.extendedProperties?.private || {}) } };
-    const info = await bookingInfoFromEvent(env, event);
+    const info = await bookingInfoFromEvent(env, event, new URL(request.url).origin);
     if (!info) throw new Error('booking info could not be built');
 
     // Add the cancel link to the calendar event description (best effort, in the background)
@@ -182,7 +182,7 @@ export async function handleCancel(request: Request, env: AppEnv, ctx: Execution
   const id = url.searchParams.get('id') || '';
   const token = url.searchParams.get('t') || '';
   const lang: Lang = url.searchParams.get('lang') === 'en' ? 'en' : 'de';
-  const site = env.SITE_URL.replace(/\/$/, '');
+  const site = url.origin;
   const secret = env.CANCEL_SECRET || 'missing-cancel-secret';
 
   if (!id || !(await verifyToken(secret, 'cancel', id, token))) return html(invalidLinkPage(lang, site), 400);
@@ -190,7 +190,7 @@ export async function handleCancel(request: Request, env: AppEnv, ctx: Execution
   const { calendar, mailer } = getServices(env);
   try {
     const event = await calendar.getEvent(id);
-    const info = event ? await bookingInfoFromEvent(env, event) : null;
+    const info = event ? await bookingInfoFromEvent(env, event, site) : null;
     if (!info) return html(invalidLinkPage(lang, site), 404);
 
     if (request.method === 'GET') {
@@ -229,7 +229,7 @@ export async function handleIcs(request: Request, env: AppEnv): Promise<Response
   if (!id || !(await verifyToken(secret, 'cancel', id, token))) return json({ ok: false, error: 'invalid' }, 400);
   const { calendar } = getServices(env);
   const event = await calendar.getEvent(id);
-  const info = event ? await bookingInfoFromEvent(env, event) : null;
+  const info = event ? await bookingInfoFromEvent(env, event, url.origin) : null;
   if (!info) return json({ ok: false, error: 'not_found' }, 404);
   const ics = buildIcs({
     uid: info.eventId,
