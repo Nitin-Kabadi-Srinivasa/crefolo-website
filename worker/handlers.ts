@@ -75,9 +75,10 @@ function parsePayload(raw: unknown): BookPayload | null {
   const turnstileToken = str(r.turnstileToken, 4000);
   if (!start || !Number.isFinite(Date.parse(start))) return null;
   if (childName.length < 1) return null;
+  if (parentName.length < 1) return null;
   if (!Number.isInteger(childAge) || childAge < 3 || childAge > 17) return null;
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) return null;
-  if ((phone.match(/\d/g) || []).length < 6) return null;
+  if (phone && (phone.match(/\d/g) || []).length < 6) return null; // phone is optional
   return { start, childName, childAge, parentName, email, phone, message, lang, turnstileToken };
 }
 

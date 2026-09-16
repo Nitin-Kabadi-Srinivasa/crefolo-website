@@ -214,7 +214,7 @@ const en: SiteContent = {
       },
       {
         q: 'What do we need for the lessons?',
-        a: 'A laptop or a PC with a camera and microphone, plus a stable internet connection. Lessons take place on Google Meet, so a Google account (Gmail) is necessary. The Cambridge books are bought separately (around 20 to 30 €). All other materials such as audio, video, worksheets, photocopiable activities and word cards come from me.',
+        a: 'A laptop or a PC with a camera and microphone, plus a stable internet connection. Lessons take place on Google Meet. A Google account (Gmail) is handy but not required: with one you join directly, without one you simply click the link and I let you in. The Cambridge books are bought separately (around 20 to 30 €). All other materials such as audio, video, worksheets, photocopiable activities and word cards come from me.',
       },
       {
         q: 'What happens in the trial lesson?',
@@ -266,9 +266,10 @@ const en: SiteContent = {
       childNamePlaceholder: 'e.g. Emma',
       childAge: 'Your child\'s age',
       ageUnit: 'years',
-      parentName: 'Your name (optional)',
+      parentName: 'Your name',
       email: 'Your email address',
-      phone: 'Your phone number',
+      emailHint: 'Any email address works. Tip: with a Gmail address the appointment lands in your Google Calendar and you join the Google Meet without waiting to be let in.',
+      phone: 'Your phone number (optional)',
       message: 'Anything else you would like to tell me? (optional)',
       privacy:
         'I have read the <a href="/en/privacy">privacy policy</a> and agree that my details are used to organise the trial lesson.',

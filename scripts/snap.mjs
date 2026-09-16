@@ -145,6 +145,11 @@ try {
     await sleep(500);
     await widgetShot(page, 'flow-4-filled');
 
+    if (process.env.FLOW_DRY) {
+      console.log('dry run: form filled, not submitted');
+      await page.close();
+      return;
+    }
     await page.click('[data-role="submit"]');
     await page.waitForSelector('[data-role="success"]:not([hidden])', { timeout: 30000 });
     await sleep(800);

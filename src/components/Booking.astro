@@ -78,16 +78,17 @@ const ages = Array.from({ length: 9 }, (_, i) => i + 4); // 4 … 12
             </select>
           </label>
           <label class="field field--full">
-            <span class="field__label">{b.form.parentName}</span>
-            <input type="text" name="parentName" maxlength="60" autocomplete="name" />
+            <span class="field__label">{b.form.parentName} <em>*</em></span>
+            <input type="text" name="parentName" required maxlength="60" autocomplete="name" />
           </label>
-          <label class="field">
+          <label class="field field--full">
             <span class="field__label">{b.form.email} <em>*</em></span>
             <input type="email" name="email" required maxlength="120" autocomplete="email" inputmode="email" />
+            <span class="field__hint">{b.form.emailHint}</span>
           </label>
-          <label class="field">
-            <span class="field__label">{b.form.phone} <em>*</em></span>
-            <input type="tel" name="phone" required minlength="6" maxlength="30" autocomplete="tel" inputmode="tel" />
+          <label class="field field--full">
+            <span class="field__label">{b.form.phone}</span>
+            <input type="tel" name="phone" minlength="6" maxlength="30" autocomplete="tel" inputmode="tel" />
           </label>
           <label class="field field--full">
             <span class="field__label">{b.form.message}</span>
@@ -433,6 +434,11 @@ const ages = Array.from({ length: 9 }, (_, i) => i + 4); // 4 … 12
   .field__label em {
     color: var(--pink);
     font-style: normal;
+  }
+  .field__hint {
+    font-size: 0.85rem;
+    color: var(--muted);
+    line-height: 1.45;
   }
   .field input:not([type='checkbox']),
   .field select,

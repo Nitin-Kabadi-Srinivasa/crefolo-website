@@ -214,7 +214,7 @@ const de: SiteContent = {
       },
       {
         q: 'Was brauchen wir für den Unterricht?',
-        a: 'Einen Laptop oder PC mit Kamera und Mikrofon sowie eine stabile Internetverbindung. Der Unterricht findet über Google Meet statt, deshalb wird ein Google-Konto (Gmail) benötigt. Die Cambridge-Bücher werden separat gekauft (ca. 20 bis 30 €). Alle weiteren Materialien wie Audio, Video, Arbeitsblätter, Kopiervorlagen und Wortkarten bekommen Sie von mir.',
+        a: 'Einen Laptop oder PC mit Kamera und Mikrofon sowie eine stabile Internetverbindung. Der Unterricht findet über Google Meet statt. Ein Google-Konto (Gmail) ist praktisch, aber nicht nötig: Damit treten Sie direkt bei, ohne Konto klicken Sie einfach auf den Link und ich lasse Sie herein. Die Cambridge-Bücher werden separat gekauft (ca. 20 bis 30 €). Alle weiteren Materialien wie Audio, Video, Arbeitsblätter, Kopiervorlagen und Wortkarten bekommen Sie von mir.',
       },
       {
         q: 'Wie läuft die Probestunde ab?',
@@ -266,9 +266,10 @@ const de: SiteContent = {
       childNamePlaceholder: 'z. B. Emma',
       childAge: 'Alter Ihres Kindes',
       ageUnit: 'Jahre',
-      parentName: 'Ihr Name (optional)',
+      parentName: 'Ihr Name',
       email: 'Ihre E-Mail-Adresse',
-      phone: 'Ihre Telefonnummer',
+      emailHint: 'Jede E-Mail-Adresse funktioniert. Tipp: Mit einer Gmail-Adresse landet der Termin direkt in Ihrem Google-Kalender, und Sie treten dem Google Meet ohne Wartezeit bei.',
+      phone: 'Ihre Telefonnummer (optional)',
       message: 'Möchten Sie mir noch etwas mitteilen? (optional)',
       privacy:
         'Ich habe die <a href="/datenschutz">Datenschutzhinweise</a> gelesen und bin einverstanden, dass meine Angaben zur Organisation der Probestunde verwendet werden.',

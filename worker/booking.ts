@@ -57,7 +57,7 @@ export function eventDescription(input: { childName: string; childAge: string; p
     `Probestunde Englisch: ${input.childName} (${input.childAge} Jahre)`,
     `Eltern: ${input.parentName || '-'}`,
     `E-Mail: ${input.parentEmail}`,
-    `Telefon: ${input.parentPhone}`,
+    `Telefon: ${input.parentPhone || '-'}`,
     `Nachricht: ${input.message || '-'}`,
     `Sprache: ${input.lang}`,
     `Gebucht über crefolo.com`,

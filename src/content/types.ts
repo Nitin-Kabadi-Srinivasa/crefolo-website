@@ -146,6 +146,7 @@ export interface BookingStrings {
     ageUnit: string;
     parentName: string;
     email: string;
+    emailHint: string;
     phone: string;
     message: string;
     privacy: string; // HTML with link to the privacy page

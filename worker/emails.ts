@@ -81,7 +81,6 @@ ${b.meetLink ? button(b.meetLink, 'Zur Probestunde (Google Meet)') : ''}
 <ul style="padding-left:20px;margin:8px 0 18px;">
   <li>Laptop, PC oder Tablet mit Kamera und Mikrofon</li>
   <li>Ein ruhiger Platz, an dem ${esc(b.childName)} sitzen kann</li>
-  <li>Ein paar Buntstifte und ein Blatt Papier</li>
   <li>Gute Laune, den Rest bringe ich mit 😊</li>
 </ul>
 <p>Sie können den Termin über die angehängte Kalenderdatei in Ihren Kalender übernehmen.</p>
@@ -121,7 +120,6 @@ ${b.meetLink ? button(b.meetLink, 'Join the trial lesson (Google Meet)') : ''}
 <ul style="padding-left:20px;margin:8px 0 18px;">
   <li>A laptop, PC or tablet with camera and microphone</li>
   <li>A quiet spot where ${esc(b.childName)} can sit</li>
-  <li>A few coloured pencils and a sheet of paper</li>
   <li>A good mood, I will bring the rest 😊</li>
 </ul>
 <p>You can add the appointment to your calendar with the attached calendar file.</p>
@@ -156,7 +154,7 @@ ${detailsBox([
   ['When', `${esc(date)}<br>${esc(time)}`],
   ['Parent', esc(b.parentName || '–')],
   ['Email', `<a href="mailto:${esc(b.parentEmail)}" style="color:#c0106d;">${esc(b.parentEmail)}</a>`],
-  ['Phone', `<a href="tel:${esc(b.parentPhone.replace(/\s+/g, ''))}" style="color:#c0106d;">${esc(b.parentPhone)}</a>`],
+  ['Phone', b.parentPhone ? `<a href="tel:${esc(b.parentPhone.replace(/\s+/g, ''))}" style="color:#c0106d;">${esc(b.parentPhone)}</a>` : '–'],
   ['Message', esc(b.message || '–')],
   ['Language', b.lang === 'de' ? 'Deutsch' : 'English'],
 ])}
@@ -170,7 +168,7 @@ Child: ${b.childName}, ${b.childAge} years
 When: ${date}, ${time}
 Parent: ${b.parentName || '-'}
 Email: ${b.parentEmail}
-Phone: ${b.parentPhone}
+Phone: ${b.parentPhone || '-'}
 Message: ${b.message || '-'}
 Language: ${b.lang}
 Google Meet: ${b.meetLink || '(none)'}
@@ -218,7 +216,7 @@ export function teacherCancellation(b: BookingInfo): Mail {
 ${detailsBox([
   ['Child', `${esc(b.childName)}, ${esc(b.childAge)} years`],
   ['When', `${esc(date)}<br>${esc(time)}`],
-  ['Parent', `${esc(b.parentName || '–')} · ${esc(b.parentEmail)} · ${esc(b.parentPhone)}`],
+  ['Parent', `${esc(b.parentName || '–')} · ${esc(b.parentEmail)} · ${esc(b.parentPhone || '–')}`],
 ])}
 <p>The calendar event has been removed and the slot is bookable again.</p>`,
     'Automatic notification from crefolo.com',
@@ -236,7 +234,7 @@ export function parentReminder(b: BookingInfo): Mail {
       `<p style="font-size:20px;font-weight:800;margin:0 0 12px;">Morgen geht's los! 🎈</p>
 <p>Kleine Erinnerung: Die Probestunde für ${esc(b.childName)} ist morgen, <strong>${esc(date)}</strong>, um <strong>${esc(time)}</strong> (deutsche Zeit).</p>
 ${b.meetLink ? button(b.meetLink, 'Zur Probestunde (Google Meet)') : ''}
-<p>Bitte halten Sie Buntstifte und ein Blatt Papier bereit. Ich freue mich auf ${esc(b.childName)}!</p>
+<p>Ich freue mich auf ${esc(b.childName)}!</p>
 <p style="font-size:14px;color:#6b5f7a;">Passt es doch nicht? <a href="${esc(b.cancelUrl)}" style="color:#c0106d;">Termin absagen</a></p>
 <p>Herzliche Grüße<br><strong>${esc(b.teacherName)}</strong><br>Crefolo</p>`,
       `Crefolo · ${esc(b.teacherEmail)} · ${esc(b.teacherPhone)}`,
@@ -249,7 +247,7 @@ ${b.meetLink ? button(b.meetLink, 'Zur Probestunde (Google Meet)') : ''}
     `<p style="font-size:20px;font-weight:800;margin:0 0 12px;">Tomorrow is the day! 🎈</p>
 <p>A quick reminder: the trial lesson for ${esc(b.childName)} is tomorrow, <strong>${esc(date)}</strong>, at <strong>${esc(time)}</strong> (German time).</p>
 ${b.meetLink ? button(b.meetLink, 'Join the trial lesson (Google Meet)') : ''}
-<p>Please have some coloured pencils and a sheet of paper ready. I look forward to meeting ${esc(b.childName)}!</p>
+<p>I look forward to meeting ${esc(b.childName)}!</p>
 <p style="font-size:14px;color:#6b5f7a;">Can't make it after all? <a href="${esc(b.cancelUrl)}" style="color:#c0106d;">Cancel appointment</a></p>
 <p>Kind regards<br><strong>${esc(b.teacherName)}</strong><br>Crefolo</p>`,
     `Crefolo · ${esc(b.teacherEmail)} · ${esc(b.teacherPhone)}`,
@@ -266,7 +264,7 @@ export function teacherReminder(b: BookingInfo): Mail {
 ${detailsBox([
   ['Child', `${esc(b.childName)}, ${esc(b.childAge)} years`],
   ['When', `${esc(date)}<br>${esc(time)}`],
-  ['Parent', `${esc(b.parentName || '–')} · ${esc(b.parentEmail)} · ${esc(b.parentPhone)}`],
+  ['Parent', `${esc(b.parentName || '–')} · ${esc(b.parentEmail)} · ${esc(b.parentPhone || '–')}`],
   ['Message', esc(b.message || '–')],
 ])}
 ${b.meetLink ? button(b.meetLink, 'Open Google Meet') : ''}`,
