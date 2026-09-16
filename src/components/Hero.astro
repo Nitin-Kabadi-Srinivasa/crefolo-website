@@ -43,11 +43,10 @@ const bookingHref = routes.booking[locale];
         <Image src={kids} alt={t.hero.photoAlt} widths={[480, 720, 960]} sizes="(max-width: 900px) 90vw, 520px" class="hero__photo" loading="eager" fetchpriority="high" />
       </div>
 
-      <span class="bubble" aria-hidden="true">{t.hero.bubble}</span>
-
-      <span class="hero__letter hero__letter--a float" aria-hidden="true">A</span>
-      <span class="hero__letter hero__letter--b float float--fast" aria-hidden="true">B</span>
-      <span class="hero__letter hero__letter--c float float--slow" aria-hidden="true">C</span>
+      <span class="hero__word hero__word--learn float" aria-hidden="true">learn</span>
+      <span class="hero__word hero__word--fun float float--fast" aria-hidden="true">fun</span>
+      <span class="hero__word hero__word--sing float float--slow" aria-hidden="true">sing</span>
+      <span class="hero__word hero__word--colour float" aria-hidden="true">colour</span>
       <span class="hero__star float float--fast" aria-hidden="true"><Icon name="star" /></span>
       <svg class="hero__squiggle float" viewBox="0 0 120 40" aria-hidden="true"><path d="M4 22 C 20 2, 34 42, 50 22 S 80 2, 96 22 S 114 30, 116 20" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round" /></svg>
     </div>
@@ -197,64 +196,48 @@ const bookingHref = routes.booking[locale];
     object-fit: cover;
     clip-path: url(#blob-clip);
   }
-  .bubble {
+  .hero__word {
     position: absolute;
-    top: 10%;
-    left: 3%;
     z-index: 2;
-    background: #fff;
-    color: var(--plum);
     font-family: var(--font-display);
     font-weight: 800;
-    font-size: 1.25rem;
-    padding: 0.45rem 0.95rem;
+    font-size: 1.35rem;
+    line-height: 1;
+    padding: 0.5rem 1rem;
     border-radius: 999px;
-    box-shadow: var(--shadow);
-    animation: pop 0.6s cubic-bezier(0.2, 0.9, 0.3, 1.4) 0.6s both;
+    color: #fff;
+    box-shadow: 0 10px 22px rgba(46, 26, 71, 0.16);
     white-space: nowrap;
   }
-  .bubble::after {
-    content: '';
-    position: absolute;
-    left: 14px;
-    bottom: -8px;
-    width: 14px;
-    height: 14px;
-    background: #fff;
-    transform: rotate(45deg);
-    border-radius: 2px;
-  }
-  .hero__letter {
-    position: absolute;
-    font-family: var(--font-display);
-    font-weight: 800;
-    font-size: 3.2rem;
-    line-height: 1;
-    opacity: 0.95;
-    text-shadow: 0 8px 18px rgba(46, 26, 71, 0.12);
-  }
-  .hero__letter--a {
-    top: -6%;
-    left: 8%;
-    color: var(--teal);
-    --rot: -12deg;
-  }
-  .hero__letter--b {
-    top: 16%;
-    right: -4%;
-    color: var(--yellow);
-    --rot: 10deg;
-  }
-  .hero__letter--c {
-    bottom: 4%;
-    right: 4%;
-    color: var(--lilac);
+  .hero__word--learn {
+    top: 4%;
+    left: 4%;
+    background: var(--teal);
     --rot: -8deg;
+  }
+  .hero__word--fun {
+    top: -3%;
+    right: 20%;
+    background: var(--yellow);
+    color: var(--plum);
+    --rot: 7deg;
+  }
+  .hero__word--sing {
+    top: 42%;
+    right: -6%;
+    background: var(--lilac);
+    --rot: 6deg;
+  }
+  .hero__word--colour {
+    bottom: 3%;
+    left: 12%;
+    background: var(--pink);
+    --rot: -5deg;
   }
   .hero__star {
     position: absolute;
-    top: -2%;
-    right: 22%;
+    top: 8%;
+    right: -3%;
     color: var(--yellow);
     width: 44px;
     --rot: 15deg;
@@ -294,27 +277,35 @@ const bookingHref = routes.booking[locale];
       margin-inline: auto;
       width: min(100%, 440px);
     }
-    .bubble {
-      top: 6%;
-      left: 2%;
+    .hero__word {
       font-size: 1.1rem;
+      padding: 0.4rem 0.85rem;
     }
-    .hero__letter {
-      font-size: 2.4rem;
+    .hero__word--learn {
+      top: 0;
+      left: 0;
     }
-    .hero__letter--a {
+    .hero__word--fun {
+      top: -2%;
+      right: 6%;
+    }
+    .hero__word--sing {
+      top: 46%;
+      right: -1%;
+    }
+    .hero__word--colour {
+      bottom: 4%;
       left: 2%;
-      top: -4%;
     }
-    .hero__letter--b {
+    .hero__star {
       right: 0;
+      width: 36px;
     }
   }
   @media (max-width: 480px) {
     .hero__actions .btn {
       width: 100%;
     }
-    .hero__letter--c,
     .hero__squiggle {
       display: none;
     }

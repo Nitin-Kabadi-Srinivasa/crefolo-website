@@ -47,7 +47,6 @@ export interface SiteContent {
     ctaPrimary: string;
     ctaSecondary: string;
     chips: string[];
-    bubble: string;
     photoAlt: string;
   };
   steps: {

@@ -40,7 +40,6 @@ const en: SiteContent = {
     ctaPrimary: 'Book a free trial lesson',
     ctaSecondary: 'Questions? Message me on WhatsApp',
     chips: ['Cambridge certified', 'Max. 3 kids per group', 'Free & non-binding trial class'],
-    bubble: 'Hello!',
     photoAlt: 'Two children drawing and learning together at a table',
   },
 

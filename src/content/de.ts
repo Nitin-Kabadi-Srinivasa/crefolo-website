@@ -40,7 +40,6 @@ const de: SiteContent = {
     ctaPrimary: 'Kostenlose Probestunde buchen',
     ctaSecondary: 'Fragen? Auf WhatsApp schreiben',
     chips: ['Cambridge-zertifiziert', 'Max. 3 Kinder pro Gruppe', 'Kostenlose, unverbindliche Probestunde'],
-    bubble: 'Hello!',
     photoAlt: 'Zwei Kinder malen und lernen gemeinsam an einem Tisch',
   },
 
