@@ -289,7 +289,8 @@ const de: SiteContent = {
       generic: 'Das hat leider nicht geklappt. Bitte versuchen Sie es noch einmal oder schreiben Sie mir direkt.',
       slot_taken: 'Oh, dieser Termin wurde gerade vergeben. Bitte wählen Sie einen anderen.',
       invalid: 'Bitte prüfen Sie Ihre Angaben.',
-      turnstile: 'Bitte bestätigen Sie kurz, dass Sie kein Roboter sind.',
+      turnstile: 'Die Sicherheitsprüfung ist noch nicht abgeschlossen. Bitte warten Sie einen Moment und klicken Sie erneut.',
+      turnstile_failed: 'Der Spam-Schutz konnte nicht geladen werden. Bitte laden Sie die Seite neu. Falls es wieder passiert, schreiben Sie mir einfach per WhatsApp oder E-Mail.',
       unavailable: 'Die Online-Buchung ist gerade nicht erreichbar. Schreiben Sie mir einfach per WhatsApp oder E-Mail, ich melde mich schnell.',
     },
     fallback: {

@@ -9,9 +9,11 @@ export async function verifyTurnstile(secret: string | undefined, token: string,
   if (ip) body.set('remoteip', ip);
   try {
     const res = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', { method: 'POST', body });
-    const json = (await res.json()) as { success: boolean };
+    const json = (await res.json()) as { success: boolean; 'error-codes'?: string[]; hostname?: string };
+    if (!json.success) console.error('turnstile siteverify failed', json['error-codes'], 'hostname:', json.hostname);
     return !!json.success;
-  } catch {
+  } catch (e) {
+    console.error('turnstile siteverify request failed', e);
     return false;
   }
 }

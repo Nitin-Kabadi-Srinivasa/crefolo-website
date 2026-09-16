@@ -289,7 +289,8 @@ const en: SiteContent = {
       generic: 'That did not work, sorry. Please try again or write to me directly.',
       slot_taken: 'Oh, this slot was just taken. Please choose another one.',
       invalid: 'Please check your details.',
-      turnstile: 'Please quickly confirm that you are not a robot.',
+      turnstile: 'The security check has not finished yet. Please wait a moment and click again.',
+      turnstile_failed: 'The spam protection could not be loaded. Please reload the page. If it happens again, just message me on WhatsApp or by email.',
       unavailable: 'Online booking is not available right now. Just message me on WhatsApp or by email, I will get back to you quickly.',
     },
     fallback: {

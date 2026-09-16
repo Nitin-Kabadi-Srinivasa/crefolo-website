@@ -167,6 +167,7 @@ export interface BookingStrings {
     slot_taken: string;
     invalid: string;
     turnstile: string;
+    turnstile_failed: string;
     unavailable: string;
   };
   fallback: {

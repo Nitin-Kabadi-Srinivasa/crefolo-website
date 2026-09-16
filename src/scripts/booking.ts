@@ -66,6 +66,8 @@ function init(root: HTMLElement) {
   let selectedSlot: Slot | null = null;
   let turnstileId: string | null = null;
   let turnstileLoading = false;
+  let turnstileToken = '';
+  let turnstileFailed = false;
 
   // ---------- helpers ----------
   const show = (el: HTMLElement, on: boolean) => {
@@ -218,8 +220,33 @@ function init(root: HTMLElement) {
       language: locale,
       theme: 'light',
       size: 'flexible',
-      appearance: 'interaction-only',
+      appearance: 'always',
+      callback: (token: string) => {
+        turnstileToken = token;
+        turnstileFailed = false;
+      },
+      'expired-callback': () => {
+        turnstileToken = '';
+      },
+      'error-callback': (code: string) => {
+        turnstileToken = '';
+        turnstileFailed = true;
+        console.error('Turnstile error', code);
+        return true; // we handle the error ourselves
+      },
     });
+  }
+
+  // The check runs in the background; give it a moment if the parent is faster than it.
+  async function waitForTurnstileToken(maxMs = 12000): Promise<string> {
+    const start = Date.now();
+    while (Date.now() - start < maxMs) {
+      const t = turnstileToken || (window.turnstile && turnstileId ? window.turnstile.getResponse(turnstileId) || '' : '');
+      if (t) return t;
+      if (turnstileFailed) return '';
+      await new Promise((r) => setTimeout(r, 250));
+    }
+    return '';
   }
 
   // ---------- submit ----------
@@ -242,10 +269,19 @@ function init(root: HTMLElement) {
       els.form.querySelector<HTMLElement>('.is-invalid input, .is-invalid select')?.focus();
       return;
     }
-    const token = sitekey && window.turnstile ? window.turnstile.getResponse(turnstileId ?? undefined) : '';
-    if (sitekey && !token) {
-      showError(s.errors.turnstile);
-      return;
+    let token = '';
+    if (sitekey) {
+      ensureTurnstile();
+      els.submit.disabled = true;
+      els.submitLabel.textContent = s.form.submitting;
+      token = await waitForTurnstileToken();
+      if (!token) {
+        els.submit.disabled = false;
+        els.submitLabel.textContent = s.form.submit;
+        showError(turnstileFailed ? s.errors.turnstile_failed : s.errors.turnstile);
+        if (window.turnstile && turnstileId) window.turnstile.reset(turnstileId);
+        return;
+      }
     }
 
     const fd = new FormData(els.form);
@@ -281,6 +317,7 @@ function init(root: HTMLElement) {
           await load();
           resetToDays();
         }
+        turnstileToken = '';
         if (window.turnstile && turnstileId) window.turnstile.reset(turnstileId);
         return;
       }
@@ -288,6 +325,7 @@ function init(root: HTMLElement) {
     } catch (err) {
       console.error('booking failed', err);
       showError(s.errors.generic);
+      turnstileToken = '';
       if (window.turnstile && turnstileId) window.turnstile.reset(turnstileId);
     } finally {
       els.submit.disabled = false;
@@ -323,6 +361,7 @@ function init(root: HTMLElement) {
     els.form.reset();
     selectedDay = null;
     selectedSlot = null;
+    turnstileToken = '';
     if (window.turnstile && turnstileId) window.turnstile.reset(turnstileId);
     await load();
   });
