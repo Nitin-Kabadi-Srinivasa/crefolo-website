@@ -2,8 +2,6 @@
 import type { Locale } from '@/content/types';
 import { getContent, routes } from '@/i18n';
 import Icon from './Icon.astro';
-import KidGirl from './KidGirl.astro';
-import KidBoy from './KidBoy.astro';
 
 interface Props {
   locale: Locale;
@@ -15,10 +13,7 @@ const bookingHref = routes.booking[locale];
 
 <section class="cta-band">
   <div class="container cta-band__inner reveal">
-    <div class="cta-band__kids float" aria-hidden="true">
-      <KidGirl size={125} class="cta-band__kid" />
-      <KidBoy size={125} class="cta-band__kid cta-band__kid--boy" />
-    </div>
+    <div class="cta-band__icon" aria-hidden="true"><Icon name="sparkles" /></div>
     <div class="cta-band__text">
       <h2>{t.ctaBand.title}</h2>
       <p>{t.ctaBand.text}</p>
@@ -58,19 +53,19 @@ const bookingHref = routes.booking[locale];
     right: -60px;
     top: -120px;
   }
-  .cta-band__kids {
-    display: flex;
-    align-items: flex-end;
-    width: 215px;
-    margin: -0.25rem 0 -1.25rem;
-    filter: drop-shadow(0 10px 18px rgba(46, 26, 71, 0.25));
-  }
-  .cta-band__kids :global(.cta-band__kid) {
-    width: 125px;
+  .cta-band__icon {
+    width: 78px;
+    height: 78px;
+    border-radius: 26px;
+    background: rgba(255, 255, 255, 0.2);
+    display: grid;
+    place-items: center;
+    color: #fff;
     flex: none;
   }
-  .cta-band__kids :global(.cta-band__kid--boy) {
-    margin-left: -34px;
+  .cta-band__icon :global(svg) {
+    width: 42px;
+    height: 42px;
   }
   .cta-band__text h2 {
     color: #fff;
@@ -121,12 +116,8 @@ const bookingHref = routes.booking[locale];
       text-align: center;
       padding: 2rem 1.5rem 2.5rem;
     }
-    .cta-band__kids {
-      margin: -0.5rem auto -1.25rem;
-      width: 190px;
-    }
-    .cta-band__kids :global(.cta-band__kid) {
-      width: 110px;
+    .cta-band__icon {
+      margin: 0 auto;
     }
     .cta-band__text p {
       margin-inline: auto;

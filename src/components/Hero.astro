@@ -4,8 +4,6 @@ import kids from '@/assets/kids.jpg';
 import type { Locale } from '@/content/types';
 import { getContent, routes } from '@/i18n';
 import Icon from './Icon.astro';
-import KidGirl from './KidGirl.astro';
-import KidBoy from './KidBoy.astro';
 import Wave from './Wave.astro';
 
 interface Props {
@@ -45,13 +43,7 @@ const bookingHref = routes.booking[locale];
         <Image src={kids} alt={t.hero.photoAlt} widths={[480, 720, 960]} sizes="(max-width: 900px) 90vw, 520px" class="hero__photo" loading="eager" fetchpriority="high" />
       </div>
 
-      <div class="hero__kid hero__kid--girl float float--slow">
-        <span class="bubble">{t.hero.bubble}</span>
-        <KidGirl size={200} label={locale === 'de' ? 'Fröhliches Mädchen, das winkt' : 'Cheerful girl waving'} />
-      </div>
-      <div class="hero__kid hero__kid--boy float">
-        <KidBoy size={185} label={locale === 'de' ? 'Fröhlicher Junge, der jubelt' : 'Cheerful boy cheering'} />
-      </div>
+      <span class="bubble" aria-hidden="true">{t.hero.bubble}</span>
 
       <span class="hero__letter hero__letter--a float" aria-hidden="true">A</span>
       <span class="hero__letter hero__letter--b float float--fast" aria-hidden="true">B</span>
@@ -205,25 +197,11 @@ const bookingHref = routes.booking[locale];
     object-fit: cover;
     clip-path: url(#blob-clip);
   }
-  .hero__kid {
-    position: absolute;
-    z-index: 2;
-    filter: drop-shadow(0 16px 24px rgba(46, 26, 71, 0.18));
-  }
-  .hero__kid--girl {
-    left: -7%;
-    bottom: -3%;
-    width: 200px;
-  }
-  .hero__kid--boy {
-    right: -6%;
-    bottom: -9%;
-    width: 185px;
-  }
   .bubble {
     position: absolute;
-    top: -18px;
-    left: 132px;
+    top: 10%;
+    left: 3%;
+    z-index: 2;
     background: #fff;
     color: var(--plum);
     font-family: var(--font-display);
@@ -268,8 +246,8 @@ const bookingHref = routes.booking[locale];
     --rot: 10deg;
   }
   .hero__letter--c {
-    top: 52%;
-    left: -4%;
+    bottom: 4%;
+    right: 4%;
     color: var(--lilac);
     --rot: -8deg;
   }
@@ -310,25 +288,15 @@ const bookingHref = routes.booking[locale];
     }
     .hero__visual {
       min-height: 0;
-      padding-bottom: 4.5rem;
+      padding-bottom: 1rem;
     }
     .hero__photo-wrap {
       margin-inline: auto;
       width: min(100%, 440px);
     }
-    .hero__kid--girl {
-      width: 140px;
-      left: -2%;
-      bottom: 0;
-    }
-    .hero__kid--boy {
-      width: 130px;
-      right: -2%;
-      bottom: -4%;
-    }
     .bubble {
-      top: -14px;
-      left: 92px;
+      top: 6%;
+      left: 2%;
       font-size: 1.1rem;
     }
     .hero__letter {
@@ -349,12 +317,6 @@ const bookingHref = routes.booking[locale];
     .hero__letter--c,
     .hero__squiggle {
       display: none;
-    }
-    .hero__kid--girl {
-      width: 118px;
-    }
-    .hero__kid--boy {
-      width: 110px;
     }
   }
 </style>

@@ -1,7 +1,5 @@
 ---
 import Base from '@/layouts/Base.astro';
-import KidGirl from '@/components/KidGirl.astro';
-import KidBoy from '@/components/KidBoy.astro';
 import Icon from '@/components/Icon.astro';
 
 const locale = 'de';
@@ -10,7 +8,6 @@ const locale = 'de';
 <Base locale={locale} page="home" title="Seite nicht gefunden – Crefolo" description="Diese Seite gibt es leider nicht." noindex hideMobileCta>
   <section class="section notfound">
     <div class="container--narrow text-center">
-      <div class="notfound__mascot float"><KidGirl size={150} /><KidBoy size={150} /></div>
       <span class="eyebrow">404</span>
       <h1>Ups, hier ist nichts.</h1>
       <p class="muted">Diese Seite gibt es leider nicht (mehr). <span lang="en">This page does not exist.</span></p>
@@ -23,15 +20,8 @@ const locale = 'de';
 </Base>
 
 <style>
-  .notfound__mascot {
-    display: flex;
-    justify-content: center;
-    align-items: flex-end;
-    gap: 0;
-    margin: 0 auto 1rem;
-  }
-  .notfound__mascot :global(.kid--boy) {
-    margin-left: -30px;
+  .notfound {
+    padding-top: clamp(4rem, 10vw, 7rem);
   }
   .notfound__actions {
     display: flex;
