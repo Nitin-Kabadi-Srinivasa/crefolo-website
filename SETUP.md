@@ -81,11 +81,16 @@ Optional hardening (recommended later): restrict the app to the one mailbox with
 
 ## 6. Go-live (domain switch)
 
-1. Cloudflare → Workers & Pages → crefolo-website → Settings → Domains & Routes → **Add custom domain** `crefolo.com` and `www.crefolo.com`. Cloudflare creates the DNS records (this replaces the old A record pointing to Hostinger; mail records stay untouched).
-2. `learn.crefolo.com`: keep a proxied DNS record (orange cloud) and add a **Redirect Rule** (Rules → Redirect Rules): if hostname equals `learn.crefolo.com` → dynamic redirect to `concat("https://crefolo.com", http.request.uri.path)`, status 301. Old flyer QR codes and Kleinanzeigen links keep working.
-3. DNS clean-up: remove `include:spf.titan.email` from the SPF TXT record (Titan mail is no longer used). Keep the Microsoft 365 records.
-4. Update the Kleinanzeigen ad link to https://crefolo.com.
-5. Keep Hostinger for a few weeks as a fallback, download a WordPress backup, then cancel.
+All in the Cloudflare dashboard for the zone crefolo.com. Mail records (MX, autodiscover, DKIM selectors, DMARC) stay untouched.
+
+1. **Remove the old redirect.** Rules → Redirect Rules and Rules → Page Rules: delete any rule that sends crefolo.com to learn.crefolo.com (otherwise the new site loops).
+2. **Custom domain:** Workers & Pages → crefolo-website → Settings → Domains & Routes → Add → Custom domain → `crefolo.com`. Confirm that Cloudflare replaces the existing A record. Wait until the status is Active.
+3. **www:** DNS → keep `www` as CNAME to `crefolo.com`, proxied (orange cloud). Rules → Redirect Rules → Create → template **"Redirect from WWW to root"** → deploy.
+4. **learn.crefolo.com** (old flyers, QR codes, Kleinanzeigen): DNS → edit the `learn` record: type `AAAA`, content `100::`, proxied. Then Rules → Redirect Rules → Create rule "learn to crefolo.com": when hostname equals `learn.crefolo.com`, then Dynamic redirect with expression `concat("https://crefolo.com", http.request.uri.path)`, status 301, preserve query string. The site's `_redirects` file maps the old WordPress paths to the new pages.
+5. **SPF clean-up:** DNS → edit the TXT record of crefolo.com to `v=spf1 include:spf.protection.outlook.com ~all` (Hostinger IP and Titan are gone).
+6. **Turnstile:** the widget's hostname list must contain `crefolo.com` (it can keep the workers.dev host).
+7. **Check:** https://crefolo.com, https://www.crefolo.com, https://learn.crefolo.com/termin-buchen/ (must land on the booking page), https://crefolo.com/api/health, and one real booking + cancellation on crefolo.com.
+8. **Afterwards:** disable the workers.dev address (Settings → Domains & Routes → workers.dev → Disable) so the site exists only once. Update the Kleinanzeigen ad and the Google Business Profile link to https://crefolo.com. Cancel Hostinger.
 
 ## Costs
 
