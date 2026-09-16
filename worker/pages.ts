@@ -46,8 +46,8 @@ export function cancelledPage(lang: Lang, siteUrl: string): string {
   const booking = lang === 'de' ? `${siteUrl}/probestunde` : `${siteUrl}/en/trial-lesson`;
   const body =
     lang === 'de'
-      ? `<h1>Der Termin wurde abgesagt.</h1><p>Schade – aber kein Problem. Sie können jederzeit einen neuen Termin buchen.</p><p><a class="btn btn--primary" href="${esc(booking)}">Neuen Termin buchen</a></p>`
-      : `<h1>The appointment has been cancelled.</h1><p>A pity – but no problem. You can book a new time whenever you like.</p><p><a class="btn btn--primary" href="${esc(booking)}">Book a new time</a></p>`;
+      ? `<h1>Der Termin wurde abgesagt.</h1><p>Schade, aber kein Problem. Sie können jederzeit einen neuen Termin buchen.</p><p><a class="btn btn--primary" href="${esc(booking)}">Neuen Termin buchen</a></p>`
+      : `<h1>The appointment has been cancelled.</h1><p>A pity, but no problem. You can book a new time whenever you like.</p><p><a class="btn btn--primary" href="${esc(booking)}">Book a new time</a></p>`;
   return page(lang, lang === 'de' ? 'Abgesagt' : 'Cancelled', body, siteUrl);
 }
 

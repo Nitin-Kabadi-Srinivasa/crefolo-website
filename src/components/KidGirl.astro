@@ -1,0 +1,126 @@
+---
+// Cartoon girl mascot ("Mia"): pigtails, purple top, teal skirt, waving. Pure SVG with blink + wave animation.
+interface Props {
+  class?: string;
+  size?: number;
+  label?: string;
+}
+const { class: cls = '', size = 220, label = 'Fröhliches Mädchen, das winkt' } = Astro.props;
+---
+
+<svg class:list={['kid', 'kid--girl', cls]} width={size} viewBox="0 0 260 340" role="img" aria-label={label} xmlns="http://www.w3.org/2000/svg">
+  <g stroke="#2b1b3d" stroke-width="4" stroke-linejoin="round" stroke-linecap="round">
+    <!-- left arm (stretched out) -->
+    <path d="M 92 160 L 60 180 L 38 200" fill="none" stroke-width="23" />
+    <path d="M 92 160 L 60 180 L 38 200" fill="none" stroke="#f8d1b3" stroke-width="15" />
+    <circle cx="34" cy="204" r="12" fill="#f8d1b3" />
+
+    <!-- pigtails -->
+    <circle cx="56" cy="74" r="22" fill="#7b4a2b" />
+    <circle cx="184" cy="74" r="22" fill="#7b4a2b" />
+
+    <!-- legs -->
+    <path d="M 106 250 L 100 300" fill="none" stroke-width="23" />
+    <path d="M 106 250 L 100 300" fill="none" stroke="#f8d1b3" stroke-width="15" />
+    <path d="M 134 250 L 150 296" fill="none" stroke-width="23" />
+    <path d="M 134 250 L 150 296" fill="none" stroke="#f8d1b3" stroke-width="15" />
+    <!-- socks -->
+    <path d="M 102 284 L 100 300" fill="none" stroke="#ff8fb8" stroke-width="15" />
+    <path d="M 145 282 L 150 296" fill="none" stroke="#ff8fb8" stroke-width="15" />
+    <!-- shoes -->
+    <ellipse cx="96" cy="313" rx="21" ry="11" fill="#ea1889" />
+    <ellipse cx="154" cy="309" rx="21" ry="11" fill="#ea1889" transform="rotate(16 154 309)" />
+    <path d="M 80 318 Q 96 325 112 318" fill="none" stroke="#fff" stroke-width="3" />
+    <path d="M 139 316 Q 155 322 170 312" fill="none" stroke="#fff" stroke-width="3" />
+
+    <!-- skirt -->
+    <path d="M 86 206 L 154 206 Q 174 252 164 258 L 76 258 Q 66 252 86 206 Z" fill="#2bbfae" />
+    <path d="M 108 214 L 104 250 M 132 214 L 136 250" fill="none" stroke="#1a9c8d" stroke-width="3" />
+
+    <!-- neck + torso -->
+    <rect x="110" y="126" width="20" height="26" rx="6" fill="#f8d1b3" />
+    <path d="M 96 148 Q 120 140 144 148 L 156 210 Q 120 220 84 210 Z" fill="#9b6fe0" />
+    <path d="M 106 148 Q 120 164 134 148 Z" fill="#fff" stroke-width="3" />
+    <circle cx="120" cy="178" r="4" fill="#fff" stroke="none" />
+    <circle cx="120" cy="194" r="4" fill="#fff" stroke="none" />
+
+    <!-- right arm (waving) -->
+    <g class="kid__wave">
+      <path d="M 148 160 L 176 132 L 194 100" fill="none" stroke-width="23" />
+      <path d="M 148 160 L 176 132 L 194 100" fill="none" stroke="#f8d1b3" stroke-width="15" />
+      <circle cx="198" cy="94" r="12" fill="#f8d1b3" />
+    </g>
+
+    <!-- hair (back), ears, head, fringe -->
+    <ellipse cx="120" cy="82" rx="58" ry="50" fill="#7b4a2b" />
+    <circle cx="72" cy="102" r="9" fill="#f8d1b3" />
+    <circle cx="168" cy="102" r="9" fill="#f8d1b3" />
+    <circle cx="120" cy="96" r="47" fill="#f8d1b3" />
+    <path d="M 74 86 C 76 52, 96 38, 120 38 C 144 38, 164 52, 166 86 C 156 72, 146 68, 138 80 C 130 68, 118 68, 112 80 C 104 68, 90 70, 74 86 Z" fill="#7b4a2b" />
+    <circle cx="70" cy="90" r="6" fill="#ffc53d" stroke-width="3" />
+    <circle cx="170" cy="90" r="6" fill="#ffc53d" stroke-width="3" />
+
+    <!-- brows -->
+    <path d="M 90 80 Q 102 74 114 80 M 126 80 Q 138 74 150 80" fill="none" />
+
+    <!-- eyes -->
+    <ellipse cx="102" cy="100" rx="13" ry="15" fill="#fff" stroke-width="3" />
+    <ellipse cx="138" cy="100" rx="13" ry="15" fill="#fff" stroke-width="3" />
+
+    <!-- nose + mouth -->
+    <path d="M 121 106 q 4 6 -2 10" fill="none" stroke-width="3" />
+    <path d="M 102 122 Q 120 148 138 122 Q 120 130 102 122 Z" fill="#c9264f" stroke-width="3.5" />
+  </g>
+  <path d="M 107 123 Q 120 129 133 123 Q 120 135 107 123 Z" fill="#fff" />
+  <circle cx="105" cy="102" r="6" fill="#2b1b3d" />
+  <circle cx="141" cy="102" r="6" fill="#2b1b3d" />
+  <circle cx="107.5" cy="99" r="2.2" fill="#fff" />
+  <circle cx="143.5" cy="99" r="2.2" fill="#fff" />
+  <ellipse class="kid__lid" cx="102" cy="100" rx="14.5" ry="16.5" fill="#f8d1b3" />
+  <ellipse class="kid__lid" cx="138" cy="100" rx="14.5" ry="16.5" fill="#f8d1b3" />
+  <circle cx="86" cy="114" r="7" fill="#ffa8c5" opacity="0.85" />
+  <circle cx="154" cy="114" r="7" fill="#ffa8c5" opacity="0.85" />
+</svg>
+
+<style is:global>
+  .kid {
+    height: auto;
+    overflow: visible;
+  }
+  .kid__lid {
+    transform-origin: center;
+    transform-box: fill-box;
+    transform: scaleY(0);
+    animation: kid-blink 6s infinite;
+  }
+  .kid--girl .kid__wave {
+    transform-origin: 148px 160px;
+    animation: kid-wave 1.8s ease-in-out infinite;
+  }
+  @keyframes kid-blink {
+    0%,
+    91%,
+    100% {
+      transform: scaleY(0);
+    }
+    93%,
+    96% {
+      transform: scaleY(1);
+    }
+  }
+  @keyframes kid-wave {
+    0%,
+    100% {
+      transform: rotate(-6deg);
+    }
+    50% {
+      transform: rotate(10deg);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .kid__lid,
+    .kid--girl .kid__wave {
+      animation: none;
+    }
+  }
+</style>

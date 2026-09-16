@@ -82,10 +82,10 @@ ${b.meetLink ? button(b.meetLink, 'Zur Probestunde (Google Meet)') : ''}
   <li>Laptop, PC oder Tablet mit Kamera und Mikrofon</li>
   <li>Ein ruhiger Platz, an dem ${esc(b.childName)} sitzen kann</li>
   <li>Ein paar Buntstifte und ein Blatt Papier</li>
-  <li>Gute Laune – der Rest kommt von mir 😊</li>
+  <li>Gute Laune, den Rest bringe ich mit 😊</li>
 </ul>
 <p>Sie können den Termin über die angehängte Kalenderdatei in Ihren Kalender übernehmen.</p>
-<p style="font-size:14px;color:#6b5f7a;">Etwas dazwischengekommen? Kein Problem – sagen Sie den Termin einfach hier ab: <a href="${esc(b.cancelUrl)}" style="color:#c0106d;">Termin absagen</a></p>
+<p style="font-size:14px;color:#6b5f7a;">Etwas dazwischengekommen? Kein Problem, sagen Sie den Termin einfach hier ab: <a href="${esc(b.cancelUrl)}" style="color:#c0106d;">Termin absagen</a></p>
 <p>Bei Fragen antworten Sie einfach auf diese E-Mail oder schreiben Sie mir auf <a href="${esc(b.whatsappUrl)}" style="color:#c0106d;">WhatsApp</a>.</p>
 <p>Herzliche Grüße<br><strong>${esc(b.teacherName)}</strong><br>Crefolo · <a href="${esc(b.siteUrl)}" style="color:#c0106d;">crefolo.com</a></p>`,
       `Crefolo · ${esc(b.teacherEmail)} · ${esc(b.teacherPhone)}<br>Sie erhalten diese E-Mail, weil über crefolo.com eine Probestunde gebucht wurde.`,
@@ -122,10 +122,10 @@ ${b.meetLink ? button(b.meetLink, 'Join the trial lesson (Google Meet)') : ''}
   <li>A laptop, PC or tablet with camera and microphone</li>
   <li>A quiet spot where ${esc(b.childName)} can sit</li>
   <li>A few coloured pencils and a sheet of paper</li>
-  <li>A good mood – I will bring the rest 😊</li>
+  <li>A good mood, I will bring the rest 😊</li>
 </ul>
 <p>You can add the appointment to your calendar with the attached calendar file.</p>
-<p style="font-size:14px;color:#6b5f7a;">Something came up? No problem – cancel here: <a href="${esc(b.cancelUrl)}" style="color:#c0106d;">Cancel appointment</a></p>
+<p style="font-size:14px;color:#6b5f7a;">Something came up? No problem, cancel here: <a href="${esc(b.cancelUrl)}" style="color:#c0106d;">Cancel appointment</a></p>
 <p>If you have questions, simply reply to this email or message me on <a href="${esc(b.whatsappUrl)}" style="color:#c0106d;">WhatsApp</a>.</p>
 <p>Kind regards<br><strong>${esc(b.teacherName)}</strong><br>Crefolo · <a href="${esc(b.siteUrl)}" style="color:#c0106d;">crefolo.com</a></p>`,
     `Crefolo · ${esc(b.teacherEmail)} · ${esc(b.teacherPhone)}<br>You receive this email because a trial lesson was booked on crefolo.com.`,
@@ -189,7 +189,7 @@ export function parentCancellation(b: BookingInfo): Mail {
       subject,
       `<p style="font-size:20px;font-weight:800;margin:0 0 12px;">Die Probestunde wurde abgesagt</p>
 <p>Die Probestunde für ${esc(b.childName)} am <strong>${esc(date)}, ${esc(time)}</strong> ist abgesagt.</p>
-<p>Sie können jederzeit einen neuen Termin wählen – ich freue mich!</p>
+<p>Sie können jederzeit einen neuen Termin wählen, ich freue mich!</p>
 ${button(bookingUrl, 'Neuen Termin buchen')}
 <p>Herzliche Grüße<br><strong>${esc(b.teacherName)}</strong><br>Crefolo</p>`,
       `Crefolo · ${esc(b.teacherEmail)} · ${esc(b.teacherPhone)}`,

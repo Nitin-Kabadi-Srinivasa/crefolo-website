@@ -4,6 +4,9 @@
   "type": "module",
   "version": "1.0.0",
   "description": "crefolo.com - playful English lessons for kids, with trial-lesson booking",
+  "engines": {
+    "node": ">=22"
+  },
   "scripts": {
     "dev": "astro dev --port 4321",
     "api": "wrangler dev --port 8787",

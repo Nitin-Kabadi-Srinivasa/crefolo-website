@@ -8,7 +8,7 @@ const legalEn: LegalContent = {
     metaDescription: 'Legal notice (Impressum) of Crefolo – online English lessons for children.',
     blocks: [
       {
-        lines: ['Crefolo', 'Stadtseestraße 25', '74189 Weinsberg', 'Germany'],
+        lines: ['Crefolo', 'Owner: Nitin Kabadi-Srinivasa', 'Stadtseestraße 25', '74189 Weinsberg', 'Germany'],
       },
       {
         lines: ['Taxed as a small business under §19 UStG (German VAT Act)', 'VAT ID: DE357055821'],
@@ -34,7 +34,7 @@ const legalEn: LegalContent = {
         heading: '1. Information on the collection of personal data',
         paragraphs: [
           '1.1 Below we inform you about the collection of personal data when you use our website in connection with participation in online tutoring by Crefolo. Personal data is all data that can be related to you personally, for example name, address, email addresses and order information.',
-          '1.2 The controller responsible for the data collection and processing described below is Crefolo, Keilstraße 17/1, 74080 Heilbronn, Germany, phone 0162 890 4641, email <a href="mailto:info@crefolo.com">info@crefolo.com</a>. Your contact person for customer matters is Nitin.',
+          '1.2 The controller responsible for the data collection and processing described below is Crefolo, Stadtseestraße 25, 74189 Weinsberg, Germany, phone 0162 890 4641, email <a href="mailto:info@crefolo.com">info@crefolo.com</a>. Your contact person for customer matters is Nitin Kabadi-Srinivasa.',
           'Data subjects may also address any objection to <a href="mailto:info@crefolo.com">info@crefolo.com</a>.',
           '1.3 When you contact us by email, WhatsApp or via the booking form, the data you provide (your email address and, if applicable, your name and phone number) is stored by us in order to answer your questions. As always, we delete the data arising in this context once storage is no longer necessary, or we restrict processing if statutory retention obligations exist.',
         ],

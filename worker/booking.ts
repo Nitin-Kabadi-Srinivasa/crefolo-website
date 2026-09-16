@@ -49,12 +49,12 @@ export async function bookingInfoFromEvent(env: AppEnv, event: CalendarEvent): P
 }
 
 export function eventSummary(childName: string, childAge: string, lang: Lang): string {
-  return lang === 'de' ? `Probestunde Englisch – ${childName} (${childAge} J.)` : `English trial lesson – ${childName} (${childAge} y.)`;
+  return lang === 'de' ? `Probestunde Englisch: ${childName} (${childAge} J.)` : `English trial lesson: ${childName} (${childAge} y.)`;
 }
 
 export function eventDescription(input: { childName: string; childAge: string; parentName: string; parentEmail: string; parentPhone: string; message: string; lang: Lang; cancelUrl: string }): string {
   return [
-    `Probestunde Englisch – ${input.childName} (${input.childAge} Jahre)`,
+    `Probestunde Englisch: ${input.childName} (${input.childAge} Jahre)`,
     `Eltern: ${input.parentName || '-'}`,
     `E-Mail: ${input.parentEmail}`,
     `Telefon: ${input.parentPhone}`,

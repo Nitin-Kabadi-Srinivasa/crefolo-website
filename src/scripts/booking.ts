@@ -307,7 +307,7 @@ function init(root: HTMLElement) {
     els.meetLink.hidden = !b.meetLink;
     els.icsLink.href = b.icsUrl;
     const fmt = (iso: string) => new Date(iso).toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');
-    const title = locale === 'de' ? `Probestunde Englisch – ${payload.childName} (Crefolo)` : `English trial lesson – ${payload.childName} (Crefolo)`;
+    const title = locale === 'de' ? `Probestunde Englisch: ${payload.childName} (Crefolo)` : `English trial lesson: ${payload.childName} (Crefolo)`;
     const details = (locale === 'de' ? 'Google Meet: ' : 'Google Meet: ') + (b.meetLink || '');
     els.gcalLink.href =
       'https://calendar.google.com/calendar/render?action=TEMPLATE' +

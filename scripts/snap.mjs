@@ -83,6 +83,35 @@ try {
     }
   }
 
+  if (mode === 'spots') {
+    // Element screenshots of the hero, the CTA band and the 404 page at several widths
+    const targets = [
+      { width: 1280, height: 900, name: 'desktop' },
+      { width: 414, height: 896, name: 'iphone-xr', isMobile: true, deviceScaleFactor: 2 },
+      { width: 375, height: 812, name: 'iphone-se', isMobile: true, deviceScaleFactor: 2 },
+    ];
+    for (const vp of targets) {
+      const page = await browser.newPage();
+      await page.setViewport(vp);
+      await page.goto(base + '/', { waitUntil: 'networkidle0', timeout: 60000 });
+      await revealAll(page);
+      for (const [sel, label] of [
+        ['#site-header', 'header'],
+        ['.hero', 'hero'],
+        ['.cta-band', 'cta'],
+      ]) {
+        const el = await page.$(sel);
+        if (el) await el.screenshot({ path: path.join(outDir, `spot-${label}-${vp.name}.png`) });
+      }
+      await page.goto(base + '/404', { waitUntil: 'networkidle0', timeout: 60000 });
+      await revealAll(page);
+      const nf = await page.$('.notfound');
+      if (nf) await nf.screenshot({ path: path.join(outDir, `spot-404-${vp.name}.png`) });
+      await page.close();
+      console.log(`spots: ${vp.name} done`);
+    }
+  }
+
   if (mode === 'flow') {
     const page = await browser.newPage();
     await page.setViewport({ width: 1100, height: 900 });

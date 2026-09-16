@@ -216,7 +216,29 @@ const navLabel = locale === 'de' ? 'Hauptnavigation' : 'Main navigation';
     }
   }
 
-  @media (max-width: 420px) {
+  @media (max-width: 430px) {
+    .site-header__inner {
+      gap: 0.75rem;
+    }
+    .brand {
+      gap: 0.45rem;
+    }
+    .brand__mark {
+      width: 38px;
+      height: 38px;
+    }
+    .brand__word {
+      height: 14px;
+    }
+    .lang-switch {
+      padding: 0.4rem 0.55rem;
+    }
+    .nav-toggle {
+      width: 40px;
+      height: 40px;
+    }
+  }
+  @media (max-width: 340px) {
     .brand__word {
       display: none;
     }

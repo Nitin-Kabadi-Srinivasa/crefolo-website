@@ -36,10 +36,10 @@ const en: SiteContent = {
   hero: {
     eyebrow: 'Online English for children aged 5 to 10',
     title: 'Learning English becomes an <em>adventure</em>',
-    text: 'Online lessons in mini groups of up to 3 children – with stories, games, songs and real Cambridge books to hold in your hands. Lots of fun, little screen time.',
+    text: 'Online lessons in mini groups of up to 3 children: stories, games, songs and real Cambridge books to hold in your hands. Lots of fun, little screen time.',
     ctaPrimary: 'Book a free trial lesson',
     ctaSecondary: 'Questions? Message me on WhatsApp',
-    chips: ['Cambridge certified', 'Max. 3 kids per group', 'Free & no obligation'],
+    chips: ['Cambridge certified', 'Max. 3 kids per group', 'Free & non-binding trial class'],
     bubble: 'Hello!',
     photoAlt: 'Two children drawing and learning together at a table',
   },
@@ -51,49 +51,52 @@ const en: SiteContent = {
       {
         icon: 'calendar',
         title: 'Book a trial lesson',
-        text: 'Pick a day and a time, tell me a little about your child – done. The trial lesson is free and comes with no obligation at all.',
+        text: 'Pick a day and a time, tell me a little about your child, done. The trial lesson is free and comes with no obligation at all.',
       },
       {
         icon: 'video',
         title: 'Meet on Google Meet',
-        text: 'In 60 minutes your child gets to know me and the way I teach. We play, speak a little English, and you ask all your questions.',
+        text: 'In around 30 to 60 minutes, you and your child get to know me and the way I teach. We play, speak a little English, and you ask all your questions.',
       },
       {
         icon: 'rocket',
         title: 'Off we go!',
-        text: 'You choose a fixed group, the Cambridge materials arrive at your home – and every week there are 40 minutes of English with a smile.',
+        text: 'You choose a fixed group, and every week there are 40 to 60 minutes of English with a smile.',
       },
     ],
   },
 
   philosophy: {
     eyebrow: 'What I believe',
-    title: 'Online lessons – without being glued to the screen',
+    title: 'Online lessons without being glued to the screen',
     paragraphs: [
-      'Young children learn best with books, games, singing, crafts and everything that keeps their hands busy. That is why only the lesson itself happens online. Everything else is offline.',
-      'Your child receives the Cambridge materials as a real book at home. Homework – drawing, crafting, singing and small tasks – is done with real materials, not on a laptop.',
-      'Audio and video exercises for listening practice go to you as parents only. That way your child uses digital content exclusively under your guidance.',
+      'I firmly believe that young children learn best with books, games, singing, crafts and everything that keeps their hands busy. That is why only the lesson itself happens online. Everything else is offline.',
+      'Your child uses the Cambridge materials as a real book at home. Homework, meaning drawing, crafting, singing and small tasks, is done with real materials, not on a laptop.',
     ],
     points: [
       { icon: 'book', title: 'Real books', text: 'Cambridge materials to touch, leaf through and colour in.' },
-      { icon: 'palette', title: 'Homework offline', text: 'Drawing, crafting, singing – with paper and pens instead of a tablet.' },
-      { icon: 'headphones', title: 'Listening practice with you', text: 'Audio and video are for parents only, to practise together.' },
+      { icon: 'palette', title: 'Homework offline', text: 'Drawing, crafting, singing: with paper and pens instead of a tablet.' },
+      {
+        icon: 'headphones',
+        title: 'Listening activities with parents',
+        text: 'Audio and video exercises for listening practice go to you as parents only. That way your child uses digital content exclusively under your guidance.',
+      },
     ],
   },
 
   features: {
     title: 'What makes the lessons special',
-    intro: 'English should feel like a game to children – with clear structure and plenty of personal attention.',
+    intro: 'English should feel like a game to children, with clear structure and plenty of personal attention.',
     items: [
       {
         icon: 'sparkles',
         title: 'Playful & interactive',
-        text: 'Stories, games, songs and creative tasks. Reading, speaking, listening and writing – all included, never boring.',
+        text: 'Stories, games, songs and creative tasks. Reading, speaking, listening and writing: all included, never boring.',
       },
       {
         icon: 'graduation',
         title: 'Cambridge curriculum',
-        text: 'Lessons follow the Cambridge curriculum from pre-A1 to A1 (CEFR). A solid foundation – also on the way to the Gymnasium.',
+        text: 'Lessons follow the Cambridge curriculum from pre-A1 to A1 (CEFR). A solid foundation, also on the way to the Gymnasium.',
       },
       {
         icon: 'group',
@@ -108,12 +111,12 @@ const en: SiteContent = {
       {
         icon: 'clock',
         title: 'Flexible times',
-        text: 'Several groups to choose from: weekday evenings plus Saturday mornings and evenings. Sundays are free.',
+        text: 'Several groups to choose from: weekday evenings plus Saturday mornings and evenings.',
       },
       {
         icon: 'home',
         title: 'Comfortable at home',
-        text: 'No driving, no stress. Open the laptop or tablet, and the English lesson can begin.',
+        text: 'No driving, no stress. Open the laptop, and the English lesson can begin.',
       },
     ],
   },
@@ -124,18 +127,19 @@ const en: SiteContent = {
     course: 'English for absolute beginners (CEFR pre-A1 to A1)',
     details: [
       'One lesson per week',
-      '40 minutes of teaching + 3 to 10 minutes with the parents',
+      '40 minutes of teaching + 10 minutes of playing English games together + 3 to 10 minutes with the parents',
       'A maximum of 3 children per group',
       'Weekday evenings, Saturday mornings and evenings',
-      'All practice materials included',
+      'All practice materials included. The Cambridge books are bought separately (around 20 to 30 €)',
       'Taught mainly in English, German as support',
+      'Eligibility: your child should know the German alphabet and be able to read at least a few simple words in German',
     ],
     plans: [
       {
         name: 'Group lessons',
         price: '€22',
         unit: 'per lesson',
-        text: 'In a mini group of up to 3 children – learn, laugh and find the courage to speak together.',
+        text: 'In a mini group of up to 3 children: learn, laugh and find the courage to speak together.',
         highlight: true,
         badge: 'Popular',
       },
@@ -143,13 +147,13 @@ const en: SiteContent = {
         name: 'One-to-one lessons',
         price: '€30',
         unit: 'per lesson',
-        text: 'Fully individual, at your child\'s own pace – ideal if your child prefers to learn alone.',
+        text: 'Fully individual, at your child\'s own pace. Ideal if your child prefers to learn alone.',
       },
     ],
     invoice: 'You receive an invoice every month. All prices are final prices.',
     note: {
       title: 'No child left out',
-      text: 'If you cannot afford the fees, that is completely fine – then you simply pay nothing. I firmly believe that every child has a right to education, whatever the circumstances. The only condition: your child wants to learn.',
+      text: 'If you cannot afford the fees, that is completely fine. Then you simply pay nothing. I firmly believe that every child has a right to education, whatever the circumstances. The only condition: your child wants to learn.',
     },
   },
 
@@ -157,12 +161,14 @@ const en: SiteContent = {
     eyebrow: 'About me',
     title: 'Hello, I\'m Nitin!',
     paragraphs: [
-      'I am a Cambridge-certified English teacher specialised in teaching children online. Kids from Germany, Austria and Switzerland learn English with me – from their very first words up to level A1.',
-      'Lessons are held mainly in English so that your child practises as much as possible. Whenever needed, I help out in German.',
+      'I\'m an automotive engineer by profession, but teaching English is something I truly enjoy. So I got Cambridge-certified to teach young learners English online. I\'ve been teaching English for the past five years, with a particular focus on children.',
+      'I love teaching kids because every lesson is different. They are curious, energetic and wonderfully creative, which makes it possible to turn learning English into something fun and engaging. I especially enjoy seeing their confidence grow as they start using new words and expressions on their own.',
+      'Outside of teaching, I enjoy playing music and riding my bike. I love exploring the countryside around the Neckar and taking longer cycling trips through the Alps whenever I get the chance.',
+      'For me, teaching English isn\'t just about learning vocabulary and grammar. It\'s about helping children feel comfortable using English, enjoy the process and gradually become confident communicators.',
       'All my students so far have been very happy and have made remarkable progress. I look forward to meeting your child, too!',
     ],
     photoAlt: 'Nitin, English teacher at Crefolo, smiling at the camera',
-    facts: ['Cambridge certified', 'Specialised in children', 'Taught in English, help in German'],
+    facts: ['Cambridge certified', 'Specialised in children'],
   },
 
   reviews: {
@@ -197,7 +203,7 @@ const en: SiteContent = {
 
   faq: {
     title: 'Frequently asked questions',
-    intro: 'Still unsure about something? Just write to me – I am happy to answer.',
+    intro: 'Still unsure about something? Just write to me, I am happy to answer.',
     items: [
       {
         q: 'What age are the lessons for?',
@@ -205,15 +211,15 @@ const en: SiteContent = {
       },
       {
         q: 'Does my child need to know some English already?',
-        a: 'No. The courses are made for absolute beginners. We start with the very first words.',
+        a: 'No. The courses are made for absolute beginners. We start with the very first words. However, your child should already know the German alphabet and be able to read at least a few simple words in German.',
       },
       {
         q: 'What do we need for the lessons?',
-        a: 'A laptop, PC or tablet with a camera and microphone, plus a stable internet connection. Lessons take place on Google Meet – it runs in the browser, nothing to install. The books and materials come from me.',
+        a: 'A laptop or a PC with a camera and microphone, plus a stable internet connection. Lessons take place on Google Meet, so a Google account (Gmail) is necessary. The Cambridge books are bought separately (around 20 to 30 €). All other materials such as audio, video, worksheets, photocopiable activities and word cards come from me.',
       },
       {
         q: 'What happens in the trial lesson?',
-        a: 'The trial lesson lasts 60 minutes, takes place on Google Meet and is free with no obligation. Your child gets to know me, we play and speak a little English, and you can ask all your questions. You receive the link by email after booking.',
+        a: 'The trial lesson lasts 60 minutes, takes place on Google Meet and is free with no obligation. In the first 30 minutes your child gets to know me, and we learn and speak a little English. In the next 20 to 30 minutes I explain the practical details and answer all your questions.',
       },
       {
         q: 'How big are the groups?',
@@ -221,7 +227,7 @@ const en: SiteContent = {
       },
       {
         q: 'When do lessons take place?',
-        a: 'On weekday evenings and on Saturday mornings and evenings. There are several groups, so you will find a time that fits. Sundays are free.',
+        a: 'Lessons take place once a week. There are several groups on weekday evenings and on Saturday mornings and evenings. You choose the group that fits your schedule. No lessons on Sundays.',
       },
       {
         q: 'Are lessons taught in German or in English?',
@@ -229,18 +235,18 @@ const en: SiteContent = {
       },
       {
         q: 'How does payment work?',
-        a: 'You receive an invoice every month. Prices are per lesson and include all materials.',
+        a: 'You receive an invoice every month. No fee is charged for missed lessons.',
       },
       {
         q: 'Do you also teach children outside Germany?',
-        a: 'Yes, I teach children from Germany, Austria and Switzerland. All times on this website are German time.',
+        a: 'Yes, I teach children from Germany, Austria and Switzerland. If you live somewhere else and are interested in joining, don\'t hesitate to contact me. All times on this website are German time.',
       },
     ],
   },
 
   ctaBand: {
     title: 'Ready for the first step?',
-    text: 'Book a free, no-obligation trial lesson – or simply send me a message. I look forward to it!',
+    text: 'Book a free, no-obligation trial lesson or simply send me a message. I look forward to it!',
     button: 'Book a free trial lesson',
   },
 
@@ -251,7 +257,7 @@ const en: SiteContent = {
     loading: 'Loading available times …',
     timezone: 'All times are German time (Europe/Berlin).',
     noSlotsDay: 'Sorry, this day is fully booked.',
-    noSlotsAll: 'All slots in the next four weeks are taken right now. Send me a short message – we will find a time!',
+    noSlotsAll: 'All slots in the next four weeks are taken right now. Send me a short message, we will find a time!',
     free: '{n} free',
     taken: 'taken',
     summary: '{day}, {date} · {time}',
@@ -284,11 +290,11 @@ const en: SiteContent = {
       slot_taken: 'Oh, this slot was just taken. Please choose another one.',
       invalid: 'Please check your details.',
       turnstile: 'Please quickly confirm that you are not a robot.',
-      unavailable: 'Online booking is not available right now. Just message me on WhatsApp or by email – I will get back to you quickly.',
+      unavailable: 'Online booking is not available right now. Just message me on WhatsApp or by email, I will get back to you quickly.',
     },
     fallback: {
       title: 'Prefer a personal message?',
-      text: 'Just write to me on WhatsApp or by email – we will find a time together.',
+      text: 'Just write to me on WhatsApp or by email, we will find a time together.',
     },
     weekdaysShort: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
     weekdaysLong: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],

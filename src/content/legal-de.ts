@@ -9,7 +9,7 @@ const legalDe: LegalContent = {
     metaDescription: 'Impressum von Crefolo – Online-Englischunterricht für Kinder.',
     blocks: [
       {
-        lines: ['Crefolo', 'Stadtseestraße 25', '74189 Weinsberg'],
+        lines: ['Crefolo', 'Inhaber: Nitin Kabadi-Srinivasa', 'Stadtseestraße 25', '74189 Weinsberg'],
       },
       {
         lines: ['Besteuerung als Kleinunternehmer gemäß §19 UStG', 'Umsatzsteuernummer: DE357055821'],
@@ -34,7 +34,7 @@ const legalDe: LegalContent = {
         heading: '1. Information über die Erhebung personenbezogener Daten',
         paragraphs: [
           '1.1 Im Folgenden informieren wir über die Erhebung personenbezogener Daten bei Nutzung unserer Website im Zusammenhang mit der Teilnahme an Online-Nachhilfeunterricht durch die Crefolo. Personenbezogene Daten sind alle Daten, die auf Sie persönlich beziehbar sind, zum Beispiel Name, Adresse, E-Mail-Adressen und Bestellinformationen.',
-          '1.2 Verantwortlich für die nachfolgend dargestellte Datenerhebung und -verarbeitung ist die Crefolo, Keilstraße 17/1, 74080 Heilbronn, Telefonnummer 0162 890 4641, E-Mail <a href="mailto:info@crefolo.com">info@crefolo.com</a>. Anlaufstelle für Kundenanliegen ist Nitin.',
+          '1.2 Verantwortlich für die nachfolgend dargestellte Datenerhebung und -verarbeitung ist die Crefolo, Stadtseestraße 25, 74189 Weinsberg, Telefonnummer 0162 890 4641, E-Mail <a href="mailto:info@crefolo.com">info@crefolo.com</a>. Anlaufstelle für Kundenanliegen ist Nitin Kabadi-Srinivasa.',
           'Einen möglichen Widerspruch können Betroffene darüber hinaus an <a href="mailto:info@crefolo.com">info@crefolo.com</a> richten.',
           '1.3 Bei Ihrer Kontaktaufnahme mit uns per E-Mail, WhatsApp oder über das Buchungsformular werden die von Ihnen mitgeteilten Daten (Ihre E-Mail-Adresse, ggf. Ihr Name und Ihre Telefonnummer) von uns gespeichert, um Ihre Fragen zu beantworten. Wie auch sonst löschen wir die in diesem Zusammenhang anfallenden Daten, nachdem die Speicherung nicht mehr erforderlich ist, oder schränken die Verarbeitung ein, falls gesetzliche Aufbewahrungspflichten bestehen.',
         ],

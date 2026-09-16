@@ -4,19 +4,25 @@ Everything the new crefolo.com needs, in the order to do it. Each step takes abo
 
 ## 1. GitHub (code + automatic publishing)
 
-1. Create a free account at https://github.com/signup (use info@crefolo.com or your private address).
-2. Create a new **private** repository named `crefolo-website` (no README, no .gitignore – the project already has them).
-3. Tell Claude the repository URL; the code is pushed from this PC.
+Done: private repository https://github.com/Nitin-Kabadi-Srinivasa/crefolo-website, connected as `origin`.
+
+Pushing the code the first time (a GitHub login window opens once, the Git Credential Manager remembers it):
+
+```powershell
+cd D:\07_Website\crefolo-website; $env:Path = "$env:LOCALAPPDATA\Programs\MinGit\cmd;$env:Path"; git push -u origin main
+```
 
 ## 2. Cloudflare (hosting, free plan)
 
-Nothing to buy. The domain crefolo.com already lives in this account.
+Nothing to buy. The domain crefolo.com already lives in this account. Important: the GitHub repository must already contain the code (section 1), otherwise the import fails.
 
 1. Log in at https://dash.cloudflare.com.
-2. **Workers & Pages → Create → Import a repository** → connect GitHub → choose `crefolo-website`.
+2. **Workers & Pages → Create → Workers → Import a repository** → connect the GitHub account (allow access to `crefolo-website`) → choose `crefolo-website`.
+   - Project name: `crefolo-website`
    - Build command: `npm run build`
    - Deploy command: `npx wrangler deploy`
    - Root directory: `/`
+   - Node version is taken from `.node-version` (24).
 3. After the first deploy the site is reachable at `crefolo-website.<account>.workers.dev`.
 4. **Turnstile** (spam protection): dashboard → Turnstile → Add widget → hostname `crefolo.com` (and the workers.dev address for testing), mode *Managed*. Note the **Site key** and the **Secret key**.
 5. Secrets (Workers & Pages → crefolo-website → Settings → Variables and Secrets → Add → type *Secret*):

@@ -36,10 +36,10 @@ const de: SiteContent = {
   hero: {
     eyebrow: 'Online-Englisch für Kinder von 5 bis 10 Jahren',
     title: 'Englisch lernen wird zum <em>Abenteuer</em>',
-    text: 'Online-Unterricht in Mini-Gruppen mit maximal 3 Kindern – mit Geschichten, Spielen, Liedern und echten Cambridge-Büchern zum Anfassen. Viel Spaß, wenig Bildschirmzeit.',
+    text: 'Online-Unterricht in Mini-Gruppen mit maximal 3 Kindern: Geschichten, Spiele, Lieder und echte Cambridge-Bücher zum Anfassen. Viel Spaß, wenig Bildschirmzeit.',
     ctaPrimary: 'Kostenlose Probestunde buchen',
     ctaSecondary: 'Fragen? Auf WhatsApp schreiben',
-    chips: ['Cambridge-zertifiziert', 'Max. 3 Kinder pro Gruppe', 'Kostenlos & unverbindlich'],
+    chips: ['Cambridge-zertifiziert', 'Max. 3 Kinder pro Gruppe', 'Kostenlose, unverbindliche Probestunde'],
     bubble: 'Hello!',
     photoAlt: 'Zwei Kinder malen und lernen gemeinsam an einem Tisch',
   },
@@ -51,49 +51,52 @@ const de: SiteContent = {
       {
         icon: 'calendar',
         title: 'Probestunde buchen',
-        text: 'Tag und Uhrzeit wählen, kurz Ihr Kind vorstellen – fertig. Die Probestunde ist kostenlos und völlig unverbindlich.',
+        text: 'Tag und Uhrzeit wählen, kurz Ihr Kind vorstellen, fertig. Die Probestunde ist kostenlos und völlig unverbindlich.',
       },
       {
         icon: 'video',
         title: 'Kennenlernen per Google Meet',
-        text: 'In 60 Minuten lernt Ihr Kind mich und meine Art zu unterrichten kennen. Wir spielen, sprechen ein bisschen Englisch, und Sie stellen alle Ihre Fragen.',
+        text: 'In etwa 30 bis 60 Minuten lernen Sie und Ihr Kind mich und meine Art zu unterrichten kennen. Wir spielen, sprechen ein bisschen Englisch, und Sie stellen alle Ihre Fragen.',
       },
       {
         icon: 'rocket',
         title: 'Loslegen!',
-        text: 'Sie wählen eine feste Gruppe, die Cambridge-Materialien kommen zu Ihnen nach Hause – und jede Woche gibt es 40 Minuten Englisch mit Freude.',
+        text: 'Sie wählen eine feste Gruppe, und jede Woche gibt es 40 bis 60 Minuten Englisch mit Freude.',
       },
     ],
   },
 
   philosophy: {
     eyebrow: 'Meine Überzeugung',
-    title: 'Online-Unterricht – aber nicht am Bildschirm kleben',
+    title: 'Online lernen, ohne am Bildschirm zu kleben',
     paragraphs: [
-      'Kleine Kinder lernen am besten mit Büchern, Spielen, Singen, Basteln und allem, was die Hände beschäftigt. Deshalb ist bei mir nur der Unterricht selbst online. Alles andere passiert offline.',
-      'Ihr Kind bekommt die Cambridge-Materialien als echtes Buch nach Hause. Die Hausaufgaben – Malen, Basteln, Singen und kleine Aufgaben – werden mit echten Materialien gemacht, nicht am Laptop.',
-      'Audio- und Videoübungen zum Hörverständnis bekommen nur Sie als Eltern. So nutzt Ihr Kind digitale Inhalte ausschließlich unter Ihrer Anleitung.',
+      'Ich bin fest davon überzeugt, dass kleine Kinder am besten mit Büchern, Spielen, Singen, Basteln und allem lernen, was die Hände beschäftigt. Deshalb ist bei mir nur der Unterricht selbst online. Alles andere passiert offline.',
+      'Ihr Kind arbeitet zu Hause mit den Cambridge-Materialien als echtem Buch. Die Hausaufgaben, also Malen, Basteln, Singen und kleine Aufgaben, werden mit echten Materialien gemacht, nicht am Laptop.',
     ],
     points: [
       { icon: 'book', title: 'Echte Bücher', text: 'Cambridge-Materialien zum Anfassen, Blättern und Reinmalen.' },
-      { icon: 'palette', title: 'Hausaufgaben offline', text: 'Malen, Basteln, Singen – mit Papier und Stiften statt Tablet.' },
-      { icon: 'headphones', title: 'Hörübungen mit Ihnen', text: 'Audio und Video gibt es nur für Eltern, zum gemeinsamen Üben.' },
+      { icon: 'palette', title: 'Hausaufgaben offline', text: 'Malen, Basteln, Singen: mit Papier und Stiften statt Tablet.' },
+      {
+        icon: 'headphones',
+        title: 'Hörübungen mit den Eltern',
+        text: 'Audio- und Videoübungen zum Hörverständnis bekommen nur Sie als Eltern. So nutzt Ihr Kind digitale Inhalte ausschließlich unter Ihrer Anleitung.',
+      },
     ],
   },
 
   features: {
     title: 'Was den Unterricht besonders macht',
-    intro: 'Englisch soll sich für Kinder wie ein Spiel anfühlen – mit klarer Struktur und viel persönlicher Aufmerksamkeit.',
+    intro: 'Englisch soll sich für Kinder wie ein Spiel anfühlen, mit klarer Struktur und viel persönlicher Aufmerksamkeit.',
     items: [
       {
         icon: 'sparkles',
         title: 'Spielerisch & interaktiv',
-        text: 'Geschichten, Spiele, Lieder und kreative Aufgaben. Lesen, Sprechen, Hören und Schreiben – alles dabei, nichts langweilig.',
+        text: 'Geschichten, Spiele, Lieder und kreative Aufgaben. Lesen, Sprechen, Hören und Schreiben: alles dabei, nichts langweilig.',
       },
       {
         icon: 'graduation',
         title: 'Cambridge-Lehrplan',
-        text: 'Unterricht nach dem Cambridge-Lehrplan von der Vorstufe A1 bis A1 (GER). Eine sichere Basis – auch für den Weg aufs Gymnasium.',
+        text: 'Unterricht nach dem Cambridge-Lehrplan von der Vorstufe A1 bis A1 (GER). Eine sichere Basis, auch für den Weg aufs Gymnasium.',
       },
       {
         icon: 'group',
@@ -108,12 +111,12 @@ const de: SiteContent = {
       {
         icon: 'clock',
         title: 'Flexible Termine',
-        text: 'Mehrere Gruppen zur Auswahl: abends unter der Woche sowie samstags vormittags und abends. Sonntags ist frei.',
+        text: 'Mehrere Gruppen zur Auswahl: abends unter der Woche sowie samstags vormittags und abends.',
       },
       {
         icon: 'home',
         title: 'Bequem von zu Hause',
-        text: 'Keine Fahrtzeiten, kein Stress. Laptop oder Tablet aufklappen, und die Englischstunde kann beginnen.',
+        text: 'Keine Fahrtzeiten, kein Stress. Laptop aufklappen, und die Englischstunde kann beginnen.',
       },
     ],
   },
@@ -124,18 +127,19 @@ const de: SiteContent = {
     course: 'Englisch für absolute Anfänger (GER Vorstufe A1 bis A1)',
     details: [
       'Eine Unterrichtsstunde pro Woche',
-      '40 Minuten Unterricht + 3 bis 10 Minuten Gespräch mit den Eltern',
+      '40 Minuten Unterricht + 10 Minuten gemeinsame Englisch-Spiele + 3 bis 10 Minuten Gespräch mit den Eltern',
       'Maximal 3 Kinder pro Gruppe',
       'Termine abends unter der Woche, samstags vormittags und abends',
-      'Alle Übungsmaterialien inklusive',
+      'Alle Übungsmaterialien inklusive. Die Cambridge-Bücher werden separat gekauft (ca. 20 bis 30 €)',
       'Unterricht hauptsächlich auf Englisch, Deutsch zur Unterstützung',
+      'Voraussetzung: Ihr Kind kennt das deutsche Alphabet und kann zumindest ein paar einfache Wörter auf Deutsch lesen',
     ],
     plans: [
       {
         name: 'Gruppenunterricht',
         price: '22 €',
         unit: 'pro Unterrichtsstunde',
-        text: 'In der Mini-Gruppe mit maximal 3 Kindern – lernen, lachen und gemeinsam mutig sprechen.',
+        text: 'In der Mini-Gruppe mit maximal 3 Kindern: lernen, lachen und gemeinsam mutig sprechen.',
         highlight: true,
         badge: 'Beliebt',
       },
@@ -143,13 +147,13 @@ const de: SiteContent = {
         name: 'Einzelunterricht',
         price: '30 €',
         unit: 'pro Unterrichtsstunde',
-        text: 'Ganz individuell im eigenen Tempo – ideal, wenn Ihr Kind lieber allein lernt.',
+        text: 'Ganz individuell im eigenen Tempo. Ideal, wenn Ihr Kind lieber allein lernt.',
       },
     ],
     invoice: 'Sie erhalten jeden Monat eine Rechnung. Alle Preise sind Endpreise.',
     note: {
       title: 'Kein Kind bleibt außen vor',
-      text: 'Wenn Sie sich die Gebühren nicht leisten können, ist das völlig in Ordnung – dann zahlen Sie einfach nichts. Ich bin überzeugt, dass jedes Kind ein Recht auf Bildung hat, unabhängig von den Umständen. Die einzige Bedingung: Ihr Kind hat Lust zu lernen.',
+      text: 'Wenn Sie sich die Gebühren nicht leisten können, ist das völlig in Ordnung. Dann zahlen Sie einfach nichts. Ich bin überzeugt, dass jedes Kind ein Recht auf Bildung hat, unabhängig von den Umständen. Die einzige Bedingung: Ihr Kind hat Lust zu lernen.',
     },
   },
 
@@ -157,12 +161,14 @@ const de: SiteContent = {
     eyebrow: 'Über mich',
     title: 'Hallo, ich bin Nitin!',
     paragraphs: [
-      'Ich bin Cambridge-zertifizierter Englischlehrer und habe mich auf den Online-Unterricht für Kinder spezialisiert. Kinder aus Deutschland, Österreich und der Schweiz lernen bei mir Englisch – von den allerersten Wörtern bis zum Niveau A1.',
-      'Der Unterricht findet hauptsächlich auf Englisch statt, damit Ihr Kind so viel wie möglich übt. Wenn es nötig ist, helfe ich auf Deutsch weiter.',
+      'Von Beruf bin ich Automobilingenieur, aber Englisch zu unterrichten ist etwas, das mir wirklich Freude macht. Deshalb habe ich mich von Cambridge zertifizieren lassen, um Kinder online in Englisch zu unterrichten. Seit fünf Jahren unterrichte ich Englisch, mit besonderem Fokus auf Kinder.',
+      'Ich liebe es, Kinder zu unterrichten, weil jede Stunde anders ist. Kinder sind neugierig, voller Energie und wunderbar kreativ. So wird Englischlernen zu etwas Spannendem und Unterhaltsamem. Besonders freue ich mich, wenn ich sehe, wie ihr Selbstvertrauen wächst, sobald sie neue Wörter und Ausdrücke von sich aus benutzen.',
+      'Neben dem Unterrichten mache ich gern Musik und fahre Fahrrad. Ich erkunde gern die Landschaft rund um den Neckar und mache, wann immer es geht, längere Radtouren durch die Alpen.',
+      'Englisch zu unterrichten bedeutet für mich nicht nur Vokabeln und Grammatik. Es geht darum, Kindern zu helfen, sich mit Englisch wohlzufühlen, Spaß am Lernen zu haben und nach und nach selbstbewusst zu kommunizieren.',
       'Alle meine Schülerinnen und Schüler waren bisher sehr zufrieden und haben bemerkenswerte Fortschritte gemacht. Ich freue mich darauf, auch Ihr Kind kennenzulernen!',
     ],
     photoAlt: 'Nitin, Englischlehrer bei Crefolo, lächelt in die Kamera',
-    facts: ['Cambridge-zertifiziert', 'Spezialisiert auf Kinder', 'Unterricht auf Englisch, Hilfe auf Deutsch'],
+    facts: ['Cambridge-zertifiziert', 'Spezialisiert auf Kinder'],
   },
 
   reviews: {
@@ -197,7 +203,7 @@ const de: SiteContent = {
 
   faq: {
     title: 'Häufige Fragen',
-    intro: 'Noch etwas unklar? Schreiben Sie mir einfach – ich antworte gern.',
+    intro: 'Noch etwas unklar? Schreiben Sie mir einfach, ich antworte gern.',
     items: [
       {
         q: 'Für welches Alter ist der Unterricht gedacht?',
@@ -205,15 +211,15 @@ const de: SiteContent = {
       },
       {
         q: 'Muss mein Kind schon Englisch können?',
-        a: 'Nein. Die Kurse sind für absolute Anfänger gemacht. Wir starten bei den allerersten Wörtern.',
+        a: 'Nein. Die Kurse sind für absolute Anfänger gemacht. Wir starten bei den allerersten Wörtern. Ihr Kind sollte allerdings das deutsche Alphabet kennen und zumindest ein paar einfache Wörter auf Deutsch lesen können.',
       },
       {
         q: 'Was brauchen wir für den Unterricht?',
-        a: 'Einen Laptop, PC oder ein Tablet mit Kamera und Mikrofon sowie eine stabile Internetverbindung. Der Unterricht findet über Google Meet statt – das läuft im Browser, ohne Installation. Die Bücher und Materialien bekommen Sie von mir.',
+        a: 'Einen Laptop oder PC mit Kamera und Mikrofon sowie eine stabile Internetverbindung. Der Unterricht findet über Google Meet statt, deshalb wird ein Google-Konto (Gmail) benötigt. Die Cambridge-Bücher werden separat gekauft (ca. 20 bis 30 €). Alle weiteren Materialien wie Audio, Video, Arbeitsblätter, Kopiervorlagen und Wortkarten bekommen Sie von mir.',
       },
       {
         q: 'Wie läuft die Probestunde ab?',
-        a: 'Die Probestunde dauert 60 Minuten, findet per Google Meet statt und ist kostenlos und unverbindlich. Ihr Kind lernt mich kennen, wir spielen und sprechen ein bisschen Englisch, und Sie können alle Fragen stellen. Den Link erhalten Sie nach der Buchung per E-Mail.',
+        a: 'Die Probestunde dauert 60 Minuten, findet per Google Meet statt und ist kostenlos und unverbindlich. In den ersten 30 Minuten lernt Ihr Kind mich kennen, und wir lernen und sprechen ein bisschen Englisch. In den folgenden 20 bis 30 Minuten erkläre ich Ihnen alles Organisatorische und beantworte alle Ihre Fragen.',
       },
       {
         q: 'Wie groß sind die Gruppen?',
@@ -221,7 +227,7 @@ const de: SiteContent = {
       },
       {
         q: 'Wann findet der Unterricht statt?',
-        a: 'Unter der Woche abends sowie samstags vormittags und abends. Es gibt mehrere Gruppen, sodass Sie eine passende Zeit finden. Sonntags ist frei.',
+        a: 'Der Unterricht findet einmal pro Woche statt. Es gibt mehrere Gruppen: abends unter der Woche sowie samstags vormittags und abends. Sie wählen die Gruppe, die zu Ihrem Zeitplan passt. Sonntags findet kein Unterricht statt.',
       },
       {
         q: 'Wird auf Deutsch oder auf Englisch unterrichtet?',
@@ -229,18 +235,18 @@ const de: SiteContent = {
       },
       {
         q: 'Wie funktioniert die Bezahlung?',
-        a: 'Sie erhalten jeden Monat eine Rechnung. Die Preise verstehen sich pro Unterrichtsstunde und enthalten alle Materialien.',
+        a: 'Sie erhalten jeden Monat eine Rechnung. Für versäumte Stunden wird keine Gebühr berechnet.',
       },
       {
         q: 'Unterrichten Sie auch Kinder außerhalb Deutschlands?',
-        a: 'Ja, ich unterrichte Kinder aus Deutschland, Österreich und der Schweiz. Alle Zeiten auf der Website sind in deutscher Zeit angegeben.',
+        a: 'Ja, ich unterrichte Kinder aus Deutschland, Österreich und der Schweiz. Wenn Sie aus einer anderen Region kommen und Interesse haben, melden Sie sich gern trotzdem. Alle Zeiten auf der Website sind in deutscher Zeit angegeben.',
       },
     ],
   },
 
   ctaBand: {
     title: 'Bereit für den ersten Schritt?',
-    text: 'Buchen Sie eine kostenlose, unverbindliche Probestunde – oder schreiben Sie mir einfach eine Nachricht. Ich freue mich darauf!',
+    text: 'Buchen Sie eine kostenlose, unverbindliche Probestunde oder schreiben Sie mir einfach eine Nachricht. Ich freue mich darauf!',
     button: 'Kostenlose Probestunde buchen',
   },
 
@@ -251,7 +257,7 @@ const de: SiteContent = {
     loading: 'Freie Termine werden geladen …',
     timezone: 'Alle Zeiten in deutscher Zeit (Europe/Berlin).',
     noSlotsDay: 'An diesem Tag ist leider schon alles belegt.',
-    noSlotsAll: 'Gerade sind alle Termine der nächsten vier Wochen belegt. Schreiben Sie mir kurz – wir finden einen Termin!',
+    noSlotsAll: 'Gerade sind alle Termine der nächsten vier Wochen belegt. Schreiben Sie mir kurz, wir finden einen Termin!',
     free: '{n} frei',
     taken: 'belegt',
     summary: '{day}, {date} · {time} Uhr',
@@ -284,11 +290,11 @@ const de: SiteContent = {
       slot_taken: 'Oh, dieser Termin wurde gerade vergeben. Bitte wählen Sie einen anderen.',
       invalid: 'Bitte prüfen Sie Ihre Angaben.',
       turnstile: 'Bitte bestätigen Sie kurz, dass Sie kein Roboter sind.',
-      unavailable: 'Die Online-Buchung ist gerade nicht erreichbar. Schreiben Sie mir einfach per WhatsApp oder E-Mail – ich melde mich schnell.',
+      unavailable: 'Die Online-Buchung ist gerade nicht erreichbar. Schreiben Sie mir einfach per WhatsApp oder E-Mail, ich melde mich schnell.',
     },
     fallback: {
       title: 'Lieber persönlich?',
-      text: 'Schreiben Sie mir einfach auf WhatsApp oder per E-Mail – wir finden gemeinsam einen Termin.',
+      text: 'Schreiben Sie mir einfach auf WhatsApp oder per E-Mail, wir finden gemeinsam einen Termin.',
     },
     weekdaysShort: ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'],
     weekdaysLong: ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'],
