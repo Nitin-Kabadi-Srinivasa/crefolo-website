@@ -147,16 +147,15 @@ try {
 
     if (process.env.FLOW_DRY) {
       console.log('dry run: form filled, not submitted');
-      await page.close();
-      return;
+    } else {
+      await page.click('[data-role="submit"]');
+      await page.waitForSelector('[data-role="success"]:not([hidden])', { timeout: 30000 });
+      await sleep(800);
+      await widgetShot(page, 'flow-5-success');
+      const meet = await page.$eval('[data-role="meet-link"]', (a) => a.href);
+      const ics = await page.$eval('[data-role="ics-link"]', (a) => a.href);
+      console.log('meet:', meet, '\nics:', ics);
     }
-    await page.click('[data-role="submit"]');
-    await page.waitForSelector('[data-role="success"]:not([hidden])', { timeout: 30000 });
-    await sleep(800);
-    await widgetShot(page, 'flow-5-success');
-    const meet = await page.$eval('[data-role="meet-link"]', (a) => a.href);
-    const ics = await page.$eval('[data-role="ics-link"]', (a) => a.href);
-    console.log('meet:', meet, '\nics:', ics);
     await page.close();
   }
 } finally {
