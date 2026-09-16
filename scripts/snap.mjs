@@ -102,6 +102,7 @@ try {
       ]) {
         const el = await page.$(sel);
         if (el) await el.screenshot({ path: path.join(outDir, `spot-${label}-${vp.name}.png`) });
+        else console.log(`spots: ${sel} not found on ${vp.name} (title: ${await page.title()})`);
       }
       await page.goto(base + '/404', { waitUntil: 'networkidle0', timeout: 60000 });
       await revealAll(page);
