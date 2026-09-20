@@ -255,23 +255,44 @@ const bookingHref = routes.booking[locale];
   }
 
   @media (max-width: 900px) {
+    /* Single column. Flatten .hero__text so its children and the photo become
+       siblings, then reorder for mobile: eyebrow, title, photo, intro, buttons, chips. */
     .hero__inner {
-      grid-template-columns: 1fr;
-      gap: 2.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 1.4rem;
     }
     .hero__text {
+      display: contents;
       text-align: center;
     }
-    .hero__lead {
-      margin-inline: auto;
+    .hero__text > .eyebrow {
+      order: 1;
+      align-self: center;
+      margin-bottom: 0;
     }
-    .hero__actions,
-    .hero__chips {
-      justify-content: center;
+    .hero__text > h1 {
+      order: 2;
+      margin-bottom: 0;
     }
     .hero__visual {
+      order: 3;
       min-height: 0;
-      padding-bottom: 1rem;
+      padding-bottom: 0;
+    }
+    .hero__text > .hero__lead {
+      order: 4;
+      margin: 0 auto;
+    }
+    .hero__text > .hero__actions {
+      order: 5;
+      margin-bottom: 0;
+      justify-content: center;
+    }
+    .hero__text > .hero__chips {
+      order: 6;
+      justify-content: center;
     }
     .hero__photo-wrap {
       margin-inline: auto;
