@@ -48,8 +48,8 @@ const de: SiteContent = {
     eyebrow: 'Neue Mini-Gruppe',
     title: 'Start am {date}',
     text: 'Einmal pro Woche, {weekdays} um {time} Uhr, mit höchstens 3 Kindern.',
-    trials: 'Kostenlose Gruppen-Probestunden vorab: {dates}, jeweils um {time} Uhr.',
-    ages: 'Getrennt nach Alter: {bands}.',
+    trials: 'Kostenlose Gruppen-Probestunden vorab: {dates}.',
+    slots: 'Jeweils {slots}.',
     cta: 'Probestunde sichern',
   },
 
@@ -177,7 +177,7 @@ const de: SiteContent = {
       items: [
         'Gruppe: Fehlt Ihr Kind wegen Krankheit, schreibe ich die Stunde gut. Bitte sagen Sie vor der Stunde Bescheid.',
         'Einzelunterricht: Stunden, die mindestens 24 Stunden vorher abgesagt werden, holen wir nach.',
-        'Nach jeder Stunde gibt es eine kurze Zusammenfassung. So holt Ihr Kind Verpasstes leicht nach.',
+        'Verpasst Ihr Kind eine Stunde, bekommen Sie eine kurze Zusammenfassung. So holt Ihr Kind den Stoff leicht nach.',
         'Kündigung mit einer Frist von 2 Wochen zum Monatsende.',
       ],
     },
@@ -269,7 +269,7 @@ const de: SiteContent = {
       },
       {
         q: 'Was passiert, wenn mein Kind eine Stunde verpasst?',
-        a: 'Kein Problem. Nach jeder Stunde bekommen alle Familien eine kurze Zusammenfassung mit Buchseiten, neuen Wörtern und dem Lied der Stunde. So holt Ihr Kind Verpasstes zu Hause in 10 bis 15 Minuten nach. Zu Beginn jeder Stunde wiederholen wir außerdem kurz die letzte Stunde. Krankheitsbedingte Fehlstunden in der Gruppe schreibe ich gut.',
+        a: 'Kein Problem. Sie bekommen eine kurze Zusammenfassung der verpassten Stunde mit Buchseiten, neuen Wörtern und dem Lied der Stunde. So holt Ihr Kind den Stoff zu Hause in 10 bis 15 Minuten nach. Zu Beginn jeder Stunde wiederholen wir außerdem kurz die letzte Stunde. Krankheitsbedingte Fehlstunden in der Gruppe schreibe ich gut.',
       },
       {
         q: 'Unterrichten Sie auch Kinder außerhalb Deutschlands?',

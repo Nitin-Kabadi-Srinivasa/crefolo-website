@@ -54,8 +54,8 @@ export interface SiteContent {
     eyebrow: string;
     title: string; // {date}
     text: string; // {weekdays}, {time}
-    trials: string; // {dates}, {time}
-    ages: string; // {bands}
+    trials: string; // {dates}
+    slots: string; // {slots}, e.g. "17:00 Uhr für 5 bis 7 Jahre und 18:00 Uhr für 8 bis 10 Jahre"
     cta: string;
   };
   steps: {

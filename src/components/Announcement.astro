@@ -4,7 +4,7 @@
 import type { Locale } from '@/content/types';
 import { schedule } from '@/content/schedule';
 import { getContent, routes } from '@/i18n';
-import { berlinInstant, longDate, weekdaysPlural, dayList, bandsText, upcomingTrials, uniqueBands, todayYmd } from '@/lib/schedule-utils';
+import { berlinInstant, longDate, weekdaysPlural, numericDate, joinList, slotsText, upcomingTrials, todayYmd } from '@/lib/schedule-utils';
 import Icon from './Icon.astro';
 
 interface Props {
@@ -18,7 +18,7 @@ const show = !!group && group.date >= todayYmd();
 let title = '';
 let text = '';
 let trialsLine = '';
-let agesLine = '';
+let slotsLine = '';
 let until = '';
 if (show && group) {
   until = berlinInstant(group.date, group.time).toISOString();
@@ -26,10 +26,10 @@ if (show && group) {
   text = t.text.replace('{weekdays}', weekdaysPlural(group.date, locale)).replace('{time}', group.time);
   const trials = upcomingTrials().filter((tr) => tr.date < group.date);
   if (trials.length) {
-    const times = [...new Set(trials.map((tr) => tr.time))].join(locale === 'de' ? ' oder ' : ' or ');
-    trialsLine = t.trials.replace('{dates}', dayList(trials.map((tr) => tr.date), locale)).replace('{time}', times);
-    const bands = uniqueBands(trials);
-    if (bands.length > 1) agesLine = t.ages.replace('{bands}', bandsText(bands, locale));
+    const dates = [...new Set(trials.map((tr) => tr.date))].map(numericDate);
+    trialsLine = t.trials.replace('{dates}', joinList(dates, locale));
+    const slots = slotsText(trials, locale);
+    if (slots) slotsLine = t.slots.replace('{slots}', slots);
   }
 }
 const bookingHref = routes.booking[locale];
@@ -45,7 +45,7 @@ const bookingHref = routes.booking[locale];
           <h2 id="announce-title" class="announce__title">{title}</h2>
           <p class="announce__text">{text}</p>
           {trialsLine && <p class="announce__trials">{trialsLine}</p>}
-          {agesLine && <p class="announce__ages">{agesLine}</p>}
+          {slotsLine && <p class="announce__ages">{slotsLine}</p>}
         </div>
         <a class="btn btn--primary announce__cta" href={bookingHref}><Icon name="calendar" />{t.cta}</a>
       </div>

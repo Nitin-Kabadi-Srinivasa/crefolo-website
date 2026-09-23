@@ -35,30 +35,34 @@ export function weekdaysPlural(ymd: string, locale: Locale): string {
   return locale === 'de' ? `${wd.toLowerCase()}s` : `${wd}s`;
 }
 
-/** "1., 8. und 15. Oktober sowie 5. November" / "1, 8 and 15 October and 5 November" */
-export function dayList(dates: string[], locale: Locale): string {
-  const monthName = (ymd: string) => new Intl.DateTimeFormat(intl(locale), { month: 'long', timeZone: 'UTC' }).format(noon(ymd));
-  const groups: { month: string; days: number[] }[] = [];
-  for (const d of [...dates].sort()) {
-    const key = d.slice(0, 7);
-    const last = groups[groups.length - 1];
-    if (last && last.month === key) last.days.push(Number(d.slice(8)));
-    else groups.push({ month: key, days: [Number(d.slice(8))] });
-  }
-  const and = locale === 'de' ? 'und' : 'and';
-  const join = (items: string[], sep: string) => (items.length <= 1 ? items.join('') : `${items.slice(0, -1).join(', ')} ${sep} ${items[items.length - 1]}`);
-  const parts = groups.map((g) => {
-    const days = g.days.map((n) => (locale === 'de' ? `${n}.` : String(n)));
-    return `${join(days, and)} ${monthName(`${g.month}-01`)}`;
-  });
-  return join(parts, locale === 'de' ? 'sowie' : 'and');
+/** '2026-10-01' -> "01.10.2026" (same format in both languages) */
+export function numericDate(ymd: string): string {
+  const [y, m, d] = ymd.split('-');
+  return `${d}.${m}.${y}`;
 }
 
-/** "5 bis 7 und 8 bis 10 Jahre" / "ages 5 to 7 and 8 to 10" */
-export function bandsText(bands: [number, number][], locale: Locale): string {
-  const items = bands.map(([a, b]) => (locale === 'de' ? `${a} bis ${b}` : `${a} to ${b}`));
-  const list = items.length <= 1 ? items.join('') : `${items.slice(0, -1).join(', ')} ${locale === 'de' ? 'und' : 'and'} ${items[items.length - 1]}`;
-  return locale === 'de' ? `${list} Jahre` : `ages ${list}`;
+/** ["a", "b", "c"] -> "a, b und c" / "a, b and c" */
+export function joinList(items: string[], locale: Locale): string {
+  if (items.length <= 1) return items.join('');
+  return `${items.slice(0, -1).join(', ')} ${locale === 'de' ? 'und' : 'and'} ${items[items.length - 1]}`;
+}
+
+/**
+ * The trial times per date, e.g. "17:00 Uhr für 5 bis 7 Jahre und 18:00 Uhr für 8 bis 10 Jahre".
+ * Empty when the dates do not all have the same times and age bands (then the booking form shows the details).
+ */
+export function slotsText(trials: TrialSession[], locale: Locale): string {
+  const slotKey = (t: TrialSession) => `${t.time}|${t.ages[0]}-${t.ages[1]}`;
+  const perDate = new Map<string, Set<string>>();
+  for (const t of trials) perDate.set(t.date, (perDate.get(t.date) || new Set()).add(slotKey(t)));
+  const sets = [...perDate.values()].map((s) => [...s].sort().join(','));
+  if (!sets.length || sets.some((s) => s !== sets[0])) return '';
+  const slots = sets[0].split(',').map((k) => {
+    const [time, ages] = k.split('|');
+    const [a, b] = ages.split('-');
+    return locale === 'de' ? `${time} Uhr für ${a} bis ${b} Jahre` : `${time} for ages ${a} to ${b}`;
+  });
+  return joinList(slots, locale);
 }
 
 export function upcomingTrials(today = todayYmd()): TrialSession[] {
@@ -69,8 +73,3 @@ export function upcomingBreaks(today = todayYmd()): ClassBreak[] {
   return schedule.breaks.filter((b) => b.to >= today).sort((a, b) => a.from.localeCompare(b.from));
 }
 
-export function uniqueBands(trials: TrialSession[]): [number, number][] {
-  const seen = new Map<string, [number, number]>();
-  for (const t of trials) seen.set(`${t.ages[0]}-${t.ages[1]}`, [t.ages[0], t.ages[1]]);
-  return [...seen.values()].sort((a, b) => a[0] - b[0]);
-}

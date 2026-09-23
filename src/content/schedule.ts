@@ -33,10 +33,15 @@ export const schedule: Schedule = {
   trialMinutes: 60,
   trials: [
     { date: '2026-10-01', time: '17:00', ages: [5, 7] },
-    { date: '2026-10-08', time: '17:00', ages: [8, 10] },
+    { date: '2026-10-01', time: '18:00', ages: [8, 10] },
+    { date: '2026-10-08', time: '17:00', ages: [5, 7] },
+    { date: '2026-10-08', time: '18:00', ages: [8, 10] },
     { date: '2026-10-15', time: '17:00', ages: [5, 7] },
-    { date: '2026-10-22', time: '17:00', ages: [8, 10] },
+    { date: '2026-10-15', time: '18:00', ages: [8, 10] },
+    { date: '2026-10-22', time: '17:00', ages: [5, 7] },
+    { date: '2026-10-22', time: '18:00', ages: [8, 10] },
     { date: '2026-10-29', time: '17:00', ages: [5, 7] },
+    { date: '2026-10-29', time: '18:00', ages: [8, 10] },
   ],
 
   // Start der nächsten neuen Gruppe (Ankündigung auf der Startseite)

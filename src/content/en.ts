@@ -48,8 +48,8 @@ const en: SiteContent = {
     eyebrow: 'New mini group',
     title: 'Starting on {date}',
     text: 'Once a week, on {weekdays} at {time}, with at most 3 children.',
-    trials: 'Free group trial lessons beforehand: {dates}, each at {time}.',
-    ages: 'Separate trial groups for {bands}.',
+    trials: 'Free group trial lessons beforehand: {dates}.',
+    slots: 'On each date: {slots}.',
     cta: 'Reserve a trial lesson',
   },
 
@@ -177,7 +177,7 @@ const en: SiteContent = {
       items: [
         'Groups: if your child is ill, the lesson is credited. Please let me know before the lesson.',
         'One-to-one: lessons cancelled at least 24 hours in advance are rescheduled.',
-        'After every lesson you get a short summary, so your child can easily catch up.',
+        'If your child misses a lesson, you receive a short summary so they can easily catch up.',
         'Cancellation with 2 weeks\' notice to the end of a month.',
       ],
     },
@@ -269,7 +269,7 @@ const en: SiteContent = {
       },
       {
         q: 'What happens if my child misses a lesson?',
-        a: 'No problem. After every lesson all families get a short summary with the book pages, new words and the song of the lesson. That way your child catches up at home in 10 to 15 minutes. Every lesson also starts with a short review of the last one. In groups, lessons missed due to illness are credited.',
+        a: 'No problem. You receive a short summary of the missed lesson with the book pages, new words and the song of the lesson. That way your child catches up at home in 10 to 15 minutes. Every lesson also starts with a short review of the last one. In groups, lessons missed due to illness are credited.',
       },
       {
         q: 'Do you also teach children outside Germany?',
