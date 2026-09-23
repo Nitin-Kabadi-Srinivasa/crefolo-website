@@ -1,5 +1,5 @@
 // Shared booking logic: turn a calendar event into the info the emails need, build links.
-import type { AppEnv } from './env';
+import { type AppEnv, timeZoneOf } from './env';
 import type { CalendarEvent } from './google';
 import { meetLinkOf } from './google';
 import { signToken } from './crypto';
@@ -8,7 +8,7 @@ import type { BookingInfo, Lang } from './emails';
 export const WHATSAPP_URL = 'https://wa.me/491628904641';
 export const TEACHER_PHONE = '+49 162 890 4641';
 
-// origin = the address the booking was made on (localhost, workers.dev or crefolo.com); falls back to SITE_URL for cron jobs
+// origin = the address the booking was made on (localhost or crefolo.com); falls back to SITE_URL for cron jobs
 export async function linksFor(env: AppEnv, eventId: string, lang: Lang, origin?: string): Promise<{ cancelUrl: string; icsUrl: string; token: string }> {
   const secret = env.CANCEL_SECRET || 'missing-cancel-secret';
   const token = await signToken(secret, 'cancel', eventId);
@@ -29,7 +29,7 @@ export async function bookingInfoFromEvent(env: AppEnv, event: CalendarEvent, or
     eventId: event.id,
     start: new Date(event.start.dateTime),
     end: new Date(event.end.dateTime),
-    timeZone: env.TIMEZONE || 'Europe/Berlin',
+    timeZone: timeZoneOf(env),
     childName: p.childName || '',
     childAge: p.childAge || '',
     parentName: p.parentName || '',
@@ -37,7 +37,9 @@ export async function bookingInfoFromEvent(env: AppEnv, event: CalendarEvent, or
     parentPhone: p.parentPhone || '',
     message: p.message || '',
     lang,
-    meetLink: meetLinkOf(event),
+    ages: p.ages || '',
+    // Group trials: the Meet belongs to the session's host event and is stored on each child's event
+    meetLink: meetLinkOf(event) || p.meetLink || event.location || '',
     cancelUrl: links.cancelUrl,
     icsUrl: links.icsUrl,
     eventLink: event.htmlLink || '',
@@ -53,15 +55,28 @@ export function eventSummary(childName: string, childAge: string, lang: Lang): s
   return lang === 'de' ? `Probestunde Englisch: ${childName} (${childAge} J.)` : `English trial lesson: ${childName} (${childAge} y.)`;
 }
 
-export function eventDescription(input: { childName: string; childAge: string; parentName: string; parentEmail: string; parentPhone: string; message: string; lang: Lang; cancelUrl: string }): string {
+export function eventDescription(input: {
+  childName: string;
+  childAge: string;
+  parentName: string;
+  parentEmail: string;
+  parentPhone: string;
+  message: string;
+  lang: Lang;
+  agesText?: string;
+  meetLink?: string;
+}): string {
   return [
     `Probestunde Englisch: ${input.childName} (${input.childAge} Jahre)`,
+    input.agesText ? `Gruppe: ${input.agesText}` : '',
     `Eltern: ${input.parentName || '-'}`,
     `E-Mail: ${input.parentEmail}`,
     `Telefon: ${input.parentPhone || '-'}`,
     `Nachricht: ${input.message || '-'}`,
     `Sprache: ${input.lang}`,
+    input.meetLink ? `Google Meet: ${input.meetLink}` : '',
     `Gebucht über crefolo.com`,
-    `Absagen: ${input.cancelUrl}`,
-  ].join('\n');
+  ]
+    .filter(Boolean)
+    .join('\n');
 }

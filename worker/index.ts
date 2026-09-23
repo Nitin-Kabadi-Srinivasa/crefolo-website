@@ -1,7 +1,8 @@
 // Cloudflare Worker: serves the static site (dist/) and the booking API under /api/*.
-import type { AppEnv } from './env';
+import { type AppEnv, isMock } from './env';
 import { handleAvailability, handleBook, handleCancel, handleIcs, handleHealth, json } from './handlers';
 import { runReminders } from './reminders';
+import { devEmailPreview } from './dev';
 
 function sameOrigin(request: Request, env: AppEnv): boolean {
   const origin = request.headers.get('origin');
@@ -36,6 +37,10 @@ export default {
             return await handleIcs(request, env);
           case '/api/health':
             return await handleHealth(env);
+          case '/api/dev/email':
+            // local design preview only, never available with the real calendar
+            if (!isMock(env)) return json({ ok: false, error: 'not_found' }, 404);
+            return devEmailPreview(url, env);
           default:
             return json({ ok: false, error: 'not_found' }, 404);
         }

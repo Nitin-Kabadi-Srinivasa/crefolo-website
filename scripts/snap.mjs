@@ -24,7 +24,13 @@ const browser = await puppeteer.launch({
 });
 
 async function revealAll(page) {
-  await page.evaluate(() => document.querySelectorAll('.reveal').forEach((el) => el.classList.add('in')));
+  await page.evaluate(() => {
+    document.querySelectorAll('.reveal').forEach((el) => el.classList.add('in'));
+    // screenshots only: keep the sticky menu and mobile booking bar from floating over captured sections
+    const st = document.createElement('style');
+    st.textContent = '#site-header{position:relative!important}.mobile-cta{display:none!important}';
+    document.head.appendChild(st);
+  });
   // scroll through the page so lazy-loaded images are fetched before the capture
   await page.evaluate(async () => {
     const h = document.documentElement.scrollHeight;
@@ -98,6 +104,8 @@ try {
       for (const [sel, label] of [
         ['#site-header', 'header'],
         ['.hero', 'hero'],
+        ['.announce', 'announce'],
+        ['.pricing', 'pricing'],
         ['.cta-band', 'cta'],
       ]) {
         const el = await page.$(sel);
@@ -113,27 +121,39 @@ try {
     }
   }
 
+  if (mode === 'emails') {
+    // Rendered emails from the local-only preview route (MOCK=1)
+    const page = await browser.newPage();
+    await page.setViewport({ width: 700, height: 900 });
+    for (const [type, lang] of [
+      ['confirm', 'de'],
+      ['confirm', 'en'],
+      ['notify', 'en'],
+      ['teacher-reminder', 'en'],
+    ]) {
+      await page.goto(`${base}/api/dev/email?type=${type}&lang=${lang}`, { waitUntil: 'networkidle0' });
+      await page.screenshot({ path: path.join(outDir, `email-${type}-${lang}.png`), fullPage: true });
+      console.log(`emails: ${type} ${lang}`);
+    }
+    await page.close();
+  }
+
   if (mode === 'flow') {
     const page = await browser.newPage();
     await page.setViewport({ width: 1100, height: 900 });
     page.on('console', (m) => m.type() === 'error' && console.log('[browser]', m.text()));
     await page.goto(base + '/probestunde', { waitUntil: 'networkidle0', timeout: 60000 });
     await revealAll(page);
-    await page.waitForSelector('.day-chip:not([disabled])', { timeout: 20000 });
-    await widgetShot(page, 'flow-1-days');
+    await page.waitForSelector('.session-card:not([disabled])', { timeout: 20000 });
+    await widgetShot(page, 'flow-1-dates');
 
-    await page.click('.day-chip:not([disabled])');
-    await page.waitForSelector('.time-btn', { timeout: 5000 });
-    await sleep(400);
-    await widgetShot(page, 'flow-2-times');
-
-    await page.click('.time-btn:not([disabled])');
+    await page.click('.session-card:not([disabled])');
     await page.waitForSelector('[data-role="form"]:not([hidden])', { timeout: 5000 });
     await sleep(400);
-    await widgetShot(page, 'flow-3-form');
+    await widgetShot(page, 'flow-2-form');
 
     await page.type('input[name="childName"]', 'Emma');
-    await page.select('select[name="childAge"]', '7');
+    await page.select('select[name="childAge"]', process.env.FLOW_AGE || '6');
     await page.type('input[name="parentName"]', 'Anna Muster');
     await page.type('input[name="email"]', 'anna.muster@example.com');
     await page.type('input[name="phone"]', '+49 170 1234567');
@@ -143,7 +163,7 @@ try {
       .waitForFunction(() => window.turnstile && window.turnstile.getResponse(), { timeout: 20000 })
       .catch(() => console.log('turnstile token not available (offline?) – submitting anyway'));
     await sleep(500);
-    await widgetShot(page, 'flow-4-filled');
+    await widgetShot(page, 'flow-3-filled');
 
     if (process.env.FLOW_DRY) {
       console.log('dry run: form filled, not submitted');
@@ -151,7 +171,7 @@ try {
       await page.click('[data-role="submit"]');
       await page.waitForSelector('[data-role="success"]:not([hidden])', { timeout: 30000 });
       await sleep(800);
-      await widgetShot(page, 'flow-5-success');
+      await widgetShot(page, 'flow-4-success');
       const meet = await page.$eval('[data-role="meet-link"]', (a) => a.href);
       const ics = await page.$eval('[data-role="ics-link"]', (a) => a.href);
       console.log('meet:', meet, '\nics:', ics);

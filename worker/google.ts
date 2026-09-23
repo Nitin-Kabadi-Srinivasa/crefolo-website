@@ -1,6 +1,5 @@
 // Google Calendar access with a long-lived refresh token (OAuth client of the teacher's Google account).
 import type { AppEnv } from './env';
-import type { BusyRange } from './slots';
 
 const TOKEN_URL = 'https://oauth2.googleapis.com/token';
 const CAL = 'https://www.googleapis.com/calendar/v3';
@@ -17,8 +16,10 @@ export class GoogleError extends Error {
 export interface CalendarEvent {
   id: string;
   status?: string;
+  created?: string;
   summary?: string;
   description?: string;
+  location?: string;
   start?: { dateTime?: string; date?: string; timeZone?: string };
   end?: { dateTime?: string; date?: string; timeZone?: string };
   hangoutLink?: string;
@@ -28,27 +29,38 @@ export interface CalendarEvent {
   extendedProperties?: { private?: Record<string, string> };
 }
 
+/** crefolo=trial: one event per booked child. crefolo=session: one host event per group trial (owns the Meet). */
+export type EventKind = 'trial' | 'session';
+
 export interface CreateEventInput {
   start: Date;
   end: Date;
   timeZone: string;
   summary: string;
   description: string;
-  attendeeEmail?: string;
+  location?: string;
+  attendees?: string[];
+  withMeet?: boolean; // create a Google Meet for this event
+  quiet?: boolean; // no pop-up reminders, shown as "free" in the calendar
   privateProps: Record<string, string>;
 }
 
+export interface EventPatch {
+  summary?: string;
+  description?: string;
+  attendees?: string[];
+  privateProps?: Record<string, string>; // merged into the existing private properties
+}
+
 export interface CalendarService {
-  getBusy(min: Date, max: Date): Promise<BusyRange[]>;
   createEvent(input: CreateEventInput): Promise<CalendarEvent>;
   getEvent(id: string): Promise<CalendarEvent | null>;
   deleteEvent(id: string): Promise<void>;
-  listTrialEvents(min: Date, max: Date): Promise<CalendarEvent[]>;
-  patchPrivateProps(id: string, props: Record<string, string>): Promise<void>;
+  listEvents(kind: EventKind, min: Date, max: Date): Promise<CalendarEvent[]>;
+  patchEvent(id: string, patch: EventPatch): Promise<void>;
 }
 
 let tokenCache: { value: string; exp: number } | null = null;
-let calendarCache: { ids: string[]; exp: number } | null = null;
 
 export async function getAccessToken(env: AppEnv): Promise<string> {
   if (tokenCache && tokenCache.exp > Date.now() + 30_000) return tokenCache.value;
@@ -79,52 +91,31 @@ async function api<T>(env: AppEnv, path: string, init: RequestInit = {}): Promis
   return (await res.json()) as T;
 }
 
-async function listCalendarIds(env: AppEnv): Promise<string[]> {
-  if (calendarCache && calendarCache.exp > Date.now()) return calendarCache.ids;
-  const json = await api<{ items?: { id: string; hidden?: boolean; deleted?: boolean }[] }>(
-    env,
-    '/users/me/calendarList?minAccessRole=reader&fields=items(id,hidden,deleted)',
-  );
-  const ids = (json.items || []).filter((c) => !c.hidden && !c.deleted).map((c) => c.id);
-  if (ids.length === 0) ids.push('primary');
-  calendarCache = { ids, exp: Date.now() + 10 * 60_000 };
-  return ids;
-}
-
 export function realCalendar(env: AppEnv): CalendarService {
   return {
-    async getBusy(min, max) {
-      const ids = await listCalendarIds(env);
-      const json = await api<{ calendars: Record<string, { busy?: { start: string; end: string }[] }> }>(env, '/freeBusy', {
-        method: 'POST',
-        body: JSON.stringify({ timeMin: min.toISOString(), timeMax: max.toISOString(), items: ids.map((id) => ({ id })) }),
-      });
-      const busy: BusyRange[] = [];
-      for (const cal of Object.values(json.calendars || {})) {
-        for (const b of cal.busy || []) busy.push({ start: new Date(b.start), end: new Date(b.end) });
-      }
-      return busy;
-    },
-
     async createEvent(input) {
-      const body = {
+      const body: Record<string, unknown> = {
         summary: input.summary,
         description: input.description,
+        location: input.location,
         start: { dateTime: input.start.toISOString(), timeZone: input.timeZone },
         end: { dateTime: input.end.toISOString(), timeZone: input.timeZone },
-        attendees: input.attendeeEmail ? [{ email: input.attendeeEmail }] : undefined,
-        conferenceData: { createRequest: { requestId: crypto.randomUUID(), conferenceSolutionKey: { type: 'hangoutsMeet' } } },
+        attendees: input.attendees?.length ? input.attendees.map((email) => ({ email })) : undefined,
         extendedProperties: { private: input.privateProps },
-        reminders: { useDefault: true },
+        reminders: input.quiet ? { useDefault: false, overrides: [] } : { useDefault: true },
+        transparency: input.quiet ? 'transparent' : 'opaque',
         guestsCanInviteOthers: false,
         guestsCanSeeOtherGuests: false,
       };
+      if (input.withMeet) {
+        body.conferenceData = { createRequest: { requestId: crypto.randomUUID(), conferenceSolutionKey: { type: 'hangoutsMeet' } } };
+      }
       let event = await api<CalendarEvent>(env, '/calendars/primary/events?conferenceDataVersion=1&sendUpdates=none', {
         method: 'POST',
         body: JSON.stringify(body),
       });
       // The Meet link is normally created synchronously; poll once if it is still pending.
-      if (!meetLinkOf(event)) {
+      if (input.withMeet && !meetLinkOf(event)) {
         await new Promise((r) => setTimeout(r, 1500));
         event = await api<CalendarEvent>(env, `/calendars/primary/events/${encodeURIComponent(event.id)}?conferenceDataVersion=1`);
       }
@@ -150,25 +141,30 @@ export function realCalendar(env: AppEnv): CalendarService {
       }
     },
 
-    async listTrialEvents(min, max) {
+    async listEvents(kind, min, max) {
       const params = new URLSearchParams({
-        privateExtendedProperty: 'crefolo=trial',
+        privateExtendedProperty: `crefolo=${kind}`,
         timeMin: min.toISOString(),
         timeMax: max.toISOString(),
         singleEvents: 'true',
         orderBy: 'startTime',
         showDeleted: 'false',
         conferenceDataVersion: '1',
-        maxResults: '50',
+        maxResults: '250',
       });
       const json = await api<{ items?: CalendarEvent[] }>(env, `/calendars/primary/events?${params}`);
       return (json.items || []).filter((e) => e.status !== 'cancelled');
     },
 
-    async patchPrivateProps(id, props) {
-      await api<CalendarEvent>(env, `/calendars/primary/events/${encodeURIComponent(id)}`, {
+    async patchEvent(id, patch) {
+      const body: Record<string, unknown> = {};
+      if (patch.summary !== undefined) body.summary = patch.summary;
+      if (patch.description !== undefined) body.description = patch.description;
+      if (patch.attendees) body.attendees = patch.attendees.map((email) => ({ email }));
+      if (patch.privateProps) body.extendedProperties = { private: patch.privateProps };
+      await api<CalendarEvent>(env, `/calendars/primary/events/${encodeURIComponent(id)}?sendUpdates=none`, {
         method: 'PATCH',
-        body: JSON.stringify({ extendedProperties: { private: props } }),
+        body: JSON.stringify(body),
       });
     },
   };

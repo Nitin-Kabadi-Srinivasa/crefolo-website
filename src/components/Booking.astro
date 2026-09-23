@@ -52,19 +52,14 @@ const ages = Array.from({ length: 9 }, (_, i) => i + 4); // 4 … 12
         <span data-role="error-text"></span>
       </div>
 
-      <div class="booking__days" data-role="days" hidden>
+      <div class="booking__sessions" data-role="sessions" hidden>
         <h3 class="booking__step-title"><span class="booking__step-num">1</span>{b.steps[0]}</h3>
-        <div class="days-strip" data-role="days-list"></div>
+        <div class="sessions-grid" data-role="sessions-list"></div>
         <p class="booking__tz muted">{b.timezone}</p>
       </div>
 
-      <div class="booking__times" data-role="times" hidden>
-        <h3 class="booking__step-title"><span class="booking__step-num">2</span>{b.steps[1]}</h3>
-        <div class="times-grid" data-role="times-list"></div>
-      </div>
-
       <form class="booking__form" data-role="form" hidden novalidate>
-        <h3 class="booking__step-title"><span class="booking__step-num">3</span>{b.steps[2]}</h3>
+        <h3 class="booking__step-title"><span class="booking__step-num">2</span>{b.steps[1]}</h3>
         <div class="field-grid">
           <label class="field">
             <span class="field__label">{b.form.childName} <em>*</em></span>
@@ -77,6 +72,7 @@ const ages = Array.from({ length: 9 }, (_, i) => i + 4); // 4 … 12
               {ages.map((a) => <option value={a}>{a} {b.form.ageUnit}</option>)}
             </select>
           </label>
+          <p class="field--full booking__age-hint" data-role="age-hint" hidden></p>
           <label class="field field--full">
             <span class="field__label">{b.form.parentName} <em>*</em></span>
             <input type="text" name="parentName" required maxlength="60" autocomplete="name" />
@@ -289,128 +285,116 @@ const ages = Array.from({ length: 9 }, (_, i) => i + 4); // 4 … 12
     flex: none;
   }
 
-  /* days strip */
-  .days-strip {
-    display: flex;
-    gap: 0.6rem;
-    overflow-x: auto;
-    padding: 0.35rem 0.25rem 0.75rem;
-    scroll-snap-type: x proximity;
-    -webkit-overflow-scrolling: touch;
-  }
-  .days-strip::-webkit-scrollbar {
-    height: 8px;
-  }
-  .days-strip::-webkit-scrollbar-thumb {
-    background: var(--pink-soft);
-    border-radius: 8px;
-  }
-  :global(.day-chip) {
-    flex: none;
-    scroll-snap-align: start;
-    width: 86px;
+  /* trial dates */
+  .sessions-grid {
     display: grid;
-    justify-items: center;
-    gap: 0.1rem;
-    padding: 0.7rem 0.4rem 0.6rem;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr));
+    gap: 0.85rem;
+  }
+  :global(.session-card) {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    width: 100%;
+    padding: 0.85rem 1rem;
     border-radius: 18px;
     border: 2px solid var(--line);
     background: #fff;
     cursor: pointer;
     color: var(--plum);
     font-family: var(--font-body);
+    text-align: left;
     transition: border-color 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease;
   }
-  :global(.day-chip:hover:not([disabled])) {
+  :global(.session-card:hover:not([disabled])) {
     border-color: var(--pink-light);
     transform: translateY(-2px);
     box-shadow: var(--shadow);
   }
-  :global(.day-chip.is-selected) {
+  :global(.session-card.is-selected) {
     border-color: var(--pink);
     background: var(--pink-soft);
-    box-shadow: var(--shadow);
   }
-  :global(.day-chip[disabled]) {
-    opacity: 0.45;
+  :global(.session-card[disabled]) {
     cursor: not-allowed;
-  }
-  :global(.day-chip__wd) {
-    font-size: 0.8rem;
-    font-weight: 700;
-    color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-  }
-  :global(.day-chip__day) {
-    font-family: var(--font-display);
-    font-weight: 800;
-    font-size: 1.6rem;
-    line-height: 1.1;
-  }
-  :global(.day-chip__month) {
-    font-size: 0.8rem;
-    color: var(--muted);
-  }
-  :global(.day-chip__free) {
-    margin-top: 0.3rem;
-    font-size: 0.72rem;
-    font-weight: 800;
-    color: #146f65;
-    background: var(--teal-soft);
-    padding: 0.1rem 0.5rem;
-    border-radius: 999px;
-  }
-  :global(.day-chip__free--none) {
-    color: var(--muted);
     background: var(--cream);
   }
-  .booking__tz {
-    font-size: 0.9rem;
-    margin: 0.25rem 0 0;
+  :global(.session-card[disabled] .session-card__date),
+  :global(.session-card[disabled] .session-card__time) {
+    opacity: 0.5;
   }
-
-  /* times */
-  .times-grid {
+  :global(.session-card__date) {
+    flex: none;
+    width: 64px;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    gap: 0.75rem;
+    justify-items: center;
+    padding: 0.45rem 0.3rem;
+    border-radius: 14px;
+    background: var(--pink-tint);
+    border: 2px solid var(--pink-soft);
   }
-  :global(.time-btn) {
-    padding: 0.9rem 0.75rem;
-    border-radius: var(--radius-sm);
-    border: 2px solid var(--line);
-    background: #fff;
-    color: var(--plum);
+  :global(.session-card__wd) {
+    font-size: 0.75rem;
+    font-weight: 800;
+    color: var(--pink-deep);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  :global(.session-card__day) {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 1.7rem;
+    line-height: 1.05;
+  }
+  :global(.session-card__month) {
+    font-size: 0.78rem;
+    color: var(--muted);
+    font-weight: 700;
+  }
+  :global(.session-card__info) {
+    display: grid;
+    gap: 0.3rem;
+    justify-items: start;
+  }
+  :global(.session-card__time) {
     font-family: var(--font-display);
     font-weight: 700;
     font-size: 1.1rem;
-    cursor: pointer;
-    display: grid;
-    gap: 0.15rem;
-    justify-items: center;
-    transition: border-color 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease;
   }
-  :global(.time-btn:hover:not([disabled])) {
-    border-color: var(--pink-light);
-    transform: translateY(-2px);
-    box-shadow: var(--shadow);
+  :global(.session-card__ages) {
+    font-size: 0.82rem;
+    font-weight: 800;
+    color: #5a3a8a;
+    background: var(--lilac-soft);
+    padding: 0.12rem 0.6rem;
+    border-radius: 999px;
   }
-  :global(.time-btn.is-selected) {
-    border-color: var(--pink);
-    background: var(--pink-soft);
-  }
-  :global(.time-btn[disabled]) {
-    opacity: 0.45;
-    cursor: not-allowed;
-    text-decoration: line-through;
-  }
-  :global(.time-btn__taken) {
-    font-family: var(--font-body);
-    font-size: 0.78rem;
+  :global(.session-card__seats) {
+    font-size: 0.85rem;
     font-weight: 700;
+    color: #146f65;
+  }
+  :global(.session-card__seats--last) {
+    color: var(--pink-deep);
+  }
+  :global(.session-card__seats--full) {
     color: var(--muted);
-    text-decoration: none;
+  }
+  :global(.sessions-empty) {
+    grid-column: 1 / -1;
+    margin: 0;
+  }
+  .booking__tz {
+    font-size: 0.9rem;
+    margin: 0.9rem 0 0;
+  }
+  .booking__age-hint {
+    margin: -0.25rem 0 0;
+    font-size: 0.9rem;
+    color: #7a5200;
+    background: var(--yellow-soft);
+    padding: 0.55rem 0.8rem;
+    border-radius: var(--radius-xs);
   }
 
   /* form */

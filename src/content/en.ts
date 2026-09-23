@@ -43,6 +43,16 @@ const en: SiteContent = {
     photoAlt: 'Two children drawing and learning together at a table',
   },
 
+  // The dates themselves live in schedule.ts; {date}, {time} etc. are filled in automatically.
+  announcement: {
+    eyebrow: 'New mini group',
+    title: 'Starting on {date}',
+    text: 'Once a week, on {weekdays} at {time}, with at most 3 children.',
+    trials: 'Free group trial lessons beforehand: {dates}, each at {time}.',
+    ages: 'Separate trial groups for {bands}.',
+    cta: 'Reserve a trial lesson',
+  },
+
   steps: {
     title: 'As easy as one, two, three',
     intro: 'From the trial lesson to the first real lesson, it is just three small steps.',
@@ -50,17 +60,17 @@ const en: SiteContent = {
       {
         icon: 'calendar',
         title: 'Book a trial lesson',
-        text: 'Pick a day and a time, tell me a little about your child, done. The trial lesson is free and comes with no obligation at all.',
+        text: 'Pick a date that suits your child\'s age and tell me a little about your child. The trial lesson is free and comes with no obligation at all.',
       },
       {
         icon: 'video',
         title: 'Meet on Google Meet',
-        text: 'In around 30 to 60 minutes, you and your child get to know me and the way I teach. We play, speak a little English, and you ask all your questions.',
+        text: 'In a small trial group of at most 3 children, your child gets to know me and the way I teach. Afterwards I take time for your questions.',
       },
       {
         icon: 'rocket',
         title: 'Off we go!',
-        text: 'You choose a fixed group, and every week there are 40 to 60 minutes of English with a smile.',
+        text: 'Your child starts in a fixed mini group, and every week there are 40 to 60 minutes of English with a smile.',
       },
     ],
   },
@@ -122,10 +132,10 @@ const en: SiteContent = {
 
   pricing: {
     title: 'Lessons & prices',
-    intro: 'Clear and simple: one price per lesson, all materials included.',
+    intro: 'Clear and fair: a fixed monthly fee for groups, one-to-one lessons billed by the lessons held.',
     course: 'English for absolute beginners (CEFR pre-A1 to A1)',
     details: [
-      'One lesson per week',
+      'One lesson per week, around 40 lessons a year',
       '40 minutes of teaching + 10 minutes of playing English games together + 3 to 10 minutes with the parents',
       'A maximum of 3 children per group',
       'Weekday evenings, Saturday mornings and evenings',
@@ -136,20 +146,41 @@ const en: SiteContent = {
     plans: [
       {
         name: 'Group lessons',
-        price: '€22',
-        unit: 'per lesson',
-        text: 'In a mini group of up to 3 children: learn, laugh and find the courage to speak together.',
+        price: '€85',
+        unit: 'per month',
+        text: 'In a mini group of up to 3 children: learn, laugh and find the courage to speak together. No fee in August.',
         highlight: true,
         badge: 'Popular',
       },
       {
         name: 'One-to-one lessons',
-        price: '€30',
+        price: '€40',
         unit: 'per lesson',
-        text: 'Fully individual, at your child\'s own pace. Ideal if your child prefers to learn alone.',
+        text: 'Fully individual, at your child\'s own pace. You only pay for the lessons that take place.',
       },
     ],
     invoice: 'You receive an invoice every month. All prices are final prices.',
+    breaks: {
+      title: 'Class-free periods',
+      intro: 'There are no lessons during these periods:',
+      holidayNote: 'If a public holiday falls on the lesson day, you get a replacement date.',
+    },
+    discounts: {
+      title: 'Discounts',
+      items: [
+        'Siblings: €10 less per month for the second child.',
+        'Friends: when a friend\'s family joins, both families get €10 off once.',
+      ],
+    },
+    terms: {
+      title: 'Missed lessons & cancellation',
+      items: [
+        'Groups: if your child is ill, the lesson is credited. Please let me know before the lesson.',
+        'One-to-one: lessons cancelled at least 24 hours in advance are rescheduled.',
+        'After every lesson you get a short summary, so your child can easily catch up.',
+        'Cancellation with 2 weeks\' notice to the end of a month.',
+      ],
+    },
     note: {
       title: 'No child left out',
       text: 'If you cannot afford the fees, that is completely fine. Then you simply pay nothing. I firmly believe that every child has a right to education, whatever the circumstances. The only condition: your child wants to learn.',
@@ -218,7 +249,7 @@ const en: SiteContent = {
       },
       {
         q: 'What happens in the trial lesson?',
-        a: 'The trial lesson lasts 60 minutes, takes place on Google Meet and is free with no obligation. In the first 30 minutes your child gets to know me, and we learn and speak a little English. In the next 20 to 30 minutes I explain the practical details and answer all your questions.',
+        a: 'The trial lesson is free with no obligation. It takes place on Google Meet in a small group of at most 3 children, separated by age. The first 30 to 45 minutes belong to the children: we play, sing and speak a little English. After that I explain the practical details and answer your questions. Altogether it takes about an hour. You receive the link by email after booking.',
       },
       {
         q: 'How big are the groups?',
@@ -226,7 +257,7 @@ const en: SiteContent = {
       },
       {
         q: 'When do lessons take place?',
-        a: 'Lessons take place once a week. There are several groups on weekday evenings and on Saturday mornings and evenings. You choose the group that fits your schedule. No lessons on Sundays.',
+        a: 'Lessons take place once a week in fixed mini groups, on weekday evenings or on Saturdays. There are no lessons during the Christmas, Easter and summer holidays. The exact periods are listed with the prices. No lessons on Sundays.',
       },
       {
         q: 'Are lessons taught in German or in English?',
@@ -234,7 +265,11 @@ const en: SiteContent = {
       },
       {
         q: 'How does payment work?',
-        a: 'You receive an invoice every month. No fee is charged for missed lessons.',
+        a: 'Group lessons cost €85 per month, with no fee in August. One-to-one lessons cost €40 per lesson, and you only pay for the lessons that take place. You receive an invoice every month. Siblings and friends get a discount.',
+      },
+      {
+        q: 'What happens if my child misses a lesson?',
+        a: 'No problem. After every lesson all families get a short summary with the book pages, new words and the song of the lesson. That way your child catches up at home in 10 to 15 minutes. Every lesson also starts with a short review of the last one. In groups, lessons missed due to illness are credited.',
       },
       {
         q: 'Do you also teach children outside Germany?',
@@ -251,16 +286,18 @@ const en: SiteContent = {
 
   booking: {
     title: 'Book a free trial lesson',
-    intro: 'Pick a day and a time. The trial lesson lasts 60 minutes, takes place on Google Meet and comes with no obligation at all.',
-    steps: ['Pick a day', 'Pick a time', 'Tell me a little'],
-    loading: 'Loading available times …',
+    intro: 'The trial lesson takes place on Google Meet in a small group of at most 3 children, separated by age. It takes about an hour and comes with no obligation at all.',
+    steps: ['Pick a date', 'Tell me a little', 'Done'],
+    loading: 'Loading dates …',
     timezone: 'All times are German time (Europe/Berlin).',
-    noSlotsDay: 'Sorry, this day is fully booked.',
-    noSlotsAll: 'All slots in the next four weeks are taken right now. Send me a short message, we will find a time!',
-    free: '{n} free',
-    taken: 'taken',
-    summary: '{day}, {date} · {time}',
-    changeSlot: 'Change time',
+    noSlotsAll: 'No trial lesson is available right now. Send me a short message and I will get back to you with the next date!',
+    seatsFree: '{n} places free',
+    seatFree: '1 place free',
+    full: 'fully booked',
+    agesLabel: 'ages {from} to {to}',
+    ageHint: 'This date is meant for children aged {from} to {to}. Maybe another date suits better?',
+    summary: '{day}, {date} · {time} · {ages}',
+    changeSlot: 'Change date',
     form: {
       childName: 'Your child\'s first name',
       childNamePlaceholder: 'e.g. Emma',
@@ -287,7 +324,7 @@ const en: SiteContent = {
     },
     errors: {
       generic: 'That did not work, sorry. Please try again or write to me directly.',
-      slot_taken: 'Oh, this slot was just taken. Please choose another one.',
+      slot_taken: 'Oh, this trial lesson just filled up. Please choose another date.',
       invalid: 'Please check your details.',
       turnstile: 'The security check has not finished yet. Please wait a moment and click again.',
       turnstile_failed: 'The spam protection could not be loaded. Please reload the page. If it happens again, just message me on WhatsApp or by email.',

@@ -1,6 +1,7 @@
 // Email templates (parent: de/en, teacher: en). Plain, warm, no external images.
 import type { Mail } from './graph';
 import { formatDateLong, formatRange } from './time';
+import { agesText } from './sessions';
 
 export type Lang = 'de' | 'en';
 
@@ -16,6 +17,9 @@ export interface BookingInfo {
   parentPhone: string;
   message: string;
   lang: Lang;
+  ages: string; // "5-7" for group trials, empty for older one-to-one trials
+  seatsTaken?: number; // group trials: children booked so far (teacher notification)
+  capacity?: number;
   meetLink: string;
   cancelUrl: string;
   icsUrl: string;
@@ -63,20 +67,25 @@ export function parentConfirmation(b: BookingInfo, ics: string): Mail {
   const { date, time } = when(b, b.lang);
   const greet = b.parentName ? (b.lang === 'de' ? `Hallo ${esc(b.parentName)},` : `Hello ${esc(b.parentName)},`) : b.lang === 'de' ? 'Liebe Eltern,' : 'Dear parents,';
 
+  const group = agesText(b.ages, b.lang);
+
   if (b.lang === 'de') {
     const subject = `Ihre Probestunde bei Crefolo: ${date}, ${time}`;
+    const rows: [string, string][] = [
+      ['Datum', esc(date)],
+      ['Uhrzeit', `${esc(time)} (deutsche Zeit)`],
+      ['Dauer', 'ca. 60 Minuten'],
+    ];
+    if (group) rows.push(['Gruppe', `Kleine Probegruppe, ${esc(group)}, höchstens 3 Kinder`]);
+    rows.push(['Wo', 'Online per Google Meet']);
     const html = layout(
       subject,
       `<p style="font-size:20px;font-weight:800;margin:0 0 12px;">Die Probestunde für ${esc(b.childName)} ist gebucht! 🎉</p>
 <p>${greet}</p>
 <p>vielen Dank für Ihre Buchung. Ich freue mich darauf, ${esc(b.childName)} kennenzulernen. Hier sind alle Details:</p>
-${detailsBox([
-  ['Datum', esc(date)],
-  ['Uhrzeit', `${esc(time)} (deutsche Zeit)`],
-  ['Dauer', '60 Minuten'],
-  ['Wo', `Online per Google Meet`],
-])}
+${detailsBox(rows)}
 ${b.meetLink ? button(b.meetLink, 'Zur Probestunde (Google Meet)') : ''}
+${group ? '<p><strong>So läuft die Probestunde ab:</strong> In den ersten 30 bis 45 Minuten sind die Kinder dran. Wir spielen, singen und sprechen ein bisschen Englisch. Danach erkläre ich Ihnen alles Organisatorische und beantworte gern Ihre Fragen.</p>' : ''}
 <p><strong>So bereiten Sie sich vor:</strong></p>
 <ul style="padding-left:20px;margin:8px 0 18px;">
   <li>Laptop, PC oder Tablet mit Kamera und Mikrofon</li>
@@ -93,7 +102,7 @@ ${b.meetLink ? button(b.meetLink, 'Zur Probestunde (Google Meet)') : ''}
 
 Datum: ${date}
 Uhrzeit: ${time} (deutsche Zeit)
-Dauer: 60 Minuten
+Dauer: ca. 60 Minuten${group ? `\nGruppe: Kleine Probegruppe, ${group}, höchstens 3 Kinder` : ''}
 Google Meet: ${b.meetLink}
 
 Absagen: ${b.cancelUrl}
@@ -104,18 +113,21 @@ ${b.teacherName} · Crefolo · ${b.siteUrl}`;
   }
 
   const subject = `Your trial lesson at Crefolo: ${date}, ${time}`;
+  const rows: [string, string][] = [
+    ['Date', esc(date)],
+    ['Time', `${esc(time)} (German time)`],
+    ['Duration', 'about 60 minutes'],
+  ];
+  if (group) rows.push(['Group', `Small trial group, ${esc(group)}, at most 3 children`]);
+  rows.push(['Where', 'Online via Google Meet']);
   const html = layout(
     subject,
     `<p style="font-size:20px;font-weight:800;margin:0 0 12px;">The trial lesson for ${esc(b.childName)} is booked! 🎉</p>
 <p>${greet}</p>
 <p>thank you for booking. I look forward to meeting ${esc(b.childName)}. Here are all the details:</p>
-${detailsBox([
-  ['Date', esc(date)],
-  ['Time', `${esc(time)} (German time)`],
-  ['Duration', '60 minutes'],
-  ['Where', 'Online via Google Meet'],
-])}
+${detailsBox(rows)}
 ${b.meetLink ? button(b.meetLink, 'Join the trial lesson (Google Meet)') : ''}
+${group ? '<p><strong>How the trial lesson works:</strong> The first 30 to 45 minutes belong to the children. We play, sing and speak a little English. After that I explain the practical details and gladly answer your questions.</p>' : ''}
 <p><strong>How to prepare:</strong></p>
 <ul style="padding-left:20px;margin:8px 0 18px;">
   <li>A laptop, PC or tablet with camera and microphone</li>
@@ -132,7 +144,7 @@ ${b.meetLink ? button(b.meetLink, 'Join the trial lesson (Google Meet)') : ''}
 
 Date: ${date}
 Time: ${time} (German time)
-Duration: 60 minutes
+Duration: about 60 minutes${group ? `\nGroup: Small trial group, ${group}, at most 3 children` : ''}
 Google Meet: ${b.meetLink}
 
 Cancel: ${b.cancelUrl}
@@ -145,13 +157,16 @@ ${b.teacherName} · Crefolo · ${b.siteUrl}`;
 // ---------------------------------------------------------------- teacher: new booking
 export function teacherNotification(b: BookingInfo): Mail {
   const { date, time } = when(b, 'en');
-  const subject = `New trial lesson: ${b.childName} (${b.childAge}) – ${date}, ${time}`;
+  const group = agesText(b.ages, 'en');
+  const seats = b.seatsTaken && b.capacity ? `${b.seatsTaken} of ${b.capacity} places taken` : '';
+  const subject = `New trial lesson: ${b.childName} (${b.childAge}), ${date}, ${time}`;
   const html = layout(
     subject,
     `<p style="font-size:20px;font-weight:800;margin:0 0 12px;">New trial lesson booked 🎉</p>
 ${detailsBox([
   ['Child', `${esc(b.childName)}, ${esc(b.childAge)} years`],
   ['When', `${esc(date)}<br>${esc(time)}`],
+  ...(group ? ([['Group', esc([group, seats].filter(Boolean).join(' · '))]] as [string, string][]) : []),
   ['Parent', esc(b.parentName || '–')],
   ['Email', `<a href="mailto:${esc(b.parentEmail)}" style="color:#c0106d;">${esc(b.parentEmail)}</a>`],
   ['Phone', b.parentPhone ? `<a href="tel:${esc(b.parentPhone.replace(/\s+/g, ''))}" style="color:#c0106d;">${esc(b.parentPhone)}</a>` : '–'],
@@ -165,7 +180,7 @@ ${b.meetLink ? button(b.meetLink, 'Open Google Meet') : '<p style="color:#8f2323
   const text = `New trial lesson booked
 
 Child: ${b.childName}, ${b.childAge} years
-When: ${date}, ${time}
+When: ${date}, ${time}${group ? `\nGroup: ${[group, seats].filter(Boolean).join(' · ')}` : ''}
 Parent: ${b.parentName || '-'}
 Email: ${b.parentEmail}
 Phone: ${b.parentPhone || '-'}
@@ -209,7 +224,7 @@ ${button(bookingUrl, 'Book a new time')}
 
 export function teacherCancellation(b: BookingInfo): Mail {
   const { date, time } = when(b, 'en');
-  const subject = `Cancelled: trial lesson ${b.childName} – ${date}, ${time}`;
+  const subject = `Cancelled: trial lesson ${b.childName}, ${date}, ${time}`;
   const html = layout(
     subject,
     `<p style="font-size:20px;font-weight:800;margin:0 0 12px;">Trial lesson cancelled</p>
@@ -218,7 +233,7 @@ ${detailsBox([
   ['When', `${esc(date)}<br>${esc(time)}`],
   ['Parent', `${esc(b.parentName || '–')} · ${esc(b.parentEmail)} · ${esc(b.parentPhone || '–')}`],
 ])}
-<p>The calendar event has been removed and the slot is bookable again.</p>`,
+<p>The booking has been removed from your calendar and the place is bookable again.</p>`,
     'Automatic notification from crefolo.com',
   );
   return { to: b.teacherEmail, subject, html, text: `Trial lesson cancelled: ${b.childName} (${b.childAge}), ${date}, ${time}. Parent: ${b.parentEmail} ${b.parentPhone}` };
@@ -255,22 +270,32 @@ ${b.meetLink ? button(b.meetLink, 'Join the trial lesson (Google Meet)') : ''}
   return { to: b.parentEmail, subject, html, text: `Reminder: trial lesson for ${b.childName} tomorrow, ${date}, ${time}. Google Meet: ${b.meetLink}. Cancel: ${b.cancelUrl}`, replyTo: b.teacherEmail };
 }
 
-export function teacherReminder(b: BookingInfo): Mail {
+/** One reminder per trial lesson for the teacher, listing every child booked into it. */
+export function teacherReminder(list: BookingInfo[]): Mail {
+  const b = list[0];
   const { date, time } = when(b, 'en');
-  const subject = `Tomorrow: trial lesson with ${b.childName} (${time})`;
+  const group = agesText(b.ages, 'en');
+  const kids = list.length === 1 ? '1 child' : `${list.length} children`;
+  const subject = `Tomorrow: trial lesson at ${time}${group ? `, ${group}` : ''}, ${kids}`;
+  const childRows = list.map(
+    (c) =>
+      [
+        `${c.childName}, ${c.childAge}`,
+        `${esc(c.parentName || '–')} · <a href="mailto:${esc(c.parentEmail)}" style="color:#c0106d;">${esc(c.parentEmail)}</a>${c.parentPhone ? ` · ${esc(c.parentPhone)}` : ''}${c.message ? `<br><em>${esc(c.message)}</em>` : ''}`,
+      ] as [string, string],
+  );
   const html = layout(
     subject,
     `<p style="font-size:20px;font-weight:800;margin:0 0 12px;">Trial lesson tomorrow</p>
-${detailsBox([
-  ['Child', `${esc(b.childName)}, ${esc(b.childAge)} years`],
-  ['When', `${esc(date)}<br>${esc(time)}`],
-  ['Parent', `${esc(b.parentName || '–')} · ${esc(b.parentEmail)} · ${esc(b.parentPhone || '–')}`],
-  ['Message', esc(b.message || '–')],
-])}
+<p><strong>${esc(date)}, ${esc(time)}</strong>${group ? ` · ${esc(group)}` : ''} · ${kids}</p>
+${detailsBox(childRows)}
 ${b.meetLink ? button(b.meetLink, 'Open Google Meet') : ''}`,
     'Automatic reminder from crefolo.com',
   );
-  return { to: b.teacherEmail, subject, html, text: `Tomorrow: trial lesson with ${b.childName} (${b.childAge}) at ${time}. Parent: ${b.parentEmail} ${b.parentPhone}. Meet: ${b.meetLink}` };
+  const text = `Tomorrow: trial lesson ${date}, ${time}${group ? `, ${group}` : ''}\n\n${list
+    .map((c) => `${c.childName} (${c.childAge}): ${c.parentName || '-'}, ${c.parentEmail}, ${c.parentPhone || '-'}${c.message ? `\n  ${c.message}` : ''}`)
+    .join('\n')}\n\nGoogle Meet: ${b.meetLink}`;
+  return { to: b.teacherEmail, subject, html, text };
 }
 
 export function teacherAlert(teacherEmail: string, subject: string, body: string): Mail {

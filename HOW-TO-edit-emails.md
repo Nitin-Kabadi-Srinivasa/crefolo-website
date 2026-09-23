@@ -25,7 +25,7 @@ Inside that file each email is a named block ("function"):
 | `parentConfirmation` | right after a booking | the parent | German **and** English |
 | `teacherNotification` | right after a booking | **you** (info@crefolo.com) | English |
 | `parentReminder` | the morning before the lesson | the parent | German and English |
-| `teacherReminder` | the morning before the lesson | you | English |
+| `teacherReminder` | the morning before the lesson, one per trial listing all children | you | English |
 | `parentCancellation` | when a booking is cancelled | the parent | German and English |
 | `teacherCancellation` | when a booking is cancelled | you | English |
 

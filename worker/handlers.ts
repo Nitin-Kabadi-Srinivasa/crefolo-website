@@ -1,14 +1,15 @@
-import { type AppEnv, getSlotConfig } from './env';
-import { generateSlots, windowOf, overlapsBusy, findSlot } from './slots';
+import { type AppEnv, minDaysAhead, timeZoneOf } from './env';
+import { bookableSessions, findSession, trialCapacity, agesText } from './sessions';
+import { childrenAt, ensureHost, syncHost } from './group';
 import { getServices } from './services';
 import { verifyTurnstile } from './turnstile';
 import { verifyToken } from './crypto';
 import { buildIcs } from './ics';
 import { bookingInfoFromEvent, eventSummary, eventDescription } from './booking';
-import { parentConfirmation, teacherNotification, parentCancellation, teacherCancellation, type Lang } from './emails';
+import { parentConfirmation, teacherNotification, parentCancellation, teacherCancellation, type BookingInfo, type Lang } from './emails';
 import { cancelConfirmPage, cancelledPage, invalidLinkPage, errorPage } from './pages';
 import { formatDateLong, formatRange } from './time';
-import { GoogleError, getAccessToken } from './google';
+import { GoogleError, getAccessToken, meetLinkOf } from './google';
 import { getGraphToken } from './graph';
 
 const JSON_HEADERS = { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store' };
@@ -26,24 +27,34 @@ export const invalidateAvailability = () => {
 // ------------------------------------------------------------------ GET /api/availability
 export async function handleAvailability(env: AppEnv): Promise<Response> {
   if (availabilityCache && availabilityCache.exp > Date.now()) return new Response(availabilityCache.body, { headers: JSON_HEADERS });
-  const cfg = getSlotConfig(env);
-  const { calendar } = getServices(env);
+  const tz = timeZoneOf(env);
   const now = new Date();
-  const slots = generateSlots(now, cfg);
-  const win = windowOf(slots);
-  const busy = win ? await calendar.getBusy(win.min, win.max) : [];
+  const capacity = trialCapacity();
+  const sessions = bookableSessions(now, tz, minDaysAhead(env));
 
-  const days = new Map<string, { date: string; slots: { start: string; end: string; available: boolean }[] }>();
-  for (const s of slots) {
-    let day = days.get(s.date);
-    if (!day) {
-      day = { date: s.date, slots: [] };
-      days.set(s.date, day);
+  const taken = new Map<number, number>();
+  if (sessions.length) {
+    const { calendar } = getServices(env);
+    const events = await calendar.listEvents('trial', sessions[0].start, sessions[sessions.length - 1].end);
+    for (const e of events) {
+      const t = Date.parse(e.start?.dateTime || '');
+      if (Number.isFinite(t)) taken.set(t, (taken.get(t) || 0) + 1);
     }
-    day.slots.push({ start: s.start.toISOString(), end: s.end.toISOString(), available: !overlapsBusy(s, busy) });
   }
-  const body = JSON.stringify({ ok: true, timezone: cfg.timeZone, generatedAt: now.toISOString(), days: [...days.values()] });
-  availabilityCache = { exp: Date.now() + 45_000, body };
+
+  const body = JSON.stringify({
+    ok: true,
+    timezone: tz,
+    capacity,
+    generatedAt: now.toISOString(),
+    sessions: sessions.map((s) => ({
+      start: s.start.toISOString(),
+      end: s.end.toISOString(),
+      ages: s.ages,
+      taken: Math.min(capacity, taken.get(s.start.getTime()) || 0),
+    })),
+  });
+  availabilityCache = { exp: Date.now() + 30_000, body };
   return new Response(body, { headers: JSON_HEADERS });
 }
 
@@ -95,18 +106,25 @@ export async function handleBook(request: Request, env: AppEnv, ctx: ExecutionCo
   const ip = request.headers.get('cf-connecting-ip');
   if (!(await verifyTurnstile(env.TURNSTILE_SECRET, data.turnstileToken, ip))) return json({ ok: false, error: 'turnstile' }, 400);
 
-  const cfg = getSlotConfig(env);
-  const slot = findSlot(generateSlots(new Date(), cfg), data.start);
-  if (!slot) return json({ ok: false, error: 'slot_taken' }, 409);
+  const tz = timeZoneOf(env);
+  const session = findSession(bookableSessions(new Date(), tz, minDaysAhead(env)), data.start);
+  if (!session) return json({ ok: false, error: 'slot_taken' }, 409);
 
+  const capacity = trialCapacity();
   const { calendar, mailer } = getServices(env);
   try {
-    const busy = await calendar.getBusy(slot.start, slot.end);
-    if (overlapsBusy(slot, busy)) return json({ ok: false, error: 'slot_taken' }, 409);
+    if ((await childrenAt(calendar, session.start)).length >= capacity) return json({ ok: false, error: 'slot_taken' }, 409);
+
+    // The session's host event owns the shared Google Meet
+    const host = await ensureHost(calendar, session, tz);
+    const meetLink = meetLinkOf(host);
 
     const childAge = String(data.childAge);
     const privateProps: Record<string, string> = {
       crefolo: 'trial',
+      ages: session.agesKey,
+      meetLink,
+      hostId: host.id,
       lang: data.lang,
       childName: data.childName,
       childAge,
@@ -117,45 +135,55 @@ export async function handleBook(request: Request, env: AppEnv, ctx: ExecutionCo
       bookedAt: new Date().toISOString(),
     };
     const event = await calendar.createEvent({
-      start: slot.start,
-      end: slot.end,
-      timeZone: cfg.timeZone,
+      start: session.start,
+      end: session.end,
+      timeZone: tz,
       summary: eventSummary(data.childName, childAge, data.lang),
-      description: eventDescription({ ...data, childAge, parentEmail: data.email, parentPhone: data.phone, cancelUrl: '' }),
-      attendeeEmail: data.email,
+      description: eventDescription({
+        ...data,
+        childAge,
+        parentEmail: data.email,
+        parentPhone: data.phone,
+        agesText: agesText(session.agesKey, 'de'),
+        meetLink,
+      }),
+      location: meetLink,
+      quiet: true,
       privateProps,
     });
+
+    // Two parents may have taken the last seat at the same moment: the earlier booking wins.
+    const children = await childrenAt(calendar, session.start);
+    const seat = children.findIndex((c) => c.id === event.id);
+    if (seat >= capacity) {
+      await calendar.deleteEvent(event.id);
+      ctx.waitUntil(syncHost(calendar, session.start).catch((e) => console.error('host sync failed', e)));
+      invalidateAvailability();
+      return json({ ok: false, error: 'slot_taken' }, 409);
+    }
     invalidateAvailability();
 
     // Make sure the info object sees the private props even if the API response omitted them
     event.extendedProperties = { private: { ...privateProps, ...(event.extendedProperties?.private || {}) } };
     const info = await bookingInfoFromEvent(env, event, new URL(request.url).origin);
     if (!info) throw new Error('booking info could not be built');
+    // If Google's list does not show the new booking yet, count it anyway
+    info.seatsTaken = Math.min(seat >= 0 ? children.length : children.length + 1, capacity);
+    info.capacity = capacity;
 
-    // Add the cancel link to the calendar event description (best effort, in the background)
+    // Background: invite the parent to the shared lesson, refresh the host's list, store the cancel link
     ctx.waitUntil(
-      calendar
-        .patchPrivateProps(event.id, { cancelUrl: info.cancelUrl })
-        .catch((e) => console.error('patch cancel url failed', e)),
+      Promise.allSettled([
+        syncHost(calendar, session.start),
+        calendar.patchEvent(event.id, { privateProps: { cancelUrl: info.cancelUrl } }),
+      ]).then((rs) => rs.forEach((r) => r.status === 'rejected' && console.error('post-booking update failed', r.reason))),
     );
 
-    const ics = buildIcs({
-      uid: event.id,
-      start: info.start,
-      end: info.end,
-      summary: eventSummary(info.childName, info.childAge, info.lang),
-      description: (info.lang === 'de' ? 'Google Meet: ' : 'Google Meet: ') + info.meetLink,
-      location: info.meetLink,
-      url: info.meetLink || info.siteUrl,
-      organizerEmail: info.teacherEmail,
-      organizerName: `${info.teacherName} (Crefolo)`,
-    });
-
+    const ics = icsFor(info);
     const results = await Promise.allSettled([mailer.send(parentConfirmation(info, ics)), mailer.send(teacherNotification(info))]);
     results.forEach((r, i) => {
       if (r.status === 'rejected') console.error(i === 0 ? 'parent email failed' : 'teacher email failed', r.reason);
     });
-    const emailSent = results[0].status === 'fulfilled';
 
     return json({
       ok: true,
@@ -166,7 +194,7 @@ export async function handleBook(request: Request, env: AppEnv, ctx: ExecutionCo
         meetLink: info.meetLink,
         cancelUrl: info.cancelUrl,
         icsUrl: info.icsUrl,
-        emailSent,
+        emailSent: results[0].status === 'fulfilled',
       },
     });
   } catch (e) {
@@ -174,6 +202,20 @@ export async function handleBook(request: Request, env: AppEnv, ctx: ExecutionCo
     if (e instanceof GoogleError) return json({ ok: false, error: 'unavailable' }, 503);
     return json({ ok: false, error: 'generic' }, 500);
   }
+}
+
+function icsFor(info: BookingInfo): string {
+  return buildIcs({
+    uid: info.eventId,
+    start: info.start,
+    end: info.end,
+    summary: eventSummary(info.childName, info.childAge, info.lang),
+    description: 'Google Meet: ' + info.meetLink,
+    location: info.meetLink,
+    url: info.meetLink || info.siteUrl,
+    organizerEmail: info.teacherEmail,
+    organizerName: `${info.teacherName} (Crefolo)`,
+  });
 }
 
 // ------------------------------------------------------------------ GET|POST /api/cancel
@@ -209,9 +251,11 @@ export async function handleCancel(request: Request, env: AppEnv, ctx: Execution
     await calendar.deleteEvent(id);
     invalidateAvailability();
     ctx.waitUntil(
-      Promise.allSettled([mailer.send(parentCancellation(info)), mailer.send(teacherCancellation(info))]).then((rs) =>
-        rs.forEach((r) => r.status === 'rejected' && console.error('cancel email failed', r.reason)),
-      ),
+      Promise.allSettled([
+        syncHost(calendar, info.start), // removes the parent from the shared lesson, or deletes it when empty
+        mailer.send(parentCancellation(info)),
+        mailer.send(teacherCancellation(info)),
+      ]).then((rs) => rs.forEach((r) => r.status === 'rejected' && console.error('post-cancel step failed', r.reason))),
     );
     return html(cancelledPage(lang, site));
   } catch (e) {
@@ -231,18 +275,7 @@ export async function handleIcs(request: Request, env: AppEnv): Promise<Response
   const event = await calendar.getEvent(id);
   const info = event ? await bookingInfoFromEvent(env, event, url.origin) : null;
   if (!info) return json({ ok: false, error: 'not_found' }, 404);
-  const ics = buildIcs({
-    uid: info.eventId,
-    start: info.start,
-    end: info.end,
-    summary: eventSummary(info.childName, info.childAge, info.lang),
-    description: 'Google Meet: ' + info.meetLink,
-    location: info.meetLink,
-    url: info.meetLink || info.siteUrl,
-    organizerEmail: info.teacherEmail,
-    organizerName: `${info.teacherName} (Crefolo)`,
-  });
-  return new Response(ics, {
+  return new Response(icsFor(info), {
     headers: {
       'content-type': 'text/calendar; charset=utf-8',
       'content-disposition': `attachment; filename="${info.lang === 'de' ? 'probestunde' : 'trial-lesson'}-crefolo.ics"`,

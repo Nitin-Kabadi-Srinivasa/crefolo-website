@@ -43,6 +43,16 @@ const de: SiteContent = {
     photoAlt: 'Zwei Kinder malen und lernen gemeinsam an einem Tisch',
   },
 
+  // Die Termine selbst stehen in schedule.ts; {date}, {time} usw. werden automatisch eingesetzt.
+  announcement: {
+    eyebrow: 'Neue Mini-Gruppe',
+    title: 'Start am {date}',
+    text: 'Einmal pro Woche, {weekdays} um {time} Uhr, mit höchstens 3 Kindern.',
+    trials: 'Kostenlose Gruppen-Probestunden vorab: {dates}, jeweils um {time} Uhr.',
+    ages: 'Getrennt nach Alter: {bands}.',
+    cta: 'Probestunde sichern',
+  },
+
   steps: {
     title: 'So einfach geht\'s',
     intro: 'Von der Probestunde bis zur ersten richtigen Unterrichtsstunde sind es nur drei kleine Schritte.',
@@ -50,17 +60,17 @@ const de: SiteContent = {
       {
         icon: 'calendar',
         title: 'Probestunde buchen',
-        text: 'Tag und Uhrzeit wählen, kurz Ihr Kind vorstellen, fertig. Die Probestunde ist kostenlos und völlig unverbindlich.',
+        text: 'Wählen Sie einen Termin passend zum Alter Ihres Kindes und stellen Sie Ihr Kind kurz vor. Die Probestunde ist kostenlos und völlig unverbindlich.',
       },
       {
         icon: 'video',
         title: 'Kennenlernen per Google Meet',
-        text: 'In etwa 30 bis 60 Minuten lernen Sie und Ihr Kind mich und meine Art zu unterrichten kennen. Wir spielen, sprechen ein bisschen Englisch, und Sie stellen alle Ihre Fragen.',
+        text: 'In einer kleinen Probegruppe mit höchstens 3 Kindern lernt Ihr Kind mich und meine Art zu unterrichten kennen. Danach nehme ich mir Zeit für Ihre Fragen.',
       },
       {
         icon: 'rocket',
         title: 'Loslegen!',
-        text: 'Sie wählen eine feste Gruppe, und jede Woche gibt es 40 bis 60 Minuten Englisch mit Freude.',
+        text: 'Ihr Kind startet in einer festen Mini-Gruppe, und jede Woche gibt es 40 bis 60 Minuten Englisch mit Freude.',
       },
     ],
   },
@@ -122,10 +132,10 @@ const de: SiteContent = {
 
   pricing: {
     title: 'Unterricht & Preise',
-    intro: 'Klar und einfach: ein Preis pro Unterrichtsstunde, alle Materialien inklusive.',
+    intro: 'Klar und fair: ein fester Monatsbeitrag für die Gruppe, Einzelunterricht nach gehaltenen Stunden.',
     course: 'Englisch für absolute Anfänger (GER Vorstufe A1 bis A1)',
     details: [
-      'Eine Unterrichtsstunde pro Woche',
+      'Eine Unterrichtsstunde pro Woche, rund 40 Stunden im Jahr',
       '40 Minuten Unterricht + 10 Minuten gemeinsame Englisch-Spiele + 3 bis 10 Minuten Gespräch mit den Eltern',
       'Maximal 3 Kinder pro Gruppe',
       'Termine abends unter der Woche, samstags vormittags und abends',
@@ -136,20 +146,41 @@ const de: SiteContent = {
     plans: [
       {
         name: 'Gruppenunterricht',
-        price: '22 €',
-        unit: 'pro Unterrichtsstunde',
-        text: 'In der Mini-Gruppe mit maximal 3 Kindern: lernen, lachen und gemeinsam mutig sprechen.',
+        price: '85 €',
+        unit: 'pro Monat',
+        text: 'In der Mini-Gruppe mit maximal 3 Kindern: lernen, lachen und gemeinsam mutig sprechen. Im August zahlen Sie nichts.',
         highlight: true,
         badge: 'Beliebt',
       },
       {
         name: 'Einzelunterricht',
-        price: '30 €',
+        price: '40 €',
         unit: 'pro Unterrichtsstunde',
-        text: 'Ganz individuell im eigenen Tempo. Ideal, wenn Ihr Kind lieber allein lernt.',
+        text: 'Ganz individuell im eigenen Tempo. Sie zahlen nur die Stunden, die stattfinden.',
       },
     ],
     invoice: 'Sie erhalten jeden Monat eine Rechnung. Alle Preise sind Endpreise.',
+    breaks: {
+      title: 'Unterrichtsfreie Zeiten',
+      intro: 'In diesen Zeiten findet kein Unterricht statt:',
+      holidayNote: 'Fällt ein Feiertag auf den Unterrichtstag, bekommen Sie einen Ersatztermin.',
+    },
+    discounts: {
+      title: 'Rabatte',
+      items: [
+        'Geschwister: 10 € weniger pro Monat für das zweite Kind.',
+        'Freunde: Kommt eine befreundete Familie dazu, bekommen beide Familien einmalig 10 € Rabatt.',
+      ],
+    },
+    terms: {
+      title: 'Fehlstunden & Kündigung',
+      items: [
+        'Gruppe: Fehlt Ihr Kind wegen Krankheit, schreibe ich die Stunde gut. Bitte sagen Sie vor der Stunde Bescheid.',
+        'Einzelunterricht: Stunden, die mindestens 24 Stunden vorher abgesagt werden, holen wir nach.',
+        'Nach jeder Stunde gibt es eine kurze Zusammenfassung. So holt Ihr Kind Verpasstes leicht nach.',
+        'Kündigung mit einer Frist von 2 Wochen zum Monatsende.',
+      ],
+    },
     note: {
       title: 'Kein Kind bleibt außen vor',
       text: 'Wenn Sie sich die Gebühren nicht leisten können, ist das völlig in Ordnung. Dann zahlen Sie einfach nichts. Ich bin überzeugt, dass jedes Kind ein Recht auf Bildung hat, unabhängig von den Umständen. Die einzige Bedingung: Ihr Kind hat Lust zu lernen.',
@@ -218,7 +249,7 @@ const de: SiteContent = {
       },
       {
         q: 'Wie läuft die Probestunde ab?',
-        a: 'Die Probestunde dauert 60 Minuten, findet per Google Meet statt und ist kostenlos und unverbindlich. In den ersten 30 Minuten lernt Ihr Kind mich kennen, und wir lernen und sprechen ein bisschen Englisch. In den folgenden 20 bis 30 Minuten erkläre ich Ihnen alles Organisatorische und beantworte alle Ihre Fragen.',
+        a: 'Die Probestunde ist kostenlos und unverbindlich. Sie findet per Google Meet in einer kleinen Gruppe mit höchstens 3 Kindern statt, getrennt nach Alter. In den ersten 30 bis 45 Minuten sind die Kinder dran: Wir spielen, singen und sprechen ein bisschen Englisch. Danach erkläre ich Ihnen alles Organisatorische und beantworte Ihre Fragen. Insgesamt dauert sie etwa eine Stunde. Den Link erhalten Sie nach der Buchung per E-Mail.',
       },
       {
         q: 'Wie groß sind die Gruppen?',
@@ -226,7 +257,7 @@ const de: SiteContent = {
       },
       {
         q: 'Wann findet der Unterricht statt?',
-        a: 'Der Unterricht findet einmal pro Woche statt. Es gibt mehrere Gruppen: abends unter der Woche sowie samstags vormittags und abends. Sie wählen die Gruppe, die zu Ihrem Zeitplan passt. Sonntags findet kein Unterricht statt.',
+        a: 'Der Unterricht findet einmal pro Woche in festen Mini-Gruppen statt, abends unter der Woche oder samstags. In den Weihnachts-, Oster- und Sommerferien ist unterrichtsfrei. Die genauen Zeiten stehen bei den Preisen. Sonntags findet kein Unterricht statt.',
       },
       {
         q: 'Wird auf Deutsch oder auf Englisch unterrichtet?',
@@ -234,7 +265,11 @@ const de: SiteContent = {
       },
       {
         q: 'Wie funktioniert die Bezahlung?',
-        a: 'Sie erhalten jeden Monat eine Rechnung. Für versäumte Stunden wird keine Gebühr berechnet.',
+        a: 'Gruppenunterricht kostet 85 € pro Monat, im August zahlen Sie nichts. Einzelunterricht kostet 40 € pro Stunde, und Sie zahlen nur die Stunden, die stattfinden. Sie erhalten jeden Monat eine Rechnung. Geschwister und Freunde bekommen einen Rabatt.',
+      },
+      {
+        q: 'Was passiert, wenn mein Kind eine Stunde verpasst?',
+        a: 'Kein Problem. Nach jeder Stunde bekommen alle Familien eine kurze Zusammenfassung mit Buchseiten, neuen Wörtern und dem Lied der Stunde. So holt Ihr Kind Verpasstes zu Hause in 10 bis 15 Minuten nach. Zu Beginn jeder Stunde wiederholen wir außerdem kurz die letzte Stunde. Krankheitsbedingte Fehlstunden in der Gruppe schreibe ich gut.',
       },
       {
         q: 'Unterrichten Sie auch Kinder außerhalb Deutschlands?',
@@ -251,15 +286,17 @@ const de: SiteContent = {
 
   booking: {
     title: 'Kostenlose Probestunde buchen',
-    intro: 'Wählen Sie einen Tag und eine Uhrzeit. Die Probestunde dauert 60 Minuten, findet per Google Meet statt und ist völlig unverbindlich.',
-    steps: ['Tag wählen', 'Uhrzeit wählen', 'Kurz vorstellen'],
-    loading: 'Freie Termine werden geladen …',
+    intro: 'Die Probestunde findet per Google Meet in einer kleinen Gruppe mit höchstens 3 Kindern statt, getrennt nach Alter. Sie dauert etwa eine Stunde und ist kostenlos und völlig unverbindlich.',
+    steps: ['Termin wählen', 'Kurz vorstellen', 'Fertig'],
+    loading: 'Termine werden geladen …',
     timezone: 'Alle Zeiten in deutscher Zeit (Europe/Berlin).',
-    noSlotsDay: 'An diesem Tag ist leider schon alles belegt.',
-    noSlotsAll: 'Gerade sind alle Termine der nächsten vier Wochen belegt. Schreiben Sie mir kurz, wir finden einen Termin!',
-    free: '{n} frei',
-    taken: 'belegt',
-    summary: '{day}, {date} · {time} Uhr',
+    noSlotsAll: 'Gerade ist keine Probestunde frei. Schreiben Sie mir kurz, dann melde ich mich mit dem nächsten Termin!',
+    seatsFree: '{n} Plätze frei',
+    seatFree: '1 Platz frei',
+    full: 'ausgebucht',
+    agesLabel: '{from} bis {to} Jahre',
+    ageHint: 'Dieser Termin ist für Kinder von {from} bis {to} Jahren gedacht. Vielleicht passt ein anderer Termin besser?',
+    summary: '{day}, {date} · {time} Uhr · {ages}',
     changeSlot: 'Termin ändern',
     form: {
       childName: 'Vorname Ihres Kindes',
@@ -287,7 +324,7 @@ const de: SiteContent = {
     },
     errors: {
       generic: 'Das hat leider nicht geklappt. Bitte versuchen Sie es noch einmal oder schreiben Sie mir direkt.',
-      slot_taken: 'Oh, dieser Termin wurde gerade vergeben. Bitte wählen Sie einen anderen.',
+      slot_taken: 'Oh, diese Probestunde ist gerade voll geworden. Bitte wählen Sie einen anderen Termin.',
       invalid: 'Bitte prüfen Sie Ihre Angaben.',
       turnstile: 'Die Sicherheitsprüfung ist noch nicht abgeschlossen. Bitte warten Sie einen Moment und klicken Sie erneut.',
       turnstile_failed: 'Der Spam-Schutz konnte nicht geladen werden. Bitte laden Sie die Seite neu. Falls es wieder passiert, schreiben Sie mir einfach per WhatsApp oder E-Mail.',

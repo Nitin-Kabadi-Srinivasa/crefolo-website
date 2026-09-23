@@ -49,6 +49,15 @@ export interface SiteContent {
     chips: string[];
     photoAlt: string;
   };
+  // Banner under the hero announcing the next group start. Dates come from schedule.ts.
+  announcement: {
+    eyebrow: string;
+    title: string; // {date}
+    text: string; // {weekdays}, {time}
+    trials: string; // {dates}, {time}
+    ages: string; // {bands}
+    cta: string;
+  };
   steps: {
     title: string;
     intro: string;
@@ -79,6 +88,9 @@ export interface SiteContent {
       badge?: string;
     }[];
     invoice: string;
+    breaks: { title: string; intro: string; holidayNote: string }; // the periods come from schedule.ts
+    discounts: { title: string; items: string[] };
+    terms: { title: string; items: string[] };
     note: { title: string; text: string };
   };
   about: {
@@ -133,11 +145,13 @@ export interface BookingStrings {
   steps: [string, string, string];
   loading: string;
   timezone: string;
-  noSlotsDay: string;
   noSlotsAll: string;
-  free: string; // "{n} frei"
-  taken: string;
-  summary: string; // "{day}, {date} · {time}"
+  seatsFree: string; // "{n} Plätze frei"
+  seatFree: string; // "1 Platz frei"
+  full: string; // "ausgebucht"
+  agesLabel: string; // "{from} bis {to} Jahre"
+  ageHint: string; // shown when the child's age is outside the trial's age band; {from} {to}
+  summary: string; // "{day}, {date} · {time} · {ages}"
   changeSlot: string;
   form: {
     childName: string;

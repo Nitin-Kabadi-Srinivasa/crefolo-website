@@ -41,6 +41,7 @@ The important files for content:
 |---|---|
 | `src\content\de.ts` | **All German text and prices** (the main website) |
 | `src\content\en.ts` | **All English text and prices** (the EN version) |
+| `src\content\schedule.ts` | **Dates:** trial lessons, the next group start, class-free periods (both languages) |
 | `src\content\legal-de.ts` | German Impressum and Datenschutz |
 | `src\content\legal-en.ts` | English Imprint and Privacy |
 | `src\pages\index.astro` | The **order of sections** on the German home page |
@@ -121,7 +122,27 @@ git push
 
 ### Change a price
 Open `src\content\de.ts`, find the `pricing:` section. Change the number inside the quotes,
-for example `price: '22 €'`. Do the same in `en.ts` (`price: '€22'`). Publish.
+for example `price: '85 €'`. Do the same in `en.ts` (`price: '€85'`). The price is also
+mentioned in the FAQ answer "Wie funktioniert die Bezahlung?", so update that sentence too. Publish.
+
+### Change trial dates, the next group start or the class-free periods
+All dates live in **one file for both languages**: `src\content\schedule.ts`.
+
+- **Trial lessons:** each line under `trials:` is one group trial, for example
+  ```
+  { date: '2026-10-01', time: '17:00', ages: [5, 7] },
+  ```
+  Date as `'YYYY-MM-DD'`, time in German time, `ages` is the age band (from, to).
+  Add a line for a new date, delete a line to cancel a date. Past dates disappear automatically.
+- **Places per trial:** `trialCapacity: 3`.
+- **Next group start:** `nextGroup: { date: '2026-11-05', time: '17:00' },`
+  This drives the "Neue Mini-Gruppe" banner under the photo. It hides itself after the start.
+  To remove the banner completely, write `nextGroup: null,`
+- **Class-free periods:** each line under `breaks:` has a German and English name and a
+  `from` / `to` date. They appear in the prices section; past periods disappear automatically.
+
+The booking form reads the trial dates from this file, so a new date can be booked as soon
+as the change is live. Keep the commas at the end of each line. Publish as usual.
 
 ### Change a headline or a paragraph
 Search the file for a few words of the current text (Ctrl+F in the editor), change the words

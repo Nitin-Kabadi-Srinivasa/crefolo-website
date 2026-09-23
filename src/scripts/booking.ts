@@ -1,10 +1,9 @@
-// Booking widget: loads free slots from /api/availability, lets the parent pick a day and time,
+// Booking widget: loads the group trial dates from /api/availability, lets the parent pick one,
 // collects the details and posts to /api/book.
 import type { BookingStrings } from '@/content/types';
 
-type Slot = { start: string; end: string; available: boolean };
-type Day = { date: string; slots: Slot[] };
-type Availability = { ok: boolean; timezone: string; days: Day[] };
+type Session = { start: string; end: string; ages: [number, number]; taken: number };
+type Availability = { ok: boolean; timezone: string; capacity: number; sessions: Session[] };
 type BookResponse =
   | {
       ok: true;
@@ -34,17 +33,19 @@ function init(root: HTMLElement) {
   const tz = 'Europe/Berlin';
   const intl = locale === 'de' ? 'de-DE' : 'en-GB';
   const timeFmt = new Intl.DateTimeFormat(intl, { hour: '2-digit', minute: '2-digit', timeZone: tz });
+  const partsFmt = new Intl.DateTimeFormat('en-US', { timeZone: tz, year: 'numeric', month: 'numeric', day: 'numeric', weekday: 'short' });
+  const WD = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
   const q = <T extends HTMLElement>(role: string) => root.querySelector<T>(`[data-role="${role}"]`)!;
   const els = {
     status: q('status'),
     error: q('error'),
     errorText: q('error-text'),
-    days: q('days'),
-    daysList: q('days-list'),
-    times: q('times'),
-    timesList: q('times-list'),
+    sessions: q('sessions'),
+    sessionsList: q('sessions-list'),
     form: q<HTMLFormElement>('form'),
+    ageSelect: root.querySelector<HTMLSelectElement>('select[name="childAge"]')!,
+    ageHint: q('age-hint'),
     submit: q<HTMLButtonElement>('submit'),
     submitLabel: q('submit-label'),
     summary: q('summary'),
@@ -62,8 +63,7 @@ function init(root: HTMLElement) {
   const stepItems = Array.from(root.querySelectorAll<HTMLElement>('.bsteps__item'));
 
   let availability: Availability | null = null;
-  let selectedDay: Day | null = null;
-  let selectedSlot: Slot | null = null;
+  let selected: Session | null = null;
   let turnstileId: string | null = null;
   let turnstileLoading = false;
   let turnstileToken = '';
@@ -86,22 +86,27 @@ function init(root: HTMLElement) {
   };
   const clearError = () => show(els.error, false);
 
-  const parseDate = (ymd: string) => new Date(`${ymd}T12:00:00Z`);
-  const dateLabel = (ymd: string) => {
-    const d = parseDate(ymd);
-    const wd = s.weekdaysLong[d.getUTCDay()];
-    const month = s.months[d.getUTCMonth()];
-    return locale === 'de' ? `${wd}, ${d.getUTCDate()}. ${month}` : `${wd}, ${d.getUTCDate()} ${month}`;
+  /** Date parts of an instant in German time */
+  const berlin = (iso: string) => {
+    const p: Record<string, string> = {};
+    for (const part of partsFmt.formatToParts(new Date(iso))) p[part.type] = part.value;
+    return { day: Number(p.day), month: Number(p.month) - 1, weekday: WD.indexOf(p.weekday) };
   };
-  const timeLabel = (slot: { start: string; end: string }) => `${timeFmt.format(new Date(slot.start))}–${timeFmt.format(new Date(slot.end))}`;
-  const summaryFor = (day: Day, slot: Slot) => {
-    const d = parseDate(day.date);
-    const template = s.summary.replace('{day}', s.weekdaysLong[d.getUTCDay()]).replace('{time}', timeLabel(slot));
-    const dateOnly = locale === 'de' ? `${d.getUTCDate()}. ${s.months[d.getUTCMonth()]}` : `${d.getUTCDate()} ${s.months[d.getUTCMonth()]}`;
-    return template.replace('{date}', dateOnly);
+  const timeLabel = (x: Session) => `${timeFmt.format(new Date(x.start))}–${timeFmt.format(new Date(x.end))}`;
+  const agesLabel = (x: Session) => s.agesLabel.replace('{from}', String(x.ages[0])).replace('{to}', String(x.ages[1]));
+  const dateOnly = (x: Session) => {
+    const d = berlin(x.start);
+    return locale === 'de' ? `${d.day}. ${s.months[d.month]}` : `${d.day} ${s.months[d.month]}`;
   };
+  const summaryFor = (x: Session) =>
+    s.summary
+      .replace('{day}', s.weekdaysLong[berlin(x.start).weekday])
+      .replace('{date}', dateOnly(x))
+      .replace('{time}', timeLabel(x))
+      .replace('{ages}', agesLabel(x));
+  const seatsText = (free: number) => (free <= 0 ? s.full : free === 1 ? s.seatFree : s.seatsFree.replace('{n}', String(free)));
 
-  // ---------- load availability ----------
+  // ---------- load dates ----------
   async function load() {
     show(els.status, true);
     clearError();
@@ -109,10 +114,10 @@ function init(root: HTMLElement) {
       const res = await fetch(`${api}/availability`, { headers: { accept: 'application/json' } });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       availability = (await res.json()) as Availability;
-      if (!availability.ok) throw new Error('not ok');
-      renderDays();
+      if (!availability.ok || !Array.isArray(availability.sessions)) throw new Error('not ok');
+      renderSessions();
       show(els.status, false);
-      show(els.days, true);
+      show(els.sessions, true);
       setStep(1);
     } catch (err) {
       console.error('availability failed', err);
@@ -121,81 +126,74 @@ function init(root: HTMLElement) {
     }
   }
 
-  function renderDays() {
-    els.daysList.innerHTML = '';
-    const days = availability!.days;
-    const anyFree = days.some((d) => d.slots.some((x) => x.available));
-    if (!anyFree) {
+  function renderSessions() {
+    els.sessionsList.innerHTML = '';
+    const cap = availability!.capacity || 3;
+    const list = availability!.sessions;
+    if (!list.some((x) => x.taken < cap)) {
       const p = document.createElement('p');
-      p.className = 'muted';
+      p.className = 'muted sessions-empty';
       p.textContent = s.noSlotsAll;
-      els.daysList.appendChild(p);
+      els.sessionsList.appendChild(p);
       return;
     }
-    for (const day of days) {
-      const d = parseDate(day.date);
-      const free = day.slots.filter((x) => x.available).length;
+    for (const x of list) {
+      const d = berlin(x.start);
+      const free = cap - x.taken;
       const btn = document.createElement('button');
       btn.type = 'button';
-      btn.className = 'day-chip';
-      btn.disabled = free === 0;
-      btn.setAttribute('aria-label', `${dateLabel(day.date)} – ${free === 0 ? s.taken : s.free.replace('{n}', String(free))}`);
+      btn.className = 'session-card';
+      btn.disabled = free <= 0;
+      if (selected && selected.start === x.start) btn.classList.add('is-selected');
+      btn.setAttribute('aria-label', `${summaryFor(x)}, ${seatsText(free)}`);
+      const seatsClass = free <= 0 ? 'session-card__seats--full' : free === 1 ? 'session-card__seats--last' : '';
       btn.innerHTML =
-        `<span class="day-chip__wd">${s.weekdaysShort[d.getUTCDay()]}</span>` +
-        `<span class="day-chip__day">${d.getUTCDate()}</span>` +
-        `<span class="day-chip__month">${s.months[d.getUTCMonth()].slice(0, 3)}</span>` +
-        `<span class="day-chip__free ${free === 0 ? 'day-chip__free--none' : ''}">${free === 0 ? s.taken : s.free.replace('{n}', String(free))}</span>`;
-      btn.addEventListener('click', () => selectDay(day, btn));
-      els.daysList.appendChild(btn);
+        `<span class="session-card__date">` +
+        `<span class="session-card__wd">${s.weekdaysShort[d.weekday]}</span>` +
+        `<span class="session-card__day">${d.day}</span>` +
+        `<span class="session-card__month">${s.months[d.month].slice(0, 3)}</span>` +
+        `</span>` +
+        `<span class="session-card__info">` +
+        `<span class="session-card__time">${timeLabel(x)}${locale === 'de' ? ' Uhr' : ''}</span>` +
+        `<span class="session-card__ages">${agesLabel(x)}</span>` +
+        `<span class="session-card__seats ${seatsClass}">${seatsText(free)}</span>` +
+        `</span>`;
+      btn.addEventListener('click', () => choose(x));
+      els.sessionsList.appendChild(btn);
     }
   }
 
-  function selectDay(day: Day, btn: HTMLButtonElement) {
-    selectedDay = day;
-    selectedSlot = null;
+  function choose(x: Session) {
+    selected = x;
     clearError();
-    els.daysList.querySelectorAll('.day-chip').forEach((b) => b.classList.toggle('is-selected', b === btn));
-    els.timesList.innerHTML = '';
-    for (const slot of day.slots) {
-      const t = document.createElement('button');
-      t.type = 'button';
-      t.className = 'time-btn';
-      t.disabled = !slot.available;
-      t.innerHTML = `<span>${timeLabel(slot)}</span>` + (slot.available ? '' : `<span class="time-btn__taken">${s.taken}</span>`);
-      t.addEventListener('click', () => selectSlot(slot, t));
-      els.timesList.appendChild(t);
-    }
-    show(els.times, true);
-    show(els.form, false);
-    show(els.summary, false);
-    setStep(2);
-    els.times.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-  }
-
-  function selectSlot(slot: Slot, btn: HTMLButtonElement) {
-    selectedSlot = slot;
-    clearError();
-    els.timesList.querySelectorAll('.time-btn').forEach((b) => b.classList.toggle('is-selected', b === btn));
-    els.summaryText.textContent = summaryFor(selectedDay!, slot);
+    els.summaryText.textContent = summaryFor(x);
     show(els.summary, true);
-    show(els.days, false);
-    show(els.times, false);
+    show(els.sessions, false);
     show(els.form, true);
-    setStep(3);
+    setStep(2);
+    updateAgeHint();
     ensureTurnstile();
     els.form.scrollIntoView({ behavior: 'smooth', block: 'start' });
     (els.form.querySelector<HTMLInputElement>('input[name="childName"]') || els.form).focus({ preventScroll: true });
   }
 
-  function resetToDays() {
-    selectedSlot = null;
+  function backToDates() {
     show(els.summary, false);
     show(els.form, false);
-    show(els.days, true);
-    show(els.times, !!selectedDay);
-    setStep(selectedDay ? 2 : 1);
-    els.days.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    renderSessions();
+    show(els.sessions, true);
+    setStep(1);
+    els.sessions.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
+
+  // Gentle hint (not a blocker) when the child's age is outside the chosen trial's age band
+  function updateAgeHint() {
+    const age = Number(els.ageSelect.value);
+    const off = !!selected && Number.isFinite(age) && age > 0 && (age < selected.ages[0] || age > selected.ages[1]);
+    if (off && selected) els.ageHint.textContent = s.ageHint.replace('{from}', String(selected.ages[0])).replace('{to}', String(selected.ages[1]));
+    show(els.ageHint, off);
+  }
+  els.ageSelect.addEventListener('change', updateAgeHint);
 
   // ---------- Turnstile ----------
   function ensureTurnstile() {
@@ -248,13 +246,17 @@ function init(root: HTMLElement) {
     }
     return '';
   }
+  const resetTurnstile = () => {
+    turnstileToken = '';
+    if (window.turnstile && turnstileId) window.turnstile.reset(turnstileId);
+  };
 
   // ---------- submit ----------
   els.form.addEventListener('submit', async (e) => {
     e.preventDefault();
     clearError();
-    if (!selectedSlot || !selectedDay) {
-      resetToDays();
+    if (!selected) {
+      backToDates();
       return;
     }
     // native validation with a friendly highlight
@@ -279,15 +281,16 @@ function init(root: HTMLElement) {
         els.submit.disabled = false;
         els.submitLabel.textContent = s.form.submit;
         showError(turnstileFailed ? s.errors.turnstile_failed : s.errors.turnstile);
-        if (window.turnstile && turnstileId) window.turnstile.reset(turnstileId);
+        resetTurnstile();
         return;
       }
     }
 
     const fd = new FormData(els.form);
+    const booked = selected;
     const payload = {
-      start: selectedSlot.start,
-      end: selectedSlot.end,
+      start: booked.start,
+      end: booked.end,
       childName: String(fd.get('childName') || '').trim(),
       childAge: Number(fd.get('childAge')),
       parentName: String(fd.get('parentName') || '').trim(),
@@ -310,43 +313,40 @@ function init(root: HTMLElement) {
       if (!res.ok || !data.ok) {
         const code = (!data.ok && data.error) || 'generic';
         const msg = (s.errors as Record<string, string>)[code] || s.errors.generic;
-        showError(msg);
         if (code === 'slot_taken') {
-          // refresh availability so the taken slot disappears
-          selectedSlot = null;
+          // the trial just filled up: reload the dates and let the parent pick another one
+          selected = null;
           await load();
-          resetToDays();
+          backToDates();
         }
-        turnstileToken = '';
-        if (window.turnstile && turnstileId) window.turnstile.reset(turnstileId);
+        showError(msg);
+        resetTurnstile();
         return;
       }
-      showSuccess(data.booking, payload);
+      showSuccess(data.booking, payload, booked);
     } catch (err) {
       console.error('booking failed', err);
       showError(s.errors.generic);
-      turnstileToken = '';
-      if (window.turnstile && turnstileId) window.turnstile.reset(turnstileId);
+      resetTurnstile();
     } finally {
       els.submit.disabled = false;
       els.submitLabel.textContent = s.form.submit;
     }
   });
 
-  function showSuccess(b: Extract<BookResponse, { ok: true }>['booking'], payload: { email: string; childName: string }) {
+  function showSuccess(b: Extract<BookResponse, { ok: true }>['booking'], payload: { email: string; childName: string }, booked: Session) {
     show(els.form, false);
     show(els.summary, false);
-    show(els.days, false);
-    show(els.times, false);
+    show(els.sessions, false);
     setStep(4);
     els.successText.textContent = s.success.text.replace('{email}', payload.email).replace('{child}', payload.childName);
-    els.successSlot.textContent = summaryFor(selectedDay!, selectedSlot!);
+    els.successSlot.textContent = summaryFor(booked);
     els.meetLink.href = b.meetLink || '#';
     els.meetLink.hidden = !b.meetLink;
     els.icsLink.href = b.icsUrl;
     const fmt = (iso: string) => new Date(iso).toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');
     const title = locale === 'de' ? `Probestunde Englisch: ${payload.childName} (Crefolo)` : `English trial lesson: ${payload.childName} (Crefolo)`;
-    const details = (locale === 'de' ? 'Google Meet: ' : 'Google Meet: ') + (b.meetLink || '');
+    const details = 'Google Meet: ' + (b.meetLink || '');
     els.gcalLink.href =
       'https://calendar.google.com/calendar/render?action=TEMPLATE' +
       `&text=${encodeURIComponent(title)}&dates=${fmt(b.start)}/${fmt(b.end)}` +
@@ -355,14 +355,13 @@ function init(root: HTMLElement) {
     els.success.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
 
-  els.change.addEventListener('click', resetToDays);
+  els.change.addEventListener('click', backToDates);
   els.another.addEventListener('click', async () => {
     show(els.success, false);
     els.form.reset();
-    selectedDay = null;
-    selectedSlot = null;
-    turnstileToken = '';
-    if (window.turnstile && turnstileId) window.turnstile.reset(turnstileId);
+    show(els.ageHint, false);
+    selected = null;
+    resetTurnstile();
     await load();
   });
 

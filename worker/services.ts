@@ -11,5 +11,6 @@ export interface Services {
 
 export function getServices(env: AppEnv): Services {
   if (isMock(env)) return { calendar: mockCalendar(), mailer: mockMailer(), mock: true };
-  return { calendar: realCalendar(env), mailer: graphMailer(env), mock: false };
+  const dryMail = env.MAIL_DRY_RUN === '1';
+  return { calendar: realCalendar(env), mailer: dryMail ? mockMailer() : graphMailer(env), mock: false };
 }

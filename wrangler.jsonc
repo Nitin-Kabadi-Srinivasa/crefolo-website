@@ -21,13 +21,9 @@
     "TEACHER_EMAIL": "info@crefolo.com",
     "TEACHER_NAME": "Nitin",
     "TIMEZONE": "Europe/Berlin",
-    // Trial-lesson slots: weekdays 1-5 = Monday-Friday, start hours in local time, 60 minutes each
-    "SLOT_WEEKDAYS": "1,2,3,4,5",
-    "SLOT_START_HOURS": "17,18,19,20",
-    "SLOT_MINUTES": "60",
-    // Earliest bookable day = today + MIN_DAYS_AHEAD; bookable up to MAX_DAYS_AHEAD days from today
+    // Trial dates, age bands and places per trial are set in src/content/schedule.ts.
+    // A trial can be booked until the day before: earliest bookable day = today + MIN_DAYS_AHEAD
     "MIN_DAYS_AHEAD": "1",
-    "MAX_DAYS_AHEAD": "28",
     // "1" = no Google/Microsoft calls, fake availability and bookings (local design work)
     "MOCK": "0"
   },
