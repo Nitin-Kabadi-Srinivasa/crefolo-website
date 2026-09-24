@@ -3,6 +3,7 @@ node_modules/
 dist/
 .astro/
 .wrangler/
+marketing/.build/
 
 # local secrets - never commit
 .dev.vars

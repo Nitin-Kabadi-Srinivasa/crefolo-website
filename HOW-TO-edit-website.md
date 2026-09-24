@@ -234,6 +234,25 @@ If you want to do it yourself (Way B, on your computer):
 
 ---
 
+## Flyers, posters and Kleinanzeigen pictures
+
+Everything lives in the `marketing` folder:
+- `marketing\output` contains the finished files: the Kleinanzeigen pictures and text, the A4 and A3
+  posters, and the A6 flyers (4 per A4 sheet for your own printer, plus a version for a print shop).
+- `marketing\src` contains the designs (HTML files, same colours and fonts as the website).
+
+The dates, times, age groups and prices are taken from `schedule.ts` and `de.ts`. After you
+change dates there, make fresh files on your computer (Way B) with:
+```powershell
+cd D:\07_Website\crefolo-website
+git pull
+npm run marketing
+```
+Then publish with the three git commands as usual, so the new files are backed up on GitHub too.
+This does not change the website.
+
+---
+
 ## Checking that your change went live
 
 - Cloudflare dashboard -> **Workers & Pages -> crefolo-website -> Deployments**.

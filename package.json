@@ -14,7 +14,8 @@
     "preview": "wrangler dev",
     "deploy": "astro build && wrangler deploy",
     "check": "astro check && tsc --noEmit -p worker/tsconfig.json",
-    "images": "node scripts/process-images.mjs"
+    "images": "node scripts/process-images.mjs",
+    "marketing": "node scripts/marketing.mjs"
   },
   "dependencies": {
     "astro": "^7.3.2",
@@ -24,6 +25,7 @@
     "@astrojs/check": "^0.9.10",
     "@cloudflare/workers-types": "^5.20260911.1",
     "puppeteer-core": "^25.10.0",
+    "qrcode": "^1.5.4",
     "typescript": "^5.9.3",
     "wrangler": "^4.131.1"
   }

@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<link rel="stylesheet" href="{{root}}/marketing/src/brand.css" />
+<style>
+  /* A6 flyer (105 x 148 mm). The script sets body class "sheet" (4 per A4 page, for home printers)
+     or "print" (one flyer per page with 3 mm bleed, for a print shop). */
+  body.sheet { --bleed: 0mm; }
+  body.print { --bleed: 3mm; }
+
+  .sheet .pg { width: 210mm; height: 297mm; display: grid; grid-template-columns: 105mm 105mm; grid-template-rows: 148.5mm 148.5mm; position: relative; page-break-after: always; overflow: hidden; }
+  .sheet .pg::before, .sheet .pg::after { content: ''; position: absolute; z-index: 5; }
+  .sheet .pg::before { left: 105mm; top: 0; bottom: 0; border-left: .25mm dashed #d9cfe2; }
+  .sheet .pg::after { top: 148.5mm; left: 0; right: 0; border-top: .25mm dashed #d9cfe2; }
+  .print .pg { width: 111mm; height: 154mm; page-break-after: always; overflow: hidden; }
+  .pg:last-child { page-break-after: auto; }
+
+  .flyer {
+    position: relative; overflow: hidden;
+    width: calc(105mm + 2 * var(--bleed)); height: calc(148mm + 2 * var(--bleed));
+    padding: calc(var(--bleed) + 7mm) calc(var(--bleed) + 7mm);
+    display: flex; flex-direction: column;
+    background: #fff;
+  }
+  .sheet .flyer { height: 148.5mm; }
+  .print .front { background: linear-gradient(180deg, #fff0f7 0%, #fffaf6 60%, #fff 100%); }
+  .print .back { background: var(--cream); }
+
+  /* ---------- front ---------- */
+  .brand { display: flex; align-items: center; gap: 2mm; }
+  .brand .mark { width: 9mm; height: 9mm; }
+  .brand .word { height: 3.1mm; }
+  .pill {
+    align-self: flex-start; margin-top: 3mm;
+    font-family: 'Baloo 2', sans-serif; font-weight: 700; font-size: 2.9mm;
+    color: var(--pink-deep); background: var(--pink-soft);
+    padding: .8mm 2.8mm; border-radius: 999px;
+  }
+  .front h1 { font-size: 9.6mm; line-height: 1.02; margin-top: 2.6mm; }
+  .front .photo { position: relative; flex: 1; margin: 4mm 1.5mm 3mm; min-height: 30mm; }
+  .front .blob-wrap { width: 100%; height: 100%; }
+  .front .sticker { font-size: 3.6mm; padding: 1.2mm 2.5mm; }
+  .front .s-learn { top: 1mm; left: -2.5mm; }
+  .front .s-fun { top: -1.5mm; right: 10%; }
+  .front .s-sing { top: 44%; right: -3mm; }
+  .front .s-colour { bottom: 1mm; left: 5%; }
+  .front .offer {
+    background: var(--pink-btn); color: #fff; border-radius: 4.5mm;
+    padding: 2.8mm 4mm; text-align: center;
+  }
+  .front .offer strong { display: block; font-family: 'Baloo 2', sans-serif; font-weight: 800; font-size: 6mm; line-height: 1.05; }
+  .front .offer span { display: block; font-size: 3mm; font-weight: 800; margin-top: .6mm; opacity: .95; }
+  .front .url { text-align: center; margin-top: 2.4mm; font-family: 'Baloo 2', sans-serif; font-weight: 800; font-size: 5mm; line-height: 1; }
+  .front .url small { font-family: 'Nunito', sans-serif; font-size: 2.7mm; font-weight: 700; color: var(--muted); }
+
+  /* ---------- back ---------- */
+  .back h2 { font-size: 6.6mm; line-height: 1.04; }
+  .back .sub { font-size: 3mm; font-weight: 700; color: var(--plum-soft); margin-top: 1mm; }
+  .back .chips { display: grid; grid-template-columns: repeat({{dateCount}}, 1fr); gap: 1.4mm; margin-top: 2.6mm; }
+  .back .chips span {
+    background: #fff; border: .45mm solid var(--pink-soft); border-radius: 2.6mm;
+    text-align: center; padding: .9mm 0 1mm;
+    font-family: 'Baloo 2', sans-serif; font-weight: 800; font-size: 3.6mm; line-height: 1.05; color: var(--plum);
+  }
+  .back .chips small { display: block; font-family: 'Nunito', sans-serif; font-size: 2.2mm; color: var(--pink-deep); text-transform: uppercase; letter-spacing: .05em; }
+  .back .slots { display: grid; gap: 1.2mm; margin-top: 2mm; }
+  .back .slot { display: flex; align-items: center; justify-content: space-between; background: var(--lilac-soft); border-radius: 2.6mm; padding: 1.2mm 3mm; }
+  .back .slot b { font-family: 'Baloo 2', sans-serif; font-weight: 800; font-size: 3.8mm; }
+  .back .slot span { font-size: 3.1mm; font-weight: 800; color: #5a3a8a; }
+  .back .start { margin-top: 2mm; background: var(--pink-btn); color: #fff; border-radius: 2.6mm; padding: 1.4mm 3mm; font-size: 3.1mm; font-weight: 800; text-align: center; }
+
+  .back .checks { list-style: none; display: grid; gap: 1.8mm; margin-top: 3.6mm; }
+  .back .checks li { display: flex; align-items: center; gap: 2mm; font-size: 3.25mm; font-weight: 800; line-height: 1.2; }
+  .back .check { width: 4.8mm; height: 4.8mm; }
+  .back .price { margin-top: 3mm; font-size: 2.95mm; font-weight: 700; color: var(--plum-soft); line-height: 1.35; }
+  .back .price b { color: var(--plum); }
+
+  .back .cta { margin-top: auto; display: flex; align-items: center; gap: 3mm; background: #fff; border: .45mm solid var(--pink-soft); border-radius: 3.6mm; padding: 2mm 2.6mm; }
+  .back .qr { width: 21mm; height: 21mm; flex: none; }
+  .back .cta .lead { font-size: 2.8mm; font-weight: 800; color: var(--pink-deep); }
+  .back .cta .url { font-family: 'Baloo 2', sans-serif; font-weight: 800; font-size: 6.4mm; line-height: 1.05; }
+  .back .cta .phone { font-size: 2.9mm; font-weight: 800; }
+  .back .imprint { margin-top: 1.8mm; font-size: 2.1mm; color: var(--muted); text-align: center; }
+</style>
+</head>
+<body class="{{layout}}">
+  <template id="front">
+    <div class="flyer front">
+      <div class="brand">
+        <img class="mark" src="{{root}}/src/assets/logo-mark.png" alt="" />
+        <img class="word" src="{{root}}/src/assets/logo-wordmark.png" alt="Crefolo" />
+      </div>
+      <span class="pill">{{eyebrow}}</span>
+      <h1 class="display hl">Englisch lernen wird zum <em>Abenteuer!</em></h1>
+      <div class="photo">
+        <div class="blob-wrap">
+          <span class="blob-bg"></span>
+          <img class="blob-img" src="{{root}}/src/assets/kids.jpg" alt="" />
+        </div>
+        <span class="sticker sticker--learn s-learn">learn</span>
+        <span class="sticker sticker--fun s-fun">fun</span>
+        <span class="sticker sticker--sing s-sing">sing</span>
+        <span class="sticker sticker--colour s-colour">colour</span>
+      </div>
+      <div class="offer">
+        <strong>Kostenlose Probestunde</strong>
+        <span>{{trialWhen}}</span>
+      </div>
+      <div class="url">crefolo.com <small>· Infos auf der Rückseite</small></div>
+    </div>
+  </template>
+
+  <template id="back">
+    <div class="flyer back">
+      <h2 class="display">Kostenlose Gruppen-Probestunde</h2>
+      <p class="sub">{{trialSub}}</p>
+      <div class="chips">{{dateChipsSmall}}</div>
+      <div class="slots">{{slotRowsSmall}}</div>
+      <div class="start">{{nextGroupLine}}</div>
+      <ul class="checks">
+        <li><span class="check">{{checkIcon}}</span>Mini-Gruppen mit höchstens 3 Kindern</li>
+        <li><span class="check">{{checkIcon}}</span>Spielerisch mit Geschichten, Spielen und Liedern</li>
+        <li><span class="check">{{checkIcon}}</span>Echte Cambridge-Bücher, wenig Bildschirmzeit</li>
+        <li><span class="check">{{checkIcon}}</span>Cambridge-zertifizierter Lehrer</li>
+      </ul>
+      <p class="price"><b>Mini-Gruppe {{groupPrice}}</b> · Einzelunterricht {{individualPrice}}<br />{{siblingDiscount}}</p>
+      <div class="cta">
+        <div class="qr">{{qr}}</div>
+        <div>
+          <div class="lead">Jetzt kostenlos anmelden:</div>
+          <div class="url">crefolo.com</div>
+          <div class="phone">WhatsApp oder Anruf: {{phone}}</div>
+        </div>
+      </div>
+      <p class="imprint">{{imprint}}</p>
+    </div>
+  </template>
+
+  <div id="pages"></div>
+
+  <script>
+    // Sheet: page 1 = 4 fronts, page 2 = 4 backs (print double-sided, flip on the long edge).
+    // Print: page 1 = front, page 2 = back.
+    const perPage = document.body.classList.contains('sheet') ? 4 : 1;
+    const out = document.getElementById('pages');
+    for (const side of ['front', 'back']) {
+      const pg = document.createElement('div');
+      pg.className = 'pg';
+      for (let i = 0; i < perPage; i++) pg.appendChild(document.getElementById(side).content.cloneNode(true));
+      out.appendChild(pg);
+    }
+  </script>
+</body>
+</html>

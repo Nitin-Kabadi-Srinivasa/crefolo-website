@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<link rel="stylesheet" href="{{root}}/marketing/src/brand.css" />
+<style>
+  html, body { width: 1200px; height: 1200px; overflow: hidden; }
+  body {
+    position: relative;
+    background: var(--cream);
+    padding: 70px 72px 60px;
+    display: flex;
+    flex-direction: column;
+  }
+  .glow { position: absolute; border-radius: 50%; filter: blur(70px); opacity: .55; z-index: 0; }
+  .glow--1 { width: 560px; height: 560px; background: #ffd6ea; top: -200px; left: -160px; }
+  .glow--2 { width: 520px; height: 520px; background: var(--lilac-soft); bottom: -200px; right: -160px; }
+  body > *:not(.glow) { position: relative; z-index: 1; }
+
+  .eyebrow {
+    align-self: flex-start;
+    font-family: 'Baloo 2', sans-serif; font-weight: 700; font-size: 28px;
+    color: var(--teal-dark); background: var(--teal-soft);
+    padding: 8px 24px; border-radius: 999px;
+  }
+  h1 { font-size: 86px; line-height: 1.04; margin: 22px 0 0; }
+  .sub { font-size: 34px; font-weight: 700; color: var(--plum-soft); margin-top: 12px; }
+
+  .dates { display: grid; grid-template-columns: repeat({{dateCount}}, 1fr); gap: 18px; margin-top: auto; }
+  .date {
+    background: #fff; border: 4px solid var(--pink-soft); border-radius: 30px;
+    padding: 26px 8px 28px; text-align: center;
+    box-shadow: 0 10px 26px rgba(46, 26, 71, .07);
+  }
+  .date .wd { font-size: 26px; font-weight: 800; color: var(--pink-deep); text-transform: uppercase; letter-spacing: .06em; }
+  .date .d { font-family: 'Baloo 2', sans-serif; font-weight: 800; font-size: 54px; line-height: 1.1; }
+
+  .slots { display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; gap: 18px; margin-top: 22px; }
+  .slot {
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
+    background: #fff; border-radius: 28px; padding: 26px 24px 26px 30px;
+    box-shadow: 0 10px 26px rgba(46, 26, 71, .07);
+  }
+  .slot .time { font-family: 'Baloo 2', sans-serif; font-weight: 800; font-size: 46px; white-space: nowrap; }
+  .slot .ages { font-family: 'Baloo 2', sans-serif; font-weight: 800; font-size: 32px; color: #5a3a8a; background: var(--lilac-soft); padding: 6px 20px; border-radius: 999px; white-space: nowrap; }
+
+  .start {
+    margin-top: auto;
+    background: var(--pink-btn); color: #fff; border-radius: 34px;
+    padding: 30px 40px;
+    box-shadow: 0 18px 40px rgba(214, 18, 122, .3);
+  }
+  .start strong { display: block; font-family: 'Baloo 2', sans-serif; font-weight: 800; font-size: 50px; line-height: 1.1; }
+  .facts { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 18px; }
+  .facts span { background: rgba(255, 255, 255, .2); font-size: 28px; font-weight: 800; padding: 8px 22px; border-radius: 999px; }
+
+  .foot { display: flex; align-items: center; justify-content: center; gap: 12px; margin-top: 28px; }
+  .foot img.mark { width: 48px; height: 48px; }
+  .foot img.word { height: 18px; }
+</style>
+</head>
+<body>
+  <span class="glow glow--1"></span><span class="glow glow--2"></span>
+
+  <span class="eyebrow">Kostenlos & unverbindlich</span>
+  <h1 class="display">{{title}}</h1>
+  <p class="sub">{{subtitle}}</p>
+
+  <div class="dates">{{dateCards}}</div>
+  <div class="slots">{{slotRows}}</div>
+
+  <div class="start">
+    <strong>{{nextGroupLine}}</strong>
+    <div class="facts">
+      <span>Mini-Gruppe {{groupPrice}}</span>
+      <span>max. 3 Kinder</span>
+      <span>Cambridge-Bücher</span>
+    </div>
+  </div>
+
+  <div class="foot">
+    <img class="mark" src="{{root}}/src/assets/logo-mark.png" alt="" />
+    <img class="word" src="{{root}}/src/assets/logo-wordmark.png" alt="Crefolo" />
+  </div>
+</body>
+</html>

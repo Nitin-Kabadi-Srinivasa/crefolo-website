@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<link rel="stylesheet" href="{{root}}/marketing/src/brand.css" />
+<style>
+  html, body { width: 210mm; height: 297mm; }
+  body { background: #fff; }
+  .page {
+    position: relative; overflow: hidden;
+    width: 210mm; height: 297mm;
+    display: flex; flex-direction: column;
+    padding: 11mm 12mm 0;
+    background: linear-gradient(180deg, #fff3f8 0%, #fffaf6 55%, #ffffff 100%);
+  }
+  .glow { position: absolute; border-radius: 50%; filter: blur(14mm); opacity: .55; }
+  .glow--1 { width: 110mm; height: 110mm; background: #ffd6ea; top: -40mm; right: -35mm; }
+  .glow--2 { width: 90mm; height: 90mm; background: var(--yellow-soft); top: 95mm; left: -40mm; }
+  .page > *:not(.glow) { position: relative; z-index: 1; }
+
+  .top { display: flex; align-items: center; justify-content: space-between; gap: 5mm; }
+  .brand { display: flex; align-items: center; gap: 3mm; }
+  .brand .mark { width: 13mm; height: 13mm; }
+  .brand .word { height: 4.4mm; }
+  .pill {
+    font-family: 'Baloo 2', sans-serif; font-weight: 700; font-size: 4.1mm;
+    color: var(--pink-deep); background: var(--pink-soft);
+    padding: 1.4mm 4mm; border-radius: 999px;
+  }
+
+  h1 { font-size: 15.2mm; line-height: 1.02; margin-top: 6mm; }
+
+  .photo { flex: 1; min-height: 50mm; display: flex; align-items: center; justify-content: center; margin: 5mm 0 2mm; }
+  .photo-inner { position: relative; height: 100%; aspect-ratio: 1.7 / 1; max-width: 100%; }
+  .photo .blob-wrap { width: 100%; height: 100%; }
+  .photo .sticker { font-size: 5.4mm; padding: 1.8mm 3.8mm; }
+  .s-learn { top: 2%; left: -2%; }
+  .s-fun { top: -3%; right: 14%; }
+  .s-sing { top: 44%; right: -4%; }
+  .s-colour { bottom: 4%; left: 6%; }
+
+  .info { display: grid; grid-template-columns: 1fr 1.25fr; gap: 6mm; align-items: stretch; margin-top: 3mm; }
+  .checks { list-style: none; display: grid; gap: 3mm; align-content: center; }
+  .checks li { display: flex; align-items: center; gap: 2.6mm; font-size: 4.3mm; font-weight: 800; line-height: 1.2; }
+  .checks .check { width: 6.6mm; height: 6.6mm; }
+
+  .offer {
+    background: var(--pink-btn); color: #fff; border-radius: 6mm;
+    padding: 4.6mm 5mm;
+    box-shadow: 0 2mm 5mm rgba(214, 18, 122, .28);
+  }
+  .offer h2 { font-family: 'Baloo 2', sans-serif; font-weight: 800; font-size: 6.4mm; line-height: 1.05; }
+  .offer .when { font-size: 3.3mm; font-weight: 800; opacity: .95; margin-top: 1.4mm; }
+  .chips { display: grid; grid-template-columns: repeat({{dateCount}}, 1fr); gap: 1.3mm; margin-top: 2.2mm; }
+  .chips span { background: #fff; color: var(--pink-deep); font-weight: 800; font-size: 3.2mm; padding: .8mm 0; border-radius: 999px; white-space: nowrap; text-align: center; }
+  .slots { margin-top: 2.4mm; display: grid; gap: .9mm; font-size: 3.8mm; font-weight: 700; }
+  .slots b { font-family: 'Baloo 2', sans-serif; font-weight: 800; }
+  .offer .start { margin-top: 2.2mm; font-size: 3.6mm; font-weight: 800; background: rgba(255,255,255,.18); border-radius: 3mm; padding: 1.4mm 2.6mm; }
+
+  .cta {
+    display: flex; align-items: center; gap: 5mm;
+    background: #fff; border-radius: 6mm; padding: 4mm 5mm;
+    margin: 5mm 0 7mm;
+    box-shadow: 0 1.5mm 5mm rgba(46, 26, 71, .08);
+    border: .5mm solid var(--pink-soft);
+  }
+  .qr { width: 30mm; height: 30mm; flex: none; }
+  .cta .txt { flex: 1; }
+  .cta .lead { font-size: 4.2mm; font-weight: 800; color: var(--pink-deep); }
+  .cta .url { font-family: 'Baloo 2', sans-serif; font-weight: 800; font-size: 11mm; line-height: 1.05; }
+  .cta .phone { font-size: 4.3mm; font-weight: 800; margin-top: .6mm; }
+  .cta .price { font-size: 3.5mm; color: var(--muted); margin-top: 1mm; font-weight: 700; }
+
+  /* tear-off strips */
+  .tabs { flex: none; display: grid; grid-template-columns: repeat(8, 1fr); height: 46mm; margin: 0 -12mm; padding-bottom: 5mm; border-top: .4mm dashed #b9a9c7; }
+  .tab { position: relative; border-left: .4mm dashed #b9a9c7; display: flex; align-items: center; justify-content: center; background: #fff; }
+  .tab:first-child { border-left: 0; }
+  .tab .v {
+    writing-mode: vertical-rl; transform: rotate(180deg);
+    display: flex; flex-direction: column; align-items: center; gap: .6mm; text-align: center;
+  }
+  .tab .v b { font-family: 'Baloo 2', sans-serif; font-weight: 800; font-size: 3.8mm; color: var(--pink-deep); line-height: 1; white-space: nowrap; }
+  .tab .v span { font-size: 3.3mm; font-weight: 800; line-height: 1.1; white-space: nowrap; }
+  .scissors { position: absolute; top: -2.9mm; left: 3mm; font-size: 4.2mm; color: #b9a9c7; background: #fff; padding: 0 1mm; line-height: 1; }
+
+  .no-tabs .tabs { display: none; }
+  .no-tabs .cta { margin-bottom: 12mm; }
+</style>
+</head>
+<body class="{{variant}}">
+  <div class="page">
+    <span class="glow glow--1"></span><span class="glow glow--2"></span>
+
+    <div class="top">
+      <div class="brand">
+        <img class="mark" src="{{root}}/src/assets/logo-mark.png" alt="" />
+        <img class="word" src="{{root}}/src/assets/logo-wordmark.png" alt="Crefolo" />
+      </div>
+      <span class="pill">{{eyebrow}}</span>
+    </div>
+
+    <h1 class="display hl">Englisch lernen wird zum <em>Abenteuer!</em></h1>
+
+    <div class="photo">
+      <div class="photo-inner">
+        <div class="blob-wrap">
+          <span class="blob-bg"></span>
+          <img class="blob-img" src="{{root}}/src/assets/kids.jpg" alt="" />
+        </div>
+        <span class="sticker sticker--learn s-learn">learn</span>
+        <span class="sticker sticker--fun s-fun">fun</span>
+        <span class="sticker sticker--sing s-sing">sing</span>
+        <span class="sticker sticker--colour s-colour">colour</span>
+      </div>
+    </div>
+
+    <div class="info">
+      <ul class="checks">
+        <li><span class="check">{{checkIcon}}</span>Online in Mini-Gruppen mit höchstens 3 Kindern</li>
+        <li><span class="check">{{checkIcon}}</span>Spielerisch mit Geschichten, Spielen und Liedern</li>
+        <li><span class="check">{{checkIcon}}</span>Echte Cambridge-Bücher, wenig Bildschirmzeit</li>
+        <li><span class="check">{{checkIcon}}</span>Cambridge-zertifizierter Lehrer</li>
+      </ul>
+      <div class="offer">
+        <h2>Kostenlose<br />Gruppen-Probestunde</h2>
+        <div class="when">{{trialWhen}}</div>
+        <div class="chips">{{dateChips}}</div>
+        <div class="slots">{{slotLines}}</div>
+        <div class="start">{{nextGroupLine}}</div>
+      </div>
+    </div>
+
+    <div class="cta">
+      <div class="qr">{{qr}}</div>
+      <div class="txt">
+        <div class="lead">Jetzt kostenlos anmelden:</div>
+        <div class="url">crefolo.com</div>
+        <div class="phone">WhatsApp oder Anruf: {{phone}}</div>
+        <div class="price">{{priceLine}}</div>
+      </div>
+    </div>
+
+    <div class="tabs">{{tabs}}</div>
+  </div>
+</body>
+</html>
