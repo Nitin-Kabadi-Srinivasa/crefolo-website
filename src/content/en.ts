@@ -176,8 +176,8 @@ const en: SiteContent = {
       title: 'Missed lessons & cancellation',
       items: [
         'Groups: if your child is ill, the lesson is credited. Please let me know before the lesson.',
-        'One-to-one: lessons cancelled at least 24 hours in advance are rescheduled.',
         'If your child misses a lesson, you receive a short summary so they can easily catch up.',
+        'One-to-one: lessons cancelled at least 24 hours in advance are rescheduled.',
         'Cancellation with 2 weeks\' notice to the end of a month.',
       ],
     },
