@@ -15,7 +15,7 @@ const de: SiteContent = {
   meta: {
     title: 'Crefolo – Englisch für Kinder online | Kostenlose Probestunde',
     description:
-      'Spielerischer Online-Englischunterricht für Kinder von 5 bis 10 Jahren. Mini-Gruppen mit maximal 3 Kindern, Cambridge-Lehrplan, echte Bücher statt Bildschirmzeit. Jetzt kostenlose Probestunde buchen.',
+      'Spielerischer Online-Englischunterricht für Kinder von 5 bis 12 Jahren. Mini-Gruppen mit maximal 3 Kindern, Cambridge-Lehrplan, echte Bücher statt Bildschirmzeit. Jetzt kostenlose Probestunde buchen.',
   },
 
   nav: {
@@ -34,7 +34,7 @@ const de: SiteContent = {
   },
 
   hero: {
-    eyebrow: 'Online-Englisch für Kinder von 5 bis 10 Jahren',
+    eyebrow: 'Online-Englisch für Kinder von 5 bis 12 Jahren',
     title: 'Englisch lernen wird zum <em>Abenteuer</em>',
     text: 'Online-Unterricht in Mini-Gruppen mit maximal 3 Kindern: Geschichten, Spiele, Lieder und echte Cambridge-Bücher zum Anfassen. Viel Spaß, wenig Bildschirmzeit.',
     ctaPrimary: 'Kostenlose Probestunde buchen',
@@ -237,7 +237,7 @@ const de: SiteContent = {
     items: [
       {
         q: 'Für welches Alter ist der Unterricht gedacht?',
-        a: 'Für Kinder von 5 bis 10 Jahren, die noch kein oder kaum Englisch können. Der Unterricht beginnt bei der Vorstufe A1 und führt bis zum Niveau A1.',
+        a: 'Für Kinder von 5 bis 12 Jahren, die noch kein oder kaum Englisch können. Der Unterricht beginnt bei der Vorstufe A1 und führt bis zum Niveau A1.',
       },
       {
         q: 'Muss mein Kind schon Englisch können?',
