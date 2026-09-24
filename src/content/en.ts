@@ -162,8 +162,9 @@ const en: SiteContent = {
     invoice: 'You receive an invoice every month. All prices are final prices.',
     breaks: {
       title: 'Lessons during the holidays',
-      intro: 'Lessons continue during the school holidays. Only these days are off:',
-      holidayNote: 'If a public holiday falls on the lesson day, you get a replacement date.',
+      intro: 'Lessons continue during the school holidays.',
+      listIntro: 'Only these days are off:', // only shown when days off are listed in schedule.ts
+      holidayNote: 'If a class falls on a public holiday, a replacement class will be offered.',
     },
     discounts: {
       title: 'Discounts',

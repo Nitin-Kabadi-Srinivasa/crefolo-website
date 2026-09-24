@@ -162,8 +162,9 @@ const de: SiteContent = {
     invoice: 'Sie erhalten jeden Monat eine Rechnung. Alle Preise sind Endpreise.',
     breaks: {
       title: 'Unterricht in den Ferien',
-      intro: 'Der Unterricht läuft auch in den Schulferien weiter. Frei sind nur diese Tage:',
-      holidayNote: 'Fällt ein gesetzlicher Feiertag auf den Unterrichtstag, bekommen Sie einen Ersatztermin.',
+      intro: 'Der Unterricht läuft auch in den Schulferien weiter.',
+      listIntro: 'Frei sind nur diese Tage:', // nur sichtbar, wenn in schedule.ts freie Tage eingetragen sind
+      holidayNote: 'Fällt eine Unterrichtsstunde auf einen gesetzlichen Feiertag, biete ich eine Ersatzstunde an.',
     },
     discounts: {
       title: 'Rabatte',

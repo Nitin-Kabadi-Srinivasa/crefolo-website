@@ -88,7 +88,7 @@ export interface SiteContent {
       badge?: string;
     }[];
     invoice: string;
-    breaks: { title: string; intro: string; holidayNote: string }; // the periods come from schedule.ts
+    breaks: { title: string; intro: string; listIntro: string; holidayNote: string }; // the days off come from schedule.ts
     discounts: { title: string; items: string[] };
     terms: { title: string; items: string[] };
     note: { title: string; text: string };

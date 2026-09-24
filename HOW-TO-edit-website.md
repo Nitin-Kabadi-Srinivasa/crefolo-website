@@ -145,6 +145,8 @@ All dates live in **one file for both languages**: `src\content\schedule.ts`.
   ```
   For a longer break, for example your own holiday, give the first and last day without lessons.
   They appear in the prices section; past entries disappear automatically.
+  With no entries (`breaks: [],`) the prices section only says that lessons continue in the
+  school holidays and that a replacement class is offered when a class falls on a public holiday.
 
 The booking form reads the trial dates from this file, so a new date can be booked as soon
 as the change is live. Keep the commas at the end of each line. Publish as usual.

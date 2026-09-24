@@ -54,22 +54,29 @@ const breaks = upcomingBreaks().map((b) => ({
     </div>
 
     <div class="pricing__info">
-      {breaks.length > 0 && (
-        <div class="card info-card reveal">
-          <div class="icon-badge icon-badge--sky"><Icon name="calendar" /></div>
-          <h3>{t.pricing.breaks.title}</h3>
-          <p class="info-card__intro">{t.pricing.breaks.intro}</p>
-          <ul class="info-card__breaks">
-            {breaks.map((b) => (
-              <li>
-                <strong>{b.name}</strong>
-                <span>{b.range}</span>
-              </li>
-            ))}
+      <div class="card info-card reveal">
+        <div class="icon-badge icon-badge--sky"><Icon name="calendar" /></div>
+        <h3>{t.pricing.breaks.title}</h3>
+        {breaks.length > 0 ? (
+          <>
+            <p class="info-card__intro">{t.pricing.breaks.intro} {t.pricing.breaks.listIntro}</p>
+            <ul class="info-card__breaks">
+              {breaks.map((b) => (
+                <li>
+                  <strong>{b.name}</strong>
+                  <span>{b.range}</span>
+                </li>
+              ))}
+            </ul>
+            <p class="info-card__note">{t.pricing.breaks.holidayNote}</p>
+          </>
+        ) : (
+          <ul class="checklist info-card__list">
+            <li>{t.pricing.breaks.intro}</li>
+            <li>{t.pricing.breaks.holidayNote}</li>
           </ul>
-          <p class="info-card__note">{t.pricing.breaks.holidayNote}</p>
-        </div>
-      )}
+        )}
+      </div>
       <div class="card info-card reveal" data-delay="1">
         <div class="icon-badge icon-badge--yellow"><Icon name="group" /></div>
         <h3>{t.pricing.discounts.title}</h3>
