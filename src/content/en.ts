@@ -15,7 +15,7 @@ const en: SiteContent = {
   meta: {
     title: 'Crefolo – Online English for Kids | Free Trial Lesson',
     description:
-      'Playful online English lessons for children aged 5 to 10. Mini groups of max. 3 kids, Cambridge curriculum, real books instead of screen time. Book your free trial lesson now.',
+      'Playful online English lessons for children aged 5 to 12. Mini groups of max. 3 kids, Cambridge curriculum, real books instead of screen time. Book your free trial lesson now.',
   },
 
   nav: {
@@ -34,7 +34,7 @@ const en: SiteContent = {
   },
 
   hero: {
-    eyebrow: 'Online English for children aged 5 to 10',
+    eyebrow: 'Online English for children aged 5 to 12',
     title: 'Learning English becomes an <em>adventure</em>',
     text: 'Online lessons in mini groups of up to 3 children: stories, games, songs and real Cambridge books to hold in your hands. Lots of fun, little screen time.',
     ctaPrimary: 'Book a free trial lesson',
@@ -237,7 +237,7 @@ const en: SiteContent = {
     items: [
       {
         q: 'What age are the lessons for?',
-        a: 'For children aged 5 to 10 who speak little or no English yet. Lessons start at pre-A1 and lead up to level A1.',
+        a: 'For children aged 5 to 12 who speak little or no English yet. Lessons start at pre-A1 and lead up to level A1.',
       },
       {
         q: 'Does my child need to know some English already?',
