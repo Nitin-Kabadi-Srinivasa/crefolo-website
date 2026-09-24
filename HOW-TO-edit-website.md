@@ -138,8 +138,13 @@ All dates live in **one file for both languages**: `src\content\schedule.ts`.
 - **Next group start:** `nextGroup: { date: '2026-11-05', time: '17:00' },`
   This drives the "Neue Mini-Gruppe" banner under the photo. It hides itself after the start.
   To remove the banner completely, write `nextGroup: null,`
-- **Class-free periods:** each line under `breaks:` has a German and English name and a
-  `from` / `to` date. They appear in the prices section; past periods disappear automatically.
+- **Days or periods without lessons:** each line under `breaks:` has a German and English name
+  and a `from` / `to` date. For a single day, use the same date twice, for example
+  ```
+  { name: { de: 'Heiligabend', en: 'Christmas Eve' }, from: '2026-12-24', to: '2026-12-24' },
+  ```
+  For a longer break, for example your own holiday, give the first and last day without lessons.
+  They appear in the prices section; past entries disappear automatically.
 
 The booking form reads the trial dates from this file, so a new date can be booked as soon
 as the change is live. Keep the commas at the end of each line. Publish as usual.

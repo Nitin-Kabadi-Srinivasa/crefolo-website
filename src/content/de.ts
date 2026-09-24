@@ -135,7 +135,7 @@ const de: SiteContent = {
     intro: 'Klar und fair: ein fester Monatsbeitrag für die Gruppe, Einzelunterricht nach gehaltenen Stunden.',
     course: 'Englisch für absolute Anfänger (GER Vorstufe A1 bis A1)',
     details: [
-      'Eine Unterrichtsstunde pro Woche, rund 40 Stunden im Jahr',
+      'Eine Unterrichtsstunde pro Woche, auch in den Schulferien',
       '40 Minuten Unterricht + 10 Minuten gemeinsame Englisch-Spiele + 3 bis 10 Minuten Gespräch mit den Eltern',
       'Maximal 3 Kinder pro Gruppe',
       'Termine abends unter der Woche, samstags vormittags und abends',
@@ -148,7 +148,7 @@ const de: SiteContent = {
         name: 'Gruppenunterricht',
         price: '85 €',
         unit: 'pro Monat',
-        text: 'In der Mini-Gruppe mit maximal 3 Kindern: lernen, lachen und gemeinsam mutig sprechen. Im August zahlen Sie nichts.',
+        text: 'In der Mini-Gruppe mit maximal 3 Kindern: lernen, lachen und gemeinsam mutig sprechen.',
         highlight: true,
         badge: 'Beliebt',
       },
@@ -161,9 +161,9 @@ const de: SiteContent = {
     ],
     invoice: 'Sie erhalten jeden Monat eine Rechnung. Alle Preise sind Endpreise.',
     breaks: {
-      title: 'Unterrichtsfreie Zeiten',
-      intro: 'In diesen Zeiten findet kein Unterricht statt:',
-      holidayNote: 'Fällt ein Feiertag auf den Unterrichtstag, bekommen Sie einen Ersatztermin.',
+      title: 'Unterricht in den Ferien',
+      intro: 'Der Unterricht läuft auch in den Schulferien weiter. Frei sind nur diese Tage:',
+      holidayNote: 'Fällt ein gesetzlicher Feiertag auf den Unterrichtstag, bekommen Sie einen Ersatztermin.',
     },
     discounts: {
       title: 'Rabatte',
@@ -257,7 +257,7 @@ const de: SiteContent = {
       },
       {
         q: 'Wann findet der Unterricht statt?',
-        a: 'Der Unterricht findet einmal pro Woche in festen Mini-Gruppen statt, abends unter der Woche oder samstags. In den Weihnachts-, Oster- und Sommerferien ist unterrichtsfrei. Die genauen Zeiten stehen bei den Preisen. Sonntags findet kein Unterricht statt.',
+        a: 'Der Unterricht findet einmal pro Woche in festen Mini-Gruppen statt, abends unter der Woche oder samstags. Er läuft auch in den Schulferien weiter, frei sind nur wenige Tage rund um Weihnachten und Ostern. Die genauen Tage stehen bei den Preisen. Sonntags findet kein Unterricht statt.',
       },
       {
         q: 'Wird auf Deutsch oder auf Englisch unterrichtet?',
@@ -265,7 +265,7 @@ const de: SiteContent = {
       },
       {
         q: 'Wie funktioniert die Bezahlung?',
-        a: 'Gruppenunterricht kostet 85 € pro Monat, im August zahlen Sie nichts. Einzelunterricht kostet 40 € pro Stunde, und Sie zahlen nur die Stunden, die stattfinden. Sie erhalten jeden Monat eine Rechnung. Geschwister und Freunde bekommen einen Rabatt.',
+        a: 'Gruppenunterricht kostet 85 € pro Monat. Einzelunterricht kostet 40 € pro Stunde, und Sie zahlen nur die Stunden, die stattfinden. Sie erhalten jeden Monat eine Rechnung. Geschwister und Freunde bekommen einen Rabatt.',
       },
       {
         q: 'Was passiert, wenn mein Kind eine Stunde verpasst?',

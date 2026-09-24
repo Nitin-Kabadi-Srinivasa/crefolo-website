@@ -135,7 +135,7 @@ const en: SiteContent = {
     intro: 'Clear and fair: a fixed monthly fee for groups, one-to-one lessons billed by the lessons held.',
     course: 'English for absolute beginners (CEFR pre-A1 to A1)',
     details: [
-      'One lesson per week, around 40 lessons a year',
+      'One lesson per week, also during the school holidays',
       '40 minutes of teaching + 10 minutes of playing English games together + 3 to 10 minutes with the parents',
       'A maximum of 3 children per group',
       'Weekday evenings, Saturday mornings and evenings',
@@ -148,7 +148,7 @@ const en: SiteContent = {
         name: 'Group lessons',
         price: '€85',
         unit: 'per month',
-        text: 'In a mini group of up to 3 children: learn, laugh and find the courage to speak together. No fee in August.',
+        text: 'In a mini group of up to 3 children: learn, laugh and find the courage to speak together.',
         highlight: true,
         badge: 'Popular',
       },
@@ -161,8 +161,8 @@ const en: SiteContent = {
     ],
     invoice: 'You receive an invoice every month. All prices are final prices.',
     breaks: {
-      title: 'Class-free periods',
-      intro: 'There are no lessons during these periods:',
+      title: 'Lessons during the holidays',
+      intro: 'Lessons continue during the school holidays. Only these days are off:',
       holidayNote: 'If a public holiday falls on the lesson day, you get a replacement date.',
     },
     discounts: {
@@ -257,7 +257,7 @@ const en: SiteContent = {
       },
       {
         q: 'When do lessons take place?',
-        a: 'Lessons take place once a week in fixed mini groups, on weekday evenings or on Saturdays. There are no lessons during the Christmas, Easter and summer holidays. The exact periods are listed with the prices. No lessons on Sundays.',
+        a: 'Lessons take place once a week in fixed mini groups, on weekday evenings or on Saturdays. They continue during the school holidays, and only a few days around Christmas and Easter are off. The exact days are listed with the prices. No lessons on Sundays.',
       },
       {
         q: 'Are lessons taught in German or in English?',
@@ -265,7 +265,7 @@ const en: SiteContent = {
       },
       {
         q: 'How does payment work?',
-        a: 'Group lessons cost €85 per month, with no fee in August. One-to-one lessons cost €40 per lesson, and you only pay for the lessons that take place. You receive an invoice every month. Siblings and friends get a discount.',
+        a: 'Group lessons cost €85 per month. One-to-one lessons cost €40 per lesson, and you only pay for the lessons that take place. You receive an invoice every month. Siblings and friends get a discount.',
       },
       {
         q: 'What happens if my child misses a lesson?',

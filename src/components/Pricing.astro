@@ -11,7 +11,10 @@ const { locale } = Astro.props;
 const t = getContent(locale);
 const bookingHref = routes.booking[locale];
 const to = locale === 'de' ? 'bis' : 'to';
-const breaks = upcomingBreaks().map((b) => ({ name: b.name[locale], range: `${shortDate(b.from, locale)} ${to} ${shortDate(b.to, locale)}` }));
+const breaks = upcomingBreaks().map((b) => ({
+  name: b.name[locale],
+  range: b.from === b.to ? shortDate(b.from, locale) : `${shortDate(b.from, locale)} ${to} ${shortDate(b.to, locale)}`,
+}));
 ---
 
 <section class="section section--cream pricing" id={sectionIds[locale].prices}>

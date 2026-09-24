@@ -47,10 +47,11 @@ export const schedule: Schedule = {
   // Start der nächsten neuen Gruppe (Ankündigung auf der Startseite)
   nextGroup: { date: '2026-11-05', time: '17:00' },
 
-  // Unterrichtsfreie Zeiten
+  // Unterrichtsfreie Tage (in den Schulferien läuft der Unterricht sonst weiter).
+  // Für einen einzelnen Tag bei 'from' und 'to' dasselbe Datum eintragen.
   breaks: [
-    { name: { de: 'Weihnachten', en: 'Christmas' }, from: '2026-12-21', to: '2027-01-08' },
-    { name: { de: 'Ostern', en: 'Easter' }, from: '2027-03-22', to: '2027-04-04' },
-    { name: { de: 'Sommer', en: 'Summer' }, from: '2027-08-01', to: '2027-09-12' },
+    { name: { de: 'Heiligabend', en: 'Christmas Eve' }, from: '2026-12-24', to: '2026-12-24' },
+    { name: { de: 'Silvester', en: 'New Year\'s Eve' }, from: '2026-12-31', to: '2026-12-31' },
+    { name: { de: 'Gründonnerstag', en: 'Maundy Thursday' }, from: '2027-03-25', to: '2027-03-25' },
   ],
 };
