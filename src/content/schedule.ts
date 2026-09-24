@@ -32,20 +32,20 @@ export const schedule: Schedule = {
   trialCapacity: 3,
   trialMinutes: 60,
   trials: [
-    { date: '2026-10-01', time: '17:00', ages: [5, 7] },
-    { date: '2026-10-01', time: '18:00', ages: [8, 12] },
-    { date: '2026-10-08', time: '17:00', ages: [5, 7] },
-    { date: '2026-10-08', time: '18:00', ages: [8, 12] },
-    { date: '2026-10-15', time: '17:00', ages: [5, 7] },
-    { date: '2026-10-15', time: '18:00', ages: [8, 12] },
-    { date: '2026-10-22', time: '17:00', ages: [5, 7] },
-    { date: '2026-10-22', time: '18:00', ages: [8, 12] },
-    { date: '2026-10-29', time: '17:00', ages: [5, 7] },
-    { date: '2026-10-29', time: '18:00', ages: [8, 12] },
+    { date: '2026-10-02', time: '17:00', ages: [5, 7] },
+    { date: '2026-10-02', time: '18:00', ages: [8, 12] },
+    { date: '2026-10-09', time: '17:00', ages: [5, 7] },
+    { date: '2026-10-09', time: '18:00', ages: [8, 12] },
+    { date: '2026-10-16', time: '17:00', ages: [5, 7] },
+    { date: '2026-10-16', time: '18:00', ages: [8, 12] },
+    { date: '2026-10-23', time: '17:00', ages: [5, 7] },
+    { date: '2026-10-23', time: '18:00', ages: [8, 12] },
+    { date: '2026-10-30', time: '17:00', ages: [5, 7] },
+    { date: '2026-10-30', time: '18:00', ages: [8, 12] },
   ],
 
   // Start der nächsten neuen Gruppe (Ankündigung auf der Startseite)
-  nextGroup: { date: '2026-11-05', time: '17:00' },
+  nextGroup: { date: '2026-11-06', time: '17:00' },
 
   // Unterrichtsfreie Tage (in den Schulferien läuft der Unterricht sonst weiter).
   // Für einen einzelnen Tag bei 'from' und 'to' dasselbe Datum eintragen.
