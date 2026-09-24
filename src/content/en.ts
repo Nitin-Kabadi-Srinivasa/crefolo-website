@@ -160,12 +160,6 @@ const en: SiteContent = {
       },
     ],
     invoice: 'You receive an invoice every month. All prices are final prices.',
-    breaks: {
-      title: 'Lessons during the holidays',
-      intro: 'Lessons continue during the school holidays.',
-      listIntro: 'Only these days are off:', // only shown when days off are listed in schedule.ts
-      holidayNote: 'If a class falls on a public holiday, a replacement class will be offered.',
-    },
     discounts: {
       title: 'Discounts',
       items: [
@@ -179,6 +173,7 @@ const en: SiteContent = {
         'Groups: if your child is ill, the lesson is credited. Please let me know before the lesson.',
         'If your child misses a lesson, you receive a short summary so they can easily catch up.',
         'One-to-one: lessons cancelled at least 24 hours in advance are rescheduled.',
+        'If a class falls on a public holiday, a replacement class will be offered.',
         'Cancellation with 2 weeks\' notice to the end of a month.',
       ],
     },
@@ -258,7 +253,7 @@ const en: SiteContent = {
       },
       {
         q: 'When do lessons take place?',
-        a: 'Lessons take place once a week in fixed mini groups, on weekday evenings or on Saturdays. They continue during the school holidays, and only a few days around Christmas and Easter are off. The exact days are listed with the prices. No lessons on Sundays.',
+        a: 'Lessons take place once a week in fixed mini groups, on weekday evenings or on Saturdays. They continue during the school holidays. No lessons on Sundays.',
       },
       {
         q: 'Are lessons taught in German or in English?',

@@ -17,7 +17,7 @@ Legal pages: `src/content/legal-de.ts` and `src/content/legal-en.ts`.
 
 Change the text between the quotes, keep the commas, save, and publish (see below). If something is syntactically wrong the build fails with a message and the old site stays online.
 
-Group trial dates (with age band), places per trial, the next group start and the class-free periods are set in `src/content/schedule.ts`. Each trial has one shared Google Meet: the first booking creates a "session" event in Google Calendar that owns the Meet and lists all parents as guests; every child also gets its own quiet event that carries the cancel link and reminder state.
+Group trial dates (with age band), places per trial and the next group start are set in `src/content/schedule.ts`. Each trial has one shared Google Meet: the first booking creates a "session" event in Google Calendar that owns the Meet and lists all parents as guests; every child also gets its own quiet event that carries the cancel link and reminder state.
 
 `.dev.vars` options for local testing: `MOCK=1` fakes calendar and email (with demo bookings); `MAIL_DRY_RUN=1` uses the real calendar but only logs emails. In mock mode, `/api/dev/email?type=confirm|notify|reminder|teacher-reminder|cancel&lang=de|en` shows the rendered emails.
 

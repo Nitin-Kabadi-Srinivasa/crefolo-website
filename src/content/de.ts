@@ -160,12 +160,6 @@ const de: SiteContent = {
       },
     ],
     invoice: 'Sie erhalten jeden Monat eine Rechnung. Alle Preise sind Endpreise.',
-    breaks: {
-      title: 'Unterricht in den Ferien',
-      intro: 'Der Unterricht läuft auch in den Schulferien weiter.',
-      listIntro: 'Frei sind nur diese Tage:', // nur sichtbar, wenn in schedule.ts freie Tage eingetragen sind
-      holidayNote: 'Fällt eine Unterrichtsstunde auf einen gesetzlichen Feiertag, biete ich eine Ersatzstunde an.',
-    },
     discounts: {
       title: 'Rabatte',
       items: [
@@ -179,6 +173,7 @@ const de: SiteContent = {
         'Gruppe: Fehlt Ihr Kind wegen Krankheit, schreibe ich die Stunde gut. Bitte sagen Sie vor der Stunde Bescheid.',
         'Verpasst Ihr Kind eine Stunde, bekommen Sie eine kurze Zusammenfassung. So holt Ihr Kind den Stoff leicht nach.',
         'Einzelunterricht: Stunden, die mindestens 24 Stunden vorher abgesagt werden, holen wir nach.',
+        'Fällt eine Unterrichtsstunde auf einen gesetzlichen Feiertag, biete ich eine Ersatzstunde an.',
         'Kündigung mit einer Frist von 2 Wochen zum Monatsende.',
       ],
     },
@@ -258,7 +253,7 @@ const de: SiteContent = {
       },
       {
         q: 'Wann findet der Unterricht statt?',
-        a: 'Der Unterricht findet einmal pro Woche in festen Mini-Gruppen statt, abends unter der Woche oder samstags. Er läuft auch in den Schulferien weiter, frei sind nur wenige Tage rund um Weihnachten und Ostern. Die genauen Tage stehen bei den Preisen. Sonntags findet kein Unterricht statt.',
+        a: 'Der Unterricht findet einmal pro Woche in festen Mini-Gruppen statt, abends unter der Woche oder samstags. Er läuft auch in den Schulferien weiter. Sonntags findet kein Unterricht statt.',
       },
       {
         q: 'Wird auf Deutsch oder auf Englisch unterrichtet?',

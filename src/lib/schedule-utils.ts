@@ -1,5 +1,5 @@
 // Formatting helpers for the dates in src/content/schedule.ts (used at build time by the pages).
-import { schedule, type ClassBreak, type TrialSession } from '@/content/schedule';
+import { schedule, type TrialSession } from '@/content/schedule';
 import type { Locale } from '@/content/types';
 import { zonedToUtc } from '../../worker/time';
 
@@ -67,9 +67,5 @@ export function slotsText(trials: TrialSession[], locale: Locale): string {
 
 export function upcomingTrials(today = todayYmd()): TrialSession[] {
   return schedule.trials.filter((t) => t.date >= today).sort((a, b) => (a.date + a.time).localeCompare(b.date + b.time));
-}
-
-export function upcomingBreaks(today = todayYmd()): ClassBreak[] {
-  return schedule.breaks.filter((b) => b.to >= today).sort((a, b) => a.from.localeCompare(b.from));
 }
 

@@ -41,7 +41,7 @@ The important files for content:
 |---|---|
 | `src\content\de.ts` | **All German text and prices** (the main website) |
 | `src\content\en.ts` | **All English text and prices** (the EN version) |
-| `src\content\schedule.ts` | **Dates:** trial lessons, the next group start, class-free periods (both languages) |
+| `src\content\schedule.ts` | **Dates:** trial lessons and the next group start (both languages) |
 | `src\content\legal-de.ts` | German Impressum and Datenschutz |
 | `src\content\legal-en.ts` | English Imprint and Privacy |
 | `src\pages\index.astro` | The **order of sections** on the German home page |
@@ -125,7 +125,7 @@ Open `src\content\de.ts`, find the `pricing:` section. Change the number inside 
 for example `price: '85 €'`. Do the same in `en.ts` (`price: '€85'`). The price is also
 mentioned in the FAQ answer "Wie funktioniert die Bezahlung?", so update that sentence too. Publish.
 
-### Change trial dates, the next group start or the class-free periods
+### Change trial dates or the next group start
 All dates live in **one file for both languages**: `src\content\schedule.ts`.
 
 - **Trial lessons:** each line under `trials:` is one group trial, for example
@@ -138,15 +138,8 @@ All dates live in **one file for both languages**: `src\content\schedule.ts`.
 - **Next group start:** `nextGroup: { date: '2026-11-05', time: '17:00' },`
   This drives the "Neue Mini-Gruppe" banner under the photo. It hides itself after the start.
   To remove the banner completely, write `nextGroup: null,`
-- **Days or periods without lessons:** each line under `breaks:` has a German and English name
-  and a `from` / `to` date. For a single day, use the same date twice, for example
-  ```
-  { name: { de: 'Heiligabend', en: 'Christmas Eve' }, from: '2026-12-24', to: '2026-12-24' },
-  ```
-  For a longer break, for example your own holiday, give the first and last day without lessons.
-  They appear in the prices section; past entries disappear automatically.
-  With no entries (`breaks: [],`) the prices section only says that lessons continue in the
-  school holidays and that a replacement class is offered when a class falls on a public holiday.
+- Days without lessons are not on the website (you tell parents yourself). The note about
+  public holidays is one of the points under `terms:` in `de.ts` / `en.ts`.
 
 The booking form reads the trial dates from this file, so a new date can be booked as soon
 as the change is live. Keep the commas at the end of each line. Publish as usual.

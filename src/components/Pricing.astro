@@ -1,7 +1,6 @@
 ---
 import type { Locale } from '@/content/types';
 import { getContent, sectionIds, routes } from '@/i18n';
-import { upcomingBreaks, shortDate } from '@/lib/schedule-utils';
 import Icon from './Icon.astro';
 
 interface Props {
@@ -10,11 +9,6 @@ interface Props {
 const { locale } = Astro.props;
 const t = getContent(locale);
 const bookingHref = routes.booking[locale];
-const to = locale === 'de' ? 'bis' : 'to';
-const breaks = upcomingBreaks().map((b) => ({
-  name: b.name[locale],
-  range: b.from === b.to ? shortDate(b.from, locale) : `${shortDate(b.from, locale)} ${to} ${shortDate(b.to, locale)}`,
-}));
 ---
 
 <section class="section section--cream pricing" id={sectionIds[locale].prices}>
@@ -55,39 +49,16 @@ const breaks = upcomingBreaks().map((b) => ({
 
     <div class="pricing__info">
       <div class="card info-card reveal">
-        <div class="icon-badge icon-badge--sky"><Icon name="calendar" /></div>
-        <h3>{t.pricing.breaks.title}</h3>
-        {breaks.length > 0 ? (
-          <>
-            <p class="info-card__intro">{t.pricing.breaks.intro} {t.pricing.breaks.listIntro}</p>
-            <ul class="info-card__breaks">
-              {breaks.map((b) => (
-                <li>
-                  <strong>{b.name}</strong>
-                  <span>{b.range}</span>
-                </li>
-              ))}
-            </ul>
-            <p class="info-card__note">{t.pricing.breaks.holidayNote}</p>
-          </>
-        ) : (
-          <ul class="checklist info-card__list">
-            <li>{t.pricing.breaks.intro}</li>
-            <li>{t.pricing.breaks.holidayNote}</li>
-          </ul>
-        )}
-      </div>
-      <div class="card info-card reveal" data-delay="1">
         <div class="icon-badge icon-badge--yellow"><Icon name="group" /></div>
         <h3>{t.pricing.discounts.title}</h3>
         <ul class="checklist info-card__list">
           {t.pricing.discounts.items.map((d) => <li>{d}</li>)}
         </ul>
       </div>
-      <div class="card info-card reveal" data-delay="2">
+      <div class="card info-card reveal" data-delay="1">
         <div class="icon-badge icon-badge--teal"><Icon name="clock" /></div>
         <h3>{t.pricing.terms.title}</h3>
-        <ul class="checklist info-card__list">
+        <ul class="checklist info-card__list info-card__list--cols">
           {t.pricing.terms.items.map((d) => <li>{d}</li>)}
         </ul>
       </div>
@@ -171,7 +142,7 @@ const breaks = upcomingBreaks().map((b) => ({
   .pricing__info {
     margin-top: 1.75rem;
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
     gap: 1.5rem;
     align-items: stretch;
   }
@@ -179,40 +150,22 @@ const breaks = upcomingBreaks().map((b) => ({
     font-size: 1.2rem;
     margin-bottom: 0.6rem;
   }
-  .info-card__intro,
-  .info-card__note {
-    color: var(--muted);
-    font-size: 0.95rem;
-    margin: 0 0 0.75rem;
-  }
-  .info-card__note {
-    margin: 0.9rem 0 0;
-  }
-  .info-card__breaks {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: grid;
-    gap: 0.55rem;
-  }
-  .info-card__breaks li {
-    display: flex;
-    flex-direction: column;
-    background: var(--sky-soft);
-    border-radius: var(--radius-xs);
-    padding: 0.55rem 0.8rem;
-  }
-  .info-card__breaks strong {
-    font-family: var(--font-display);
-    color: var(--plum);
-  }
-  .info-card__breaks span {
-    color: var(--plum-soft);
-    font-size: 0.95rem;
-  }
   .info-card__list {
     font-size: 0.97rem;
     color: var(--plum-soft);
+  }
+  /* the wide card shows its points in two newspaper-style columns */
+  .info-card__list--cols {
+    display: block;
+    columns: 2;
+    column-gap: 2rem;
+  }
+  .info-card__list--cols li {
+    break-inside: avoid;
+    margin-bottom: 0.7rem;
+  }
+  .info-card__list--cols li:last-child {
+    margin-bottom: 0;
   }
   .pricing__note {
     margin-top: 1.75rem;
@@ -244,19 +197,22 @@ const breaks = upcomingBreaks().map((b) => ({
     margin: 0;
     color: var(--plum-soft);
   }
-  @media (max-width: 1000px) {
-    .pricing__info {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-  }
   @media (max-width: 860px) {
-    .pricing__grid {
+    .pricing__grid,
+    .pricing__info {
       grid-template-columns: 1fr;
+    }
+    .info-card__list {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      column-gap: 2rem;
     }
   }
   @media (max-width: 640px) {
-    .pricing__info {
+    .info-card__list {
       grid-template-columns: 1fr;
+    }
+    .info-card__list--cols {
+      columns: 1;
     }
   }
 </style>
