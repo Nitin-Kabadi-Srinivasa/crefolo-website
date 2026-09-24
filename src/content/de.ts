@@ -176,8 +176,8 @@ const de: SiteContent = {
       title: 'Fehlstunden & Kündigung',
       items: [
         'Gruppe: Fehlt Ihr Kind wegen Krankheit, schreibe ich die Stunde gut. Bitte sagen Sie vor der Stunde Bescheid.',
-        'Einzelunterricht: Stunden, die mindestens 24 Stunden vorher abgesagt werden, holen wir nach.',
         'Verpasst Ihr Kind eine Stunde, bekommen Sie eine kurze Zusammenfassung. So holt Ihr Kind den Stoff leicht nach.',
+        'Einzelunterricht: Stunden, die mindestens 24 Stunden vorher abgesagt werden, holen wir nach.',
         'Kündigung mit einer Frist von 2 Wochen zum Monatsende.',
       ],
     },
